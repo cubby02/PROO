@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">PROO</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="submit">Submit</string>
+    <string name="login">LogIn</string>
 </resources>

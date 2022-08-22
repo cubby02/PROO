@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "961876884181",
+    "project_id": "proo-17f44",
+    "storage_bucket": "proo-17f44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961876884181:android:8722322024b53a2339405c",
+        "android_client_info": {
+          "package_name": "com.cubbysulotions.proo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961876884181-4s7137g7f1ineptsj3begsi7od7ffjai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXwLUmAP-_X258no4106TlOhxel-yrNWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961876884181-4s7137g7f1ineptsj3begsi7od7ffjai.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
