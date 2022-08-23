@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_welcomeScreenFragment"
-            app:destination="@id/welcomeScreenFragment" />
+            app:destination="@id/welcomeScreenFragment"
+            app:enterAnim="@anim/slide_left_to_right"
+            app:launchSingleTop="true"
+            app:popExitAnim="@anim/slide_l2r_reverse"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -21,7 +25,13 @@
         tools:layout="@layout/fragment_sign_in" >
         <action
             android:id="@+id/action_signInFragment_to_welcomeScreenFragment"
-            app:destination="@id/welcomeScreenFragment" />
+            app:destination="@id/welcomeScreenFragment"
+            app:enterAnim="@anim/slide_r2l_reverse"
+            app:exitAnim="@anim/fade_out"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_right_to_left"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/welcomeScreenFragment"
@@ -30,9 +40,17 @@
         tools:layout="@layout/fragment_welcome_screen" >
         <action
             android:id="@+id/action_welcomeScreenFragment_to_loginFragment2"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_right_to_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_r2l_reverse" />
         <action
             android:id="@+id/action_welcomeScreenFragment_to_signInFragment2"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_right_to_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_r2l_reverse" />
     </fragment>
 </navigation>

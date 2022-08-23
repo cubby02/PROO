@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -42,6 +43,7 @@ public class SignInFragment extends Fragment {
     private Button btnBack, btnSubmit;
     private FirebaseAuth mAuth;
     private NavController navController;
+    private NavOptions navOptions;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -54,6 +56,12 @@ public class SignInFragment extends Fragment {
             btnBack = view.findViewById(R.id.btnBack);
             btnSubmit = view.findViewById(R.id.btnSubmit);
             navController = Navigation.findNavController(view);
+            navOptions = new NavOptions.Builder().setPopUpTo(R.id.welcomeScreenFragment, true)
+                    .setEnterAnim(R.anim.slide_left_to_right)
+                    .setExitAnim(R.anim.wait_anim)
+                    .setPopEnterAnim(R.anim.wait_anim)
+                    .setPopExitAnim(R.anim.slide_l2r_reverse)
+                    .build();
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
@@ -73,7 +81,7 @@ public class SignInFragment extends Fragment {
             btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    navController.navigate(R.id.action_signInFragment_to_welcomeScreenFragment);
+                    navController.navigate(R.id.action_signInFragment_to_welcomeScreenFragment, null, navOptions);
                 }
             });
 

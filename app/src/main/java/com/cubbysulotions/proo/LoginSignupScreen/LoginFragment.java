@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -51,6 +52,7 @@ public class LoginFragment extends Fragment {
     private Button btnBack, btnLogin;
     private FirebaseAuth mAuth;
     private NavController navController;
+    private NavOptions navOptions;
     private TextView forgotPassword;
 
     @Override
@@ -63,6 +65,13 @@ public class LoginFragment extends Fragment {
             btnLogin = view.findViewById(R.id.btnLogin);
             navController = Navigation.findNavController(view);
             forgotPassword = view.findViewById(R.id.txtForgotPassword);
+
+            navOptions = new NavOptions.Builder().setPopUpTo(R.id.welcomeScreenFragment, true)
+                    .setEnterAnim(R.anim.slide_left_to_right)
+                    .setExitAnim(R.anim.wait_anim)
+                    .setPopEnterAnim(R.anim.wait_anim)
+                    .setPopExitAnim(R.anim.slide_l2r_reverse)
+                    .build();
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
@@ -82,7 +91,7 @@ public class LoginFragment extends Fragment {
             btnBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    navController.navigate(R.id.action_loginFragment_to_welcomeScreenFragment);
+                    navController.navigate(R.id.action_loginFragment_to_welcomeScreenFragment, null, navOptions);
                 }
             });
 
