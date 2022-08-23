@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.LoadingDialog;
 import com.cubbysulotions.proo.Models.Users;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,6 +45,7 @@ public class SignInFragment extends Fragment {
     private FirebaseAuth mAuth;
     private NavController navController;
     private NavOptions navOptions;
+    LoadingDialog loadingDialog;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class SignInFragment extends Fragment {
                     .setPopEnterAnim(R.anim.wait_anim)
                     .setPopExitAnim(R.anim.slide_l2r_reverse)
                     .build();
+            loadingDialog = new LoadingDialog(getActivity());
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
@@ -107,6 +110,7 @@ public class SignInFragment extends Fragment {
             } else if (password.getText().length() < 6){
                 password.setError("Password should be at least 6 characters");
             } else {
+                loadingDialog.startLoading("Processing");
                 //Then this block of code is to check whether the email is existing or not
                 mAuth.fetchSignInMethodsForEmail(emailText)
                         .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -136,22 +140,27 @@ public class SignInFragment extends Fragment {
                                                                             .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
+                                                                            loadingDialog.stopLoading();
                                                                             toast("Please check your email for verification.");
-                                                                            navController.navigate(R.id.action_signInFragment_to_welcomeScreenFragment);
+                                                                            navController.navigate(R.id.action_signInFragment_to_welcomeScreenFragment, null, navOptions);
                                                                         }
                                                                     });
                                                                 } else {
+                                                                    loadingDialog.stopLoading();
                                                                     toast(task.getException().getMessage());
                                                                 }
                                                             }
                                                         });
                                                     } else {
                                                         Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                                                        loadingDialog.stopLoading();
+                                                        toast("Please try again.");
                                                     }
                                                 }
                                             });
                                 } else {
                                     //Log.e("TAG", "Is Old User!");
+                                    loadingDialog.stopLoading();
                                     email.setError("The email address is already in use by another account.");
                                 }
                             }

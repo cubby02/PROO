@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.LoadingDialog;
 import com.cubbysulotions.proo.MainActivity;
 import com.cubbysulotions.proo.Models.Users;
 import com.cubbysulotions.proo.R;
@@ -54,6 +55,7 @@ public class LoginFragment extends Fragment {
     private NavController navController;
     private NavOptions navOptions;
     private TextView forgotPassword;
+    LoadingDialog loadingDialog;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class LoginFragment extends Fragment {
             btnLogin = view.findViewById(R.id.btnLogin);
             navController = Navigation.findNavController(view);
             forgotPassword = view.findViewById(R.id.txtForgotPassword);
+            loadingDialog = new LoadingDialog(getActivity());
 
             navOptions = new NavOptions.Builder().setPopUpTo(R.id.welcomeScreenFragment, true)
                     .setEnterAnim(R.anim.slide_left_to_right)
@@ -121,25 +124,25 @@ public class LoginFragment extends Fragment {
             EditText resetEmail = dialog.findViewById(R.id.txtEmailReset);
             Button buttonSend = dialog.findViewById(R.id.button3);
 
-
-            toast("Email: " + resetEmail.getText().toString());
             buttonSend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //loadingDialog.startLoading("Please wait");
+
                     if (resetEmail.getText().toString().isEmpty()){
                         resetEmail.setError("Required");
-                        toast("Email: " + resetEmail.getText().toString());
                     } else {
                         dialog.dismiss();
+                        loadingDialog.startLoading("Please wait");
                         mAuth.sendPasswordResetEmail(resetEmail.getText().toString()).
                                 addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()){
+                                            loadingDialog.stopLoading();
                                             toast("Please check your mail box");
                                         } else {
                                             toast("Invalid Email");
+                                            loadingDialog.stopLoading();
                                             dialog.show();
                                             email.setText(resetEmail.getText().toString());
                                         }
@@ -167,21 +170,24 @@ public class LoginFragment extends Fragment {
                 email.setError("Required");
                 password.setError("Required");
             } else {
-
+                loadingDialog.startLoading("Logging in");
                 mAuth.signInWithEmailAndPassword(emailText, passText)
                         .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     if(mAuth.getCurrentUser().isEmailVerified()){
+                                        loadingDialog.stopLoading();
                                         Intent intent = new Intent(getActivity(), MainActivity.class);
                                         startActivity(intent);
                                         getActivity().finish();
                                     } else {
+                                        loadingDialog.stopLoading();
                                         toast("Please verify your email address");
                                     }
                                 } else {
                                     Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                                    loadingDialog.stopLoading();
                                     if (Objects.equals(task.getException().getMessage(), "There is no user record corresponding to this identifier. The user may have been deleted.")){
                                         toast("Email does not exist");
                                     } else if(Objects.equals(task.getException().getMessage(), "The password is invalid or the user does not have a password.")){
@@ -195,6 +201,7 @@ public class LoginFragment extends Fragment {
                         });
             }
         } catch (Exception e){
+            loadingDialog.stopLoading();
             toast("Login Error, Please try again");
             Log.e("Login Error", "exception", e);
         }
