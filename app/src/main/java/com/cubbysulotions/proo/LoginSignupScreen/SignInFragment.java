@@ -90,6 +90,7 @@ public class SignInFragment extends Fragment {
             String emailText = email.getText().toString();
             String passText = password.getText().toString();
 
+            //The first if-else is to validate the length of the password
             if (firstName.isEmpty() || lastName.isEmpty() || emailText.isEmpty() || passText.isEmpty()){
                 fname.setError("Required");
                 lname.setError("Required");
@@ -98,28 +99,42 @@ public class SignInFragment extends Fragment {
             } else if (password.getText().length() < 6){
                 password.setError("Password should be at least 6 characters");
             } else {
+                //Then this block of code is to check whether the email is existing or not
                 mAuth.fetchSignInMethodsForEmail(emailText)
                         .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
                             @Override
                             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-
                                 boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
 
+                                //Log.e("TAG", "Is New User!");
                                 if (isNewUser) {
-                                    //Log.e("TAG", "Is New User!");
+                                    //While the next block of code is to create the account using Email and Password
                                     mAuth.createUserWithEmailAndPassword(emailText, passText)
                                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                                    //if successful, firebase will send a verification email to the user
                                                     if(task.isSuccessful()){
-                                                        Users users = new Users(firstName, lastName, emailText);
-                                                        FirebaseDatabase.getInstance().getReference("users")
-                                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                                .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        mAuth.getCurrentUser().sendEmailVerification()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                toast("Registered Successfully");
-                                                                navController.navigate(R.id.action_signInFragment_to_welcomeScreenFragment);
+                                                                //if the email verification is successfully sent, the first name, last name and email
+                                                                //will be save in Realtime database
+                                                                if(task.isSuccessful()){
+                                                                    Users users = new Users(firstName, lastName, emailText);
+                                                                    FirebaseDatabase.getInstance().getReference("users")
+                                                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                                            .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            toast("Please check your email for verification.");
+                                                                            navController.navigate(R.id.action_signInFragment_to_welcomeScreenFragment);
+                                                                        }
+                                                                    });
+                                                                } else {
+                                                                    toast(task.getException().getMessage());
+                                                                }
                                                             }
                                                         });
                                                     } else {

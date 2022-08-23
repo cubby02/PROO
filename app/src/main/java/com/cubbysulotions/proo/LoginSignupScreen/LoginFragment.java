@@ -164,9 +164,13 @@ public class LoginFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                                    startActivity(intent);
-                                    getActivity().finish();
+                                    if(mAuth.getCurrentUser().isEmailVerified()){
+                                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    } else {
+                                        toast("Please verify your email address");
+                                    }
                                 } else {
                                     Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
                                     if (Objects.equals(task.getException().getMessage(), "There is no user record corresponding to this identifier. The user may have been deleted.")){
