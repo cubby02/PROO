@@ -1,6 +1,9 @@
 package com.cubbysulotions.proo.LoginSignupScreen;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.MainActivity;
@@ -46,6 +51,7 @@ public class LoginFragment extends Fragment {
     private Button btnBack, btnLogin;
     private FirebaseAuth mAuth;
     private NavController navController;
+    private TextView forgotPassword;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -56,6 +62,7 @@ public class LoginFragment extends Fragment {
             btnBack = view.findViewById(R.id.btnBackLogin);
             btnLogin = view.findViewById(R.id.btnLogin);
             navController = Navigation.findNavController(view);
+            forgotPassword = view.findViewById(R.id.txtForgotPassword);
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
@@ -78,9 +85,67 @@ public class LoginFragment extends Fragment {
                     navController.navigate(R.id.action_loginFragment_to_welcomeScreenFragment);
                 }
             });
+
+            forgotPassword.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openDialog();
+                }
+            });
         } catch (Exception e){
             toast("Something went wrong, Please try again");
             Log.e("Login Error", "exception", e);
+        }
+    }
+
+    private void openDialog() {
+        try{
+            Dialog dialog = new Dialog(getActivity());
+            //We have added a title in the custom layout. So let's disable the default title.
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            //The user will be able to cancel the dialog bu clicking anywhere outside the dialog.
+            dialog.setCancelable(true);
+            //Mention the name of the layout of your custom dialog.
+            dialog.setContentView(R.layout.reset_password);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            EditText resetEmail = dialog.findViewById(R.id.txtEmailReset);
+            Button buttonSend = dialog.findViewById(R.id.button3);
+
+
+            toast("Email: " + resetEmail.getText().toString());
+            buttonSend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //loadingDialog.startLoading("Please wait");
+                    if (resetEmail.getText().toString().isEmpty()){
+                        resetEmail.setError("Required");
+                        toast("Email: " + resetEmail.getText().toString());
+                    } else {
+                        dialog.dismiss();
+                        mAuth.sendPasswordResetEmail(resetEmail.getText().toString()).
+                                addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            toast("Please check your mail box");
+                                        } else {
+                                            toast("Invalid Email");
+                                            dialog.show();
+                                            email.setText(resetEmail.getText().toString());
+                                        }
+                                    }
+                                });
+                    }
+                }
+            });
+
+            dialog.show();
+
+
+        } catch (Exception e){
+            toast("Something went wrong, Please try again");
+            Log.e("Forgot Pass Error", "exception", e);
         }
     }
 
