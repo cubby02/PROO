@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.LoadingDialog;
-import com.cubbysulotions.proo.Models.Users;
+import com.cubbysulotions.proo.ModelsClasses.Users;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -3,15 +3,26 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/border.xml" value="0.20046296296296295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.20046296296296295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/item_selector.xml" value="0.20046296296296295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/round_corner.xml" value="0.20046296296296295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_login_register.xml" value="0.209375" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_splash_screen.xml" value="0.16032608695652173" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_welcome.xml" value="0.1953125" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/custom_loading_dialog.xml" value="0.18611111111111112" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_cells.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/custom_loading_dialog.xml" value="0.5" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_basic_food.xml" value="0.1736111111111111" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_calendar.xml" value="0.22" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_chatbot.xml" value="0.1736111111111111" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_home.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_login.xml" value="0.2" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_sign_in.xml" value="0.33" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_todo.xml" value="0.1736111111111111" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_welcome_screen.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/reset_password.xml" value="0.5" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/menu/item_menu.xml" value="0.18611111111111112" />
       </map>
     </option>
   </component>

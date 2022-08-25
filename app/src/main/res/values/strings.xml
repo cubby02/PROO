@@ -9,4 +9,6 @@
     <string name="submit">Submit</string>
     <string name="login">LogIn</string>
     <string name="u_forgot_password_u"><u>Forgot password?</u></string>
+    <string name="next"><![CDATA[->]]></string>
+    <string name="prev"><![CDATA[<-]]></string>
 </resources>

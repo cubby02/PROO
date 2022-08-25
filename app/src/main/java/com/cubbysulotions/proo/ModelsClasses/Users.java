@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.Models;
+package com.cubbysulotions.proo.ModelsClasses;
 
 public class Users {
     public String firstname;

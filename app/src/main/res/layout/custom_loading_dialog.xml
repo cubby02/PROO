@@ -15,8 +15,8 @@
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/loading"
             style="@style/SpinKitView.Large.ChasingDots"
-            android:layout_width="59dp"
-            android:layout_height="54dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             app:SpinKit_Color="@color/teal_200"
