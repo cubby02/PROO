@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_calendarFragment_to_weeklyCalendarFragment"
             app:destination="@id/weeklyCalendarFragment" />
+        <action
+            android:id="@+id/action_calendarFragment_to_eventEditFragment"
+            app:destination="@id/eventEditFragment" />
     </fragment>
     <fragment
         android:id="@+id/weeklyCalendarFragment"
@@ -40,6 +43,9 @@
         <action
             android:id="@+id/action_eventEditFragment_to_dailyFragment"
             app:destination="@id/dailyFragment" />
+        <action
+            android:id="@+id/action_eventEditFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
     <fragment
         android:id="@+id/dailyFragment"

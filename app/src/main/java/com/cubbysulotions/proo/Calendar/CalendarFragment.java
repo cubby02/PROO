@@ -46,7 +46,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private Button btnPrevious, btnNext, btnWeekly;
     private TextView txtMonth;
     private RecyclerView calendarRecyclerView;
-
+    NavController navController;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -58,7 +58,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         txtMonth = view.findViewById(R.id.txtMonth);
         btnWeekly = view.findViewById(R.id.btnWeekly);
         calendarRecyclerView = view.findViewById(R.id.calendarDatesRecyclerView);
-        NavController navController = Navigation.findNavController(view);
+        navController = Navigation.findNavController(view);
 
         selectedDate = LocalDate.now();
         setMonthView();
@@ -109,6 +109,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     }
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemClick(int position, LocalDate date) {
@@ -116,7 +117,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
             selectedDate = date;
             setMonthView();
         }
-
     }
 
     private void toast(String message){
