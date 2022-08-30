@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.MainActivity;
+package com.cubbysulotions.proo.Calendar;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,12 +20,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.ModelsClasses.CalendarAdapter;
+import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
 import com.cubbysulotions.proo.R;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInMonthArray;
+import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.monthYearFormatter;
+import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
 
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -36,10 +43,10 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         return view = inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
-    private Button btnPrevious, btnNext;
+    private Button btnPrevious, btnNext, btnWeekly;
     private TextView txtMonth;
     private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -49,10 +56,19 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         btnPrevious = view.findViewById(R.id.btnPrevious);
         btnNext = view.findViewById(R.id.btnNext);
         txtMonth = view.findViewById(R.id.txtMonth);
+        btnWeekly = view.findViewById(R.id.btnWeekly);
         calendarRecyclerView = view.findViewById(R.id.calendarDatesRecyclerView);
+        NavController navController = Navigation.findNavController(view);
 
         selectedDate = LocalDate.now();
         setMonthView();
+
+        btnWeekly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_calendarFragment_to_weeklyCalendarFragment);
+            }
+        });
 
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,36 +88,12 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
         txtMonth.setText(monthYearFormatter(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(date);
-
-        int daysInMonth = yearMonth.lengthOfMonth();
-
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
-
-        for(int i = 1; i <= 42; i++)
-        {
-            if(i <= dayOfWeek || i > daysInMonth + dayOfWeek)
-            {
-                daysInMonthArray.add("");
-            }
-            else
-            {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
-            }
-        }
-        return  daysInMonthArray;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -116,19 +108,15 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         setMonthView();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String monthYearFormatter(LocalDate date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        return date.format(formatter);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onItemClick(int position, String dayText) {
-        if(!(dayText.equals(""))){
-            String message = "Selected date " + dayText + " " + monthYearFormatter(selectedDate);
-            toast(message);
+    public void onItemClick(int position, LocalDate date) {
+        if (date != null){
+            selectedDate = date;
+            setMonthView();
         }
+
     }
 
     private void toast(String message){

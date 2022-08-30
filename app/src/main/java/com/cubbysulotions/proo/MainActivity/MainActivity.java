@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.cubbysulotions.proo.Calendar.CalendarFragment;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new ChatbotFragment();
                             break;
                         case R.id.nav_calendar:
-                            fragment = new CalendarFragment();
+                            fragment = new CalendarContainerFragment();
                             break;
                         case R.id.nav_todo:
                             fragment = new TodoFragment();

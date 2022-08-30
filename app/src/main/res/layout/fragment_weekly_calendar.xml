@@ -3,21 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Calendar.CalendarFragment"
-    android:background="@android:color/holo_orange_light"
+    tools:context=".Calendar.WeeklyCalendarFragment"
+    android:background="?attr/colorError"
     android:orientation="vertical">
 
-
-    <Button
-        android:id="@+id/btnWeekly"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Weekly"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:background="@android:color/transparent"
-        android:textColor="#000000"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +16,7 @@
         android:layout_marginTop="20dp">
 
         <Button
-            android:id="@+id/btnPrevious"
+            android:id="@+id/btnPreviousWeekly"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +27,7 @@
             android:textColor="#000000"/>
 
         <TextView
-            android:id="@+id/txtMonth"
+            android:id="@+id/txtMonthWeekly"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
@@ -47,7 +36,7 @@
             android:textSize="20sp"
             android:textColor="@color/white"/>
         <Button
-            android:id="@+id/btnNext"
+            android:id="@+id/btnNextWeekly"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -120,11 +109,39 @@
 
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/calendarDatesRecyclerView"
+        android:id="@+id/calendarDatesRecyclerViewWeekly"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:text="Event List"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textColor="@color/white"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/eventList"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/ic_baseline_add_24"
+            android:id="@+id/addEvent"/>
+    </RelativeLayout>
 
 
 

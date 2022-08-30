@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calendar"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.cubbysulotions.proo.Calendar.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_weeklyCalendarFragment"
+            app:destination="@id/weeklyCalendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weeklyCalendarFragment"
+        android:name="com.cubbysulotions.proo.Calendar.WeeklyCalendarFragment"
+        android:label="fragment_weekly_calendar"
+        tools:layout="@layout/fragment_weekly_calendar" >
+        <action
+            android:id="@+id/action_weeklyCalendarFragment_to_eventEditFragment"
+            app:destination="@id/eventEditFragment" />
+        <action
+            android:id="@+id/action_weeklyCalendarFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventEditFragment"
+        android:name="com.cubbysulotions.proo.Calendar.EventEditFragment"
+        android:label="fragment_event_edit"
+        tools:layout="@layout/fragment_event_edit" >
+        <action
+            android:id="@+id/action_eventEditFragment_to_weeklyCalendarFragment"
+            app:destination="@id/weeklyCalendarFragment" />
+    </fragment>
+</navigation>
