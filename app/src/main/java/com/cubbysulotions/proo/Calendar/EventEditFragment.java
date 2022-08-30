@@ -68,6 +68,15 @@ public class EventEditFragment extends Fragment {
         String eventNameTxt = eventName.getText().toString();
         CalendarEvents newEvent = new CalendarEvents(eventNameTxt, selectedDate, time);
         CalendarEvents.eventsList.add(newEvent);
-        navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment);
+        String flag = getArguments().getString("flag");
+        switch (flag){
+            case "FROM_WEEKLY":
+                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment);
+                break;
+            case "FROM_DAILY":
+                navController.navigate(R.id.action_eventEditFragment_to_dailyFragment);
+                break;
+        }
+
     }
 }

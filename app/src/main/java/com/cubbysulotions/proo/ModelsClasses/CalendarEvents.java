@@ -19,6 +19,19 @@ public class CalendarEvents {
         return events;
     }
 
+    public static ArrayList<CalendarEvents> eventsForDateandTime(LocalDate date, LocalTime time){
+        ArrayList<CalendarEvents> events = new ArrayList<>();
+
+        for(CalendarEvents event : eventsList){
+            int eventHour = event.time.getHour();
+            int cellHour = time.getHour();
+            if(event.getDate().equals(date) && eventHour == cellHour)
+                events.add(event);
+        }
+
+        return events;
+    }
+
     private String name;
     private LocalDate date;
     private LocalTime time;

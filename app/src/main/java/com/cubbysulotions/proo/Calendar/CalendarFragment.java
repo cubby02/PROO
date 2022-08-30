@@ -88,7 +88,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
         txtMonth.setText(monthYearFormatter(selectedDate));
-        ArrayList<LocalDate> daysInMonth = daysInMonthArray(selectedDate);
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray();
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);

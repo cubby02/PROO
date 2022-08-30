@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="12:00"
+        android:id="@+id/txtTimeCell"
+        android:textColor="@color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:background="#F4F4F4">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:background="@color/welcome"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:lines="2"
+            android:text="12:00"
+            android:id="@+id/event1"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:background="@color/welcome"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:lines="2"
+            android:text="12:00"
+            android:id="@+id/event2"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:background="@color/welcome"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:lines="2"
+            android:text="12:00"
+            android:id="@+id/event3"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

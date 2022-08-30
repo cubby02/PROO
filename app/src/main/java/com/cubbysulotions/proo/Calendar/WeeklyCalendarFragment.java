@@ -46,7 +46,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         return view = inflater.inflate(R.layout.fragment_weekly_calendar, container, false);
     }
 
-    private Button btnPrevious, btnNext;
+    private Button btnPrevious, btnNext, btnDaily;
     private TextView txtMonth;
     private RecyclerView calendarRecyclerView;
     private ListView eventList;
@@ -61,6 +61,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         btnPrevious = view.findViewById(R.id.btnPreviousWeekly);
         btnNext = view.findViewById(R.id.btnNextWeekly);
         txtMonth = view.findViewById(R.id.txtMonthWeekly);
+        btnDaily = view.findViewById(R.id.btnDaily);
         calendarRecyclerView = view.findViewById(R.id.calendarDatesRecyclerViewWeekly);
         btnNewEvent = view.findViewById(R.id.addEvent);
         eventList = view.findViewById(R.id.eventList);
@@ -88,7 +89,17 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         btnNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navController.navigate(R.id.action_weeklyCalendarFragment_to_eventEditFragment);
+                String flag = "FROM_WEEKLY";
+                Bundle bundle = new Bundle();
+                bundle.putString("flag", flag);
+                navController.navigate(R.id.action_weeklyCalendarFragment_to_eventEditFragment, bundle);
+            }
+        });
+
+        btnDaily.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_weeklyCalendarFragment_to_dailyFragment);
             }
         });
     }

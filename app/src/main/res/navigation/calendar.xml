@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_weeklyCalendarFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
+        <action
+            android:id="@+id/action_weeklyCalendarFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventEditFragment"
@@ -34,5 +37,20 @@
         <action
             android:id="@+id/action_eventEditFragment_to_weeklyCalendarFragment"
             app:destination="@id/weeklyCalendarFragment" />
+        <action
+            android:id="@+id/action_eventEditFragment_to_dailyFragment"
+            app:destination="@id/dailyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dailyFragment"
+        android:name="com.cubbysulotions.proo.Calendar.DailyFragment"
+        android:label="fragment_daily"
+        tools:layout="@layout/fragment_daily" >
+        <action
+            android:id="@+id/action_dailyFragment_to_weeklyCalendarFragment"
+            app:destination="@id/weeklyCalendarFragment" />
+        <action
+            android:id="@+id/action_dailyFragment_to_eventEditFragment"
+            app:destination="@id/eventEditFragment" />
     </fragment>
 </navigation>
