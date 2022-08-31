@@ -25,7 +25,7 @@ public class CalendarUtils {
     }
 
     public static String formattedShortTime(LocalTime time){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h a");
         return time.format(formatter);
     }
 
@@ -97,6 +97,7 @@ public class CalendarUtils {
 
         return null;
     }
+
 
 
 }

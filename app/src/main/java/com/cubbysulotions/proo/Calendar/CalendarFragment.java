@@ -20,12 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.ModelsClasses.CalendarAdapter;
-import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
 import com.cubbysulotions.proo.R;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInMonthArray;
@@ -94,6 +91,8 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

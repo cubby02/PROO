@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.cubbysulotions.proo.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -34,6 +36,8 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
         setEvents(convertView, events.events);
         return convertView;
     }
+
+
 
     private void setEvents(View convertView, ArrayList<CalendarEvents> events) {
         TextView event1 = convertView.findViewById(R.id.event1);

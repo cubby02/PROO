@@ -17,6 +17,7 @@ import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<CalendarEvents> {
 
+
     public EventAdapter(@NonNull Context context, List<CalendarEvents> events) {
         super(context, 0, events);
     }
@@ -30,8 +31,10 @@ public class EventAdapter extends ArrayAdapter<CalendarEvents> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);
 
         TextView eventCell = convertView.findViewById(R.id.eventCell);
-        String eventTitle = events.getName() + " " + CalendarUtils.formattedTime(events.getTime());
+        String eventTitle = CalendarUtils.formattedTime(events.getTime()) + "\t" + events.getName();
         eventCell.setText(eventTitle);
         return convertView;
     }
+
+
 }

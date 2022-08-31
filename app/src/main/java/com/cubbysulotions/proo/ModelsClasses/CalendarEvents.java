@@ -35,6 +35,18 @@ public class CalendarEvents {
     private String name;
     private LocalDate date;
     private LocalTime time;
+    private String id;
+    private String dateString;
+    private String timeString;
+
+    public CalendarEvents(){}
+
+    public CalendarEvents(String name, String id, String dateString, String timeString) {
+        this.name = name;
+        this.id = id;
+        this.dateString = dateString;
+        this.timeString = timeString;
+    }
 
     public CalendarEvents(String name, LocalDate date, LocalTime time) {
         this.name = name;
@@ -64,5 +76,29 @@ public class CalendarEvents {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public String getTimeString() {
+        return timeString;
+    }
+
+    public void setTimeString(String timeString) {
+        this.timeString = timeString;
     }
 }

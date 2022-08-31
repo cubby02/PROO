@@ -1,7 +1,10 @@
 package com.cubbysulotions.proo.ModelsClasses;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,12 +46,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
 
         if(date.equals(CalendarUtils.selectedDate))
-            holder.parentView.setBackgroundResource(R.color.white_transparent);
+            holder.parentView.setBackgroundResource(R.drawable.round_corner);
 
         if(date.getMonth().equals(CalendarUtils.selectedDate.getMonth()))
             holder.dayOfMonth.setTextColor(Color.BLACK);
         else
             holder.dayOfMonth.setTextColor(Color.LTGRAY);
+
     }
 
     @Override
@@ -59,4 +63,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     public interface OnItemListener{
         void onItemClick(int position, LocalDate date);
     }
+
+
+
+
 }

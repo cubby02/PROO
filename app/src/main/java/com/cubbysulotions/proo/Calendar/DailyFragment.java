@@ -24,6 +24,10 @@ import com.cubbysulotions.proo.ModelsClasses.HourAdapter;
 import com.cubbysulotions.proo.ModelsClasses.HourEvent;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -51,6 +55,11 @@ public class DailyFragment extends Fragment {
     private FloatingActionButton btnNewEvent;
     NavController navController;
 
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    FirebaseDatabase database;
+    DatabaseReference reference;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -62,6 +71,11 @@ public class DailyFragment extends Fragment {
         btnNewEvent = view.findViewById(R.id.addDailyEvent);
         eventList = view.findViewById(R.id.dailyEventList);
         navController = Navigation.findNavController(view);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("events").child(currentUser.getUid());
 
         btnPrevious.setOnClickListener(new View.OnClickListener() {
 
@@ -113,7 +127,7 @@ public class DailyFragment extends Fragment {
 
     private ArrayList<HourEvent> hourEventList() {
         ArrayList<HourEvent> list = new ArrayList<>();
-        for (int hour = 0; hour < 24; hour++){
+        for (int hour = 1; hour < 24; hour++){
             LocalTime time = LocalTime.of(hour, 0);
             ArrayList<CalendarEvents> events = CalendarEvents.eventsForDateandTime(selectedDate, time);
             HourEvent hourEvent = new HourEvent(time, events);

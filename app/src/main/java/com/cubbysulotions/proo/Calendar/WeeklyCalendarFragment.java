@@ -12,6 +12,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +26,20 @@ import com.cubbysulotions.proo.ModelsClasses.CalendarAdapter;
 import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
 import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
 import com.cubbysulotions.proo.ModelsClasses.EventAdapter;
+import com.cubbysulotions.proo.ModelsClasses.EventRVAdapter;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInMonthArray;
 import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInWeekArray;
@@ -49,8 +60,12 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     private Button btnPrevious, btnNext, btnDaily;
     private TextView txtMonth;
     private RecyclerView calendarRecyclerView;
-    private ListView eventList;
+    private RecyclerView eventList;
     private FloatingActionButton btnNewEvent;
+    private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -66,6 +81,12 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         btnNewEvent = view.findViewById(R.id.addEvent);
         eventList = view.findViewById(R.id.eventList);
         NavController navController = Navigation.findNavController(view);
+
+        //Initialize firebase
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("events").child(currentUser.getUid());
 
         selectedDate = LocalDate.now();
         setWeekVIew();
@@ -119,9 +140,34 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     }
 
     private void setEventAdapter() {
-        ArrayList<CalendarEvents> dailyEvent = CalendarEvents.eventsForDate(selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getActivity(), dailyEvent);
-        eventList.setAdapter(eventAdapter);
+        try {
+            List<CalendarEvents> events = new ArrayList<>();
+
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
+            EventRVAdapter adapter = new EventRVAdapter(getActivity(), events);
+            eventList.setLayoutManager(layoutManager);
+            eventList.setAdapter(adapter);
+
+            reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot data : snapshot.getChildren()){
+                        CalendarEvents ev = data.getValue(CalendarEvents.class);
+                        events.add(ev);
+                    }
+
+                    adapter.updateDataSet(events);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } catch (Exception e){
+            toast("Something went wrong, please try again");
+            Log.e("Logout error", "exception", e);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -131,6 +177,8 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         selectedDate = date;
         setWeekVIew();
     }
+
+
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
