@@ -7,6 +7,7 @@ import java.util.List;
 public class HourEvent {
     LocalTime time;
     ArrayList<CalendarEvents> events;
+    private ArrayList<DailyEvent> dailyEvent;
 
     public HourEvent(){}
 
@@ -29,5 +30,13 @@ public class HourEvent {
 
     public void setEvents(ArrayList<CalendarEvents> events) {
         this.events = events;
+    }
+
+    public ArrayList<DailyEvent> getDailyEvent() {
+        return dailyEvent;
+    }
+
+    public void setDailyEvent(ArrayList<DailyEvent> dailyEvent) {
+        this.dailyEvent = dailyEvent;
     }
 }

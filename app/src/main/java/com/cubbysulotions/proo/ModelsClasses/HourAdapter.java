@@ -40,6 +40,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
 
 
     private void setEvents(View convertView, ArrayList<CalendarEvents> events) {
+        /*
         TextView event1 = convertView.findViewById(R.id.event1);
         TextView event2 = convertView.findViewById(R.id.event2);
         TextView event3 = convertView.findViewById(R.id.event3);
@@ -68,7 +69,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent> {
             String eventNotShown = String.valueOf(events.size() - 2);
             eventNotShown += " More Events";
             event3.setText(eventNotShown);
-        }
+        } */
     }
 
     private void setEvent(TextView tv, CalendarEvents calendarEvents) {

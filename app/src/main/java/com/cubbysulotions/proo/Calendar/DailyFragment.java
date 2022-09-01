@@ -9,8 +9,10 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +22,10 @@ import android.widget.TextView;
 
 import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
 import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
+import com.cubbysulotions.proo.ModelsClasses.EventRVAdapter;
 import com.cubbysulotions.proo.ModelsClasses.HourAdapter;
 import com.cubbysulotions.proo.ModelsClasses.HourEvent;
+import com.cubbysulotions.proo.ModelsClasses.HourRVAdapter;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,8 +54,8 @@ public class DailyFragment extends Fragment {
 
     private Button btnPrevious, btnNext;
     private TextView txtMonth, txtDayOfWeek;
-    private RecyclerView calendarRecyclerView;
-    private ListView eventList;
+
+    private RecyclerView eventList;
     private FloatingActionButton btnNewEvent;
     NavController navController;
 
@@ -112,17 +116,23 @@ public class DailyFragment extends Fragment {
         setDayView();
     }
 
+    private String monthDate;
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setDayView() {
-        txtMonth.setText(CalendarUtils.monthDayFormatter(selectedDate));
+        monthDate = CalendarUtils.monthDayFormatter(selectedDate);
+        txtMonth.setText(monthDate);
         String dayOfWeek = selectedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
         txtDayOfWeek.setText(dayOfWeek);
         setHourAdapter();
     }
 
     private void setHourAdapter() {
-        HourAdapter hourAdapter = new HourAdapter(getActivity(), hourEventList());
-        eventList.setAdapter(hourAdapter);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
+        HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate);
+        eventList.setLayoutManager(layoutManager);
+        eventList.setAdapter(adapter);
+
+
     }
 
     private ArrayList<HourEvent> hourEventList() {
