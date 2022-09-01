@@ -35,11 +35,14 @@ public class EventRVAdapter extends RecyclerView.Adapter<EventRVAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView eventTxt;
-
+        public TextView timeText;
+        public TextView dateText;
+        public TextView eventNameText;
         public ViewHolder(final View itemView){
             super(itemView);
-            eventTxt = itemView.findViewById(R.id.eventCell);
+            timeText = itemView.findViewById(R.id.timeText);
+            dateText = itemView.findViewById(R.id.dateText);
+            eventNameText = itemView.findViewById(R.id.eventNameText);
         }
     }
 
@@ -60,8 +63,10 @@ public class EventRVAdapter extends RecyclerView.Adapter<EventRVAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull EventRVAdapter.ViewHolder holder, int position) {
         CalendarEvents events = list.get(position);
-        String title = CalendarUtils.formattedTime(LocalTime.parse(events.getTimeString())) + "\t" + events.getName();
-        holder.eventTxt.setText(title);
+
+        holder.timeText.setText(CalendarUtils.formattedTime(LocalTime.parse(events.getTimeString())));
+        holder.dateText.setText(CalendarUtils.formattedShortDate(LocalDate.parse(events.getDateString())));
+        holder.eventNameText.setText(events.getName());
     }
 
     public void updateDataSet(List<CalendarEvents> newResult){

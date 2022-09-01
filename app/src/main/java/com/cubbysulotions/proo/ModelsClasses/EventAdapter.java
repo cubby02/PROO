@@ -30,9 +30,9 @@ public class EventAdapter extends ArrayAdapter<CalendarEvents> {
         if(convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);
 
-        TextView eventCell = convertView.findViewById(R.id.eventCell);
+        //TextView eventCell = convertView.findViewById(R.id.eventCell);
         String eventTitle = CalendarUtils.formattedTime(events.getTime()) + "\t" + events.getName();
-        eventCell.setText(eventTitle);
+        //eventCell.setText(eventTitle);
         return convertView;
     }
 

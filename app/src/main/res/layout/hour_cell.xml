@@ -2,26 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <TextView
-        android:layout_width="70dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:text="12 PM"
-        android:id="@+id/txtTimeCell"
-        android:textColor="@color/black"/>
+    android:orientation="vertical">
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#F4F4F4">
-        <androidx.recyclerview.widget.RecyclerView
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="12 PM"
+            android:id="@+id/txtTimeCell"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/dailyEventListRecyclerView"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#F4F4F4">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dailyEventListRecyclerView"/>
+
+        </LinearLayout>
     </LinearLayout>
+
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height=".3dp"
+        android:background="#4B000000"/>
+
 
 </LinearLayout>

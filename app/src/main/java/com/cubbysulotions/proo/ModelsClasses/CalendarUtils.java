@@ -19,10 +19,17 @@ public class CalendarUtils {
         return date.format(formatter);
     }
 
+    public static String formattedShortDate(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
+        return date.format(formatter);
+    }
+
     public static String formattedTime(LocalTime time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
         return time.format(formatter);
     }
+
+
 
     public static String formattedShortTime(LocalTime time){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h a");

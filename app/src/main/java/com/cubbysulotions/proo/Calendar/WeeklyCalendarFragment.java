@@ -38,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -126,11 +127,13 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     }
 
 
-
+    String monthDate;
+    ArrayList<LocalDate> days;
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setWeekVIew() {
+        monthDate = CalendarUtils.monthDayFormatter(selectedDate);
         txtMonth.setText(monthYearFormatter(selectedDate));
-        ArrayList<LocalDate> days = daysInWeekArray(selectedDate);
+        days = daysInWeekArray(selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
@@ -149,16 +152,19 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
             eventList.setAdapter(adapter);
 
             reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot data : snapshot.getChildren()){
                         CalendarEvents ev = data.getValue(CalendarEvents.class);
-                        events.add(ev);
-                    }
 
+                        if (days.get(6).isAfter(LocalDate.parse(ev.getDateString())) && days.get(0).isBefore(LocalDate.parse(ev.getDateString()))){
+                            events.add(ev);
+                        }
+
+                    }
                     adapter.updateDataSet(events);
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -173,7 +179,6 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemClick(int position, LocalDate date) {
-
         selectedDate = date;
         setWeekVIew();
     }
