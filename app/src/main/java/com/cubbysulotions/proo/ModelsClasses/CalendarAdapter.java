@@ -2,6 +2,8 @@ package com.cubbysulotions.proo.ModelsClasses;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -9,12 +11,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubbysulotions.proo.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
@@ -25,6 +36,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         this.days = days;
         this.onItemListener = onItemListener;
     }
+
+    private FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    FirebaseDatabase database;
+    DatabaseReference reference;
 
     @NonNull
     @Override
@@ -43,6 +59,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         final LocalDate date = days.get(position);
 
+        //Initialize firebase
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference().child("events").child(currentUser.getUid());
+
+
         holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
 
         if(date.equals(CalendarUtils.selectedDate))
@@ -52,6 +75,33 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
             holder.dayOfMonth.setTextColor(Color.BLACK);
         else
             holder.dayOfMonth.setTextColor(Color.LTGRAY);
+
+        /* Supposedly for adding dot if there's an event on that date
+        List<CalendarEvents> events = new ArrayList<>();
+
+        reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int size = (int) snapshot.getChildrenCount();
+                CalendarEvents ev = new CalendarEvents();
+                for(DataSnapshot data : snapshot.getChildren()){
+                    ev = data.getValue(CalendarEvents.class);
+                    events.add(ev);
+                }
+
+                if(CalendarUtils.selectedDate == LocalDate.parse(ev.getDateString())){
+                    if(size < 0)
+                        holder.dot.setVisibility(View.VISIBLE);
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        }); */
+
 
     }
 

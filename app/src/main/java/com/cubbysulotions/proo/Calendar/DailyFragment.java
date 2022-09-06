@@ -131,13 +131,11 @@ public class DailyFragment extends Fragment {
         HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate);
         eventList.setLayoutManager(layoutManager);
         eventList.setAdapter(adapter);
-
-
     }
 
     private ArrayList<HourEvent> hourEventList() {
         ArrayList<HourEvent> list = new ArrayList<>();
-        for (int hour = 1; hour < 24; hour++){
+        for (int hour = 0; hour < 24; hour++){
             LocalTime time = LocalTime.of(hour, 0);
             ArrayList<CalendarEvents> events = CalendarEvents.eventsForDateandTime(selectedDate, time);
             HourEvent hourEvent = new HourEvent(time, events);

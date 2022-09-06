@@ -38,15 +38,20 @@ public class CalendarEvents {
     private String id;
     private String dateString;
     private String timeString;
+    private String requestCode;
+    private String notificationID;
 
     public CalendarEvents(){}
 
-    public CalendarEvents(String name, String id, String dateString, String timeString) {
+    public CalendarEvents(String name, String id, String dateString, String timeString, String requestCode, String notificationID) {
         this.name = name;
         this.id = id;
         this.dateString = dateString;
         this.timeString = timeString;
+        this.requestCode = requestCode;
+        this.notificationID = notificationID;
     }
+
 
     public CalendarEvents(String name, LocalDate date, LocalTime time) {
         this.name = name;
@@ -100,5 +105,21 @@ public class CalendarEvents {
 
     public void setTimeString(String timeString) {
         this.timeString = timeString;
+    }
+
+    public String getRequestCode() {
+        return requestCode;
+    }
+
+    public void setRequestCode(String requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    public String getNotificationID() {
+        return notificationID;
+    }
+
+    public void setNotificationID(String notificationID) {
+        this.notificationID = notificationID;
     }
 }

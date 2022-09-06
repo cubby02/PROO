@@ -1,7 +1,10 @@
 package com.cubbysulotions.proo.Calendar;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +25,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.LoadingDialog;
+import com.cubbysulotions.proo.ModelsClasses.AlarmReceiver;
 import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
 import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
 import com.cubbysulotions.proo.R;
@@ -34,8 +38,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
+import static android.content.Context.ALARM_SERVICE;
 import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
 
 
@@ -67,6 +75,10 @@ public class EventEditFragment extends Fragment {
     int hour, minute;
     int year, months, day;
 
+    int requestCode, notificationID;
+
+    String eventNameTxt;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,6 +102,10 @@ public class EventEditFragment extends Fragment {
         currentUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("events").child(currentUser.getUid());
+
+        Random random = new Random();
+        requestCode = random.nextInt(9999 - 1000 + 1) + 1000;
+        notificationID = random.nextInt(9999 - 1000 + 1) + 1000;
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,9 +139,12 @@ public class EventEditFragment extends Fragment {
     private void popUpDateDialog() {
         DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                selectedDate = LocalDate.of(year, month + 1, day);
+            public void onDateSet(DatePicker datePicker, int year1, int month1, int day1) {
+                selectedDate = LocalDate.of(year1, month1 + 1, day1);
                 btnDate.setText(CalendarUtils.formattedDate(selectedDate));
+                year = year1;
+                months = month1;
+                day = day1;
             }
         };
 
@@ -149,7 +168,7 @@ public class EventEditFragment extends Fragment {
             }
         };
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), onTimeSetListener,hour, minute, false);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), onTimeSetListener,time.getHour(), time.getMinute(), false);
         timePickerDialog.show();
 
     }
@@ -169,22 +188,76 @@ public class EventEditFragment extends Fragment {
         }
     }
 
+    private void setNotification(){
+
+        if (months == 0 && day == 0 && year == 0){
+            year = Calendar.getInstance().get(Calendar.YEAR);
+            months = Calendar.getInstance().get(Calendar.MONTH);
+            day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        }
+
+        if (hour == 0 && minute == 0){
+            hour = time.getHour();
+            minute = time.getMinute();
+        }
+
+        //toast("Month: " + months + ", day: " + day);
+        //toast(hour + ":" + minute);
+
+        //Calendar startTime = Calendar.getInstance();
+        //selectedDate = startTime.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        //set notification id and text
+        Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        intent.putExtra("requestCode", requestCode);
+        intent.putExtra("notificationID", notificationID);
+        intent.putExtra("todo", eventNameTxt);
+
+        //getBroadcast context, requestCode, intent, flags
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getActivity(),
+                requestCode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+        //Create time
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, hour);
+        startTime.set(Calendar.MINUTE, minute);
+        startTime.set(Calendar.SECOND, 0);
+
+        startTime.set(Calendar.MONTH, months);
+        startTime.set(Calendar.DAY_OF_MONTH, day);
+        startTime.set(Calendar.YEAR, year);
+
+        long alarmStart = startTime.getTimeInMillis();
+
+        //set alarm
+        //set type millisecond, intent
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmStart, alarmIntent);
+        toast("Notification set");
+    }
+
     private void saveActionEvent() {
         try {
-            loadingDialog.startLoading("Saving...");
-            String flag = getArguments().getString("flag");
-            String eventNameTxt = eventName.getText().toString();
-            CalendarEvents newEvent = new CalendarEvents(eventNameTxt, selectedDate, time);
-            CalendarEvents.eventsList.add(newEvent);
+            if(eventName.getText().length() == 0){
+                eventName.setError("Required");
+            } else {
+                loadingDialog.startLoading("Saving...");
+                String flag = getArguments().getString("flag");
+                eventNameTxt = eventName.getText().toString();
 
-            String id = reference.push().getKey();
-            CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt, id, String.valueOf(selectedDate), String.valueOf(time));
+
+                String id = reference.push().getKey();
+                CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt, id, String.valueOf(selectedDate), String.valueOf(time), String.valueOf(requestCode), String.valueOf(notificationID));
+
 
             reference.child(id).setValue(newEventToDB).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         loadingDialog.stopLoading();
+                        setNotification();
                         switch (flag){
                             case "FROM_WEEKLY":
                                 navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment);
@@ -199,6 +272,8 @@ public class EventEditFragment extends Fragment {
                     }
                 }
             });
+            }
+
         } catch (Exception e){
             toast("Something went wrong, please try again");
             Log.e("Logout error", "exception", e);

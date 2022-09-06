@@ -53,19 +53,13 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         btnPrevious = view.findViewById(R.id.btnPrevious);
         btnNext = view.findViewById(R.id.btnNext);
         txtMonth = view.findViewById(R.id.txtMonth);
-        btnWeekly = view.findViewById(R.id.btnWeekly);
+        //btnWeekly = view.findViewById(R.id.btnWeekly);
         calendarRecyclerView = view.findViewById(R.id.calendarDatesRecyclerView);
         navController = Navigation.findNavController(view);
 
         selectedDate = LocalDate.now();
         setMonthView();
 
-        btnWeekly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navController.navigate(R.id.action_calendarFragment_to_weeklyCalendarFragment);
-            }
-        });
 
         btnPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +109,9 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         if (date != null){
             selectedDate = date;
             setMonthView();
+            Bundle bundle = new Bundle();
+            bundle.putString("date", String.valueOf(selectedDate));
+            navController.navigate(R.id.action_calendarFragment_to_weeklyCalendarFragment, bundle);
         }
     }
 

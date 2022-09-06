@@ -27,6 +27,8 @@ import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
 import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
 import com.cubbysulotions.proo.ModelsClasses.EventAdapter;
 import com.cubbysulotions.proo.ModelsClasses.EventRVAdapter;
+import com.cubbysulotions.proo.ModelsClasses.HourEvent;
+import com.cubbysulotions.proo.ModelsClasses.HourRVAdapter;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,7 +79,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         btnPrevious = view.findViewById(R.id.btnPreviousWeekly);
         btnNext = view.findViewById(R.id.btnNextWeekly);
         txtMonth = view.findViewById(R.id.txtMonthWeekly);
-        btnDaily = view.findViewById(R.id.btnDaily);
+        //btnDaily = view.findViewById(R.id.btnDaily);
         calendarRecyclerView = view.findViewById(R.id.calendarDatesRecyclerViewWeekly);
         btnNewEvent = view.findViewById(R.id.addEvent);
         eventList = view.findViewById(R.id.eventList);
@@ -89,7 +91,8 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("events").child(currentUser.getUid());
 
-        selectedDate = LocalDate.now();
+        String date = getArguments().getString("date");
+        selectedDate = LocalDate.parse(date);
         setWeekVIew();
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -118,12 +121,13 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
             }
         });
 
+        /*
         btnDaily.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navController.navigate(R.id.action_weeklyCalendarFragment_to_dailyFragment);
             }
-        });
+        }); */
     }
 
 
@@ -139,7 +143,8 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
-        setEventAdapter();
+        //setEventAdapter();
+        setHourAdapter();
     }
 
     private void setEventAdapter() {
@@ -176,6 +181,24 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         }
     }
 
+    private void setHourAdapter() {
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
+        HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate);
+        eventList.setLayoutManager(layoutManager);
+        eventList.setAdapter(adapter);
+    }
+
+    private ArrayList<HourEvent> hourEventList() {
+        ArrayList<HourEvent> list = new ArrayList<>();
+        for (int hour = 0; hour < 24; hour++){
+            LocalTime time = LocalTime.of(hour, 0);
+            ArrayList<CalendarEvents> events = CalendarEvents.eventsForDateandTime(selectedDate, time);
+            HourEvent hourEvent = new HourEvent(time, events);
+            list.add(hourEvent);
+        }
+        return list;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemClick(int position, LocalDate date) {
@@ -192,6 +215,6 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     @Override
     public void onResume() {
         super.onResume();
-        setEventAdapter();
+        //setEventAdapter();
     }
 }

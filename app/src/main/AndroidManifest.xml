@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cubbysulotions.proo">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".ModelsClasses.FirebaseOffline"
         android:allowBackup="true"
@@ -11,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PROO"
         android:usesCleartextTraffic="true">
+
+        <receiver android:name=".ModelsClasses.AlarmReceiver"/>
+
         <activity
             android:name=".SplashScreen"
             android:exported="true">
@@ -29,6 +37,6 @@
             android:exported="true"></activity>
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+
 
 </manifest>
