@@ -5,6 +5,8 @@ public class DailyEvent {
     private String id;
     private String dateString;
     private String timeString;
+    private String requestCode;
+    private String notificationID;
 
     public DailyEvent(String name, String id, String dateString, String timeString) {
         this.name = name;
@@ -45,5 +47,21 @@ public class DailyEvent {
 
     public void setTimeString(String timeString) {
         this.timeString = timeString;
+    }
+
+    public String getRequestCode() {
+        return requestCode;
+    }
+
+    public void setRequestCode(String requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    public String getNotificationID() {
+        return notificationID;
+    }
+
+    public void setNotificationID(String notificationID) {
+        this.notificationID = notificationID;
     }
 }

@@ -45,6 +45,7 @@ import java.util.Random;
 
 import static android.content.Context.ALARM_SERVICE;
 import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
+import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.localDateToCalendar;
 
 
 public class EventEditFragment extends Fragment {
@@ -148,9 +149,9 @@ public class EventEditFragment extends Fragment {
             }
         };
 
-        year = Calendar.getInstance().get(Calendar.YEAR);
-        months = Calendar.getInstance().get(Calendar.MONTH);
-        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        year = localDateToCalendar(selectedDate).get(Calendar.YEAR);
+        months = localDateToCalendar(selectedDate).get(Calendar.MONTH);
+        day = localDateToCalendar(selectedDate).get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), onDateSetListener, year, months, day);
         datePickerDialog.show();
@@ -175,9 +176,12 @@ public class EventEditFragment extends Fragment {
 
     private void cancel(){
         String flag = getArguments().getString("flag");
+        String date = getArguments().getString("date");
+        Bundle bundle = new Bundle();
+        bundle.putString("date", date);
         switch (flag){
             case "FROM_WEEKLY":
-                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment);
+                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment, bundle);
                 break;
             case "FROM_DAILY":
                 navController.navigate(R.id.action_eventEditFragment_to_dailyFragment);
@@ -191,9 +195,9 @@ public class EventEditFragment extends Fragment {
     private void setNotification(){
 
         if (months == 0 && day == 0 && year == 0){
-            year = Calendar.getInstance().get(Calendar.YEAR);
-            months = Calendar.getInstance().get(Calendar.MONTH);
-            day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+            year = localDateToCalendar(selectedDate).get(Calendar.YEAR);
+            months = localDateToCalendar(selectedDate).get(Calendar.MONTH);
+            day = localDateToCalendar(selectedDate).get(Calendar.DAY_OF_MONTH);
         }
 
         if (hour == 0 && minute == 0){
@@ -206,6 +210,7 @@ public class EventEditFragment extends Fragment {
 
         //Calendar startTime = Calendar.getInstance();
         //selectedDate = startTime.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
 
         //set notification id and text
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
@@ -258,12 +263,15 @@ public class EventEditFragment extends Fragment {
                     if(task.isSuccessful()){
                         loadingDialog.stopLoading();
                         setNotification();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("date", String.valueOf(selectedDate));
                         switch (flag){
                             case "FROM_WEEKLY":
-                                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment);
+                                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment, bundle);
                                 break;
                             case "FROM_DAILY":
-                                navController.navigate(R.id.action_eventEditFragment_to_dailyFragment);
+                                navController.navigate(R.id.action_eventEditFragment_to_dailyFragment, bundle);
                                 break;
                         }
                     } else {

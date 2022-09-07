@@ -8,8 +8,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CalendarUtils {
     public static LocalDate selectedDate;
@@ -105,6 +108,12 @@ public class CalendarUtils {
         return null;
     }
 
+    public static Calendar localDateToCalendar(LocalDate localDate){
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
+        return calendar;
+    }
 
 }

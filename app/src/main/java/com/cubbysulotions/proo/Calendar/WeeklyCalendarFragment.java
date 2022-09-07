@@ -115,8 +115,10 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
             @Override
             public void onClick(View view) {
                 String flag = "FROM_WEEKLY";
+
                 Bundle bundle = new Bundle();
                 bundle.putString("flag", flag);
+                bundle.putString("date", String.valueOf(selectedDate));
                 navController.navigate(R.id.action_weeklyCalendarFragment_to_eventEditFragment, bundle);
             }
         });
