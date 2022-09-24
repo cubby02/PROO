@@ -49,5 +49,8 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.4.0'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:3.0.0-RC3'
 
 }

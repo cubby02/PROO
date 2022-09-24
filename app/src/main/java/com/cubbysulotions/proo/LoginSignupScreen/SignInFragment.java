@@ -68,11 +68,6 @@ public class SignInFragment extends Fragment {
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
-            /*
-            if (mAuth.getCurrentUser() != null){
-                getActivity().finish();
-                return;
-            } */
 
             btnSubmit.setOnClickListener(new View.OnClickListener() {
                 @Override

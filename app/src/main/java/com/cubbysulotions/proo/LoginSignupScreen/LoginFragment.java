@@ -122,6 +122,7 @@ public class LoginFragment extends Fragment {
             EditText resetEmail = dialog.findViewById(R.id.txtEmailReset);
             Button buttonSend = dialog.findViewById(R.id.button3);
 
+            resetEmail.setText(email.getText().toString());
             buttonSend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
