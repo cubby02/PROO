@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.cubbysulotions.proo.Chatbot.ChatbotActivity;
+import com.cubbysulotions.proo.Chatbot.ChatbotOnlineOfflineActivity;
 import com.cubbysulotions.proo.R;
 
 public class ChatbotFragment extends Fragment {
@@ -35,7 +35,7 @@ public class ChatbotFragment extends Fragment {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent chat = new Intent(getActivity(), ChatbotActivity.class);
+                Intent chat = new Intent(getActivity(), ChatbotOnlineOfflineActivity.class);
                 startActivity(chat);
             }
         });
