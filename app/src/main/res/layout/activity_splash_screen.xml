@@ -7,10 +7,16 @@
     tools:context=".SplashScreen">
 
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/splash_bg"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
         android:id="@+id/imageView8"
         android:layout_width="248dp"
         android:layout_height="205dp"
-        android:layout_marginTop="236dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"

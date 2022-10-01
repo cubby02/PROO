@@ -69,6 +69,8 @@ dependencies {
     }
     implementation 'io.grpc:grpc-okhttp:1.30.0'
 
+    implementation 'hari.bounceview:bounceview:0.2.0'
+
 
 }
 

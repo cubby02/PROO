@@ -1,9 +1,11 @@
 package com.cubbysulotions.proo.LoginSignupScreen;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.cubbysulotions.proo.R;
+
+import hari.bounceview.BounceView;
 
 public class WelcomeScreenFragment extends Fragment {
 
@@ -34,6 +38,14 @@ public class WelcomeScreenFragment extends Fragment {
         NavController navController = Navigation.findNavController(view);
         login = view.findViewById(R.id.btnLogin);
         register = view.findViewById(R.id.btnRegister);
+        BounceView.addAnimTo(login);
+        BounceView.addAnimTo(register);
+
+        ConstraintLayout constraintLayout = view.findViewById(R.id.layout);
+        AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override

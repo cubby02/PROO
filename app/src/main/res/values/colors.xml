@@ -12,4 +12,18 @@
     <color name="login">#FF9800</color>
     <color name="register">#FFC107</color>
 
+    <!-- Night theme -->
+    <color name="green_night">#86e3ce</color>
+    <color name="blue_night">#759df5</color>
+    <color name="yellow_night">#ffdd95</color>
+    <color name="red_night">#fc887b</color>
+    <color name="purple_night">#cdacdb</color>
+
+    <!-- Day theme -->
+    <color name="green">#50d7b8</color>
+    <color name="blue">#4172f1</color>
+    <color name="yellow">#ffce66</color>
+    <color name="red">#fb5344</color>
+    <color name="purple">#b787cb</color>
+
 </resources>
