@@ -85,7 +85,6 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
 
   private void setUpBot() {
     try {
-
       InputStream stream = this.getResources().openRawResource(R.raw.credential);
       GoogleCredentials credentials = GoogleCredentials.fromStream(stream)
               .createScoped(Lists.newArrayList("https://www.googleapis.com/auth/cloud-platform"));
@@ -111,6 +110,7 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
 
   @Override
   public void callback(DetectIntentResponse returnResponse) {
+    Log.d("Test", "Response" + returnResponse);
      if(returnResponse!=null) {
        String botReply = returnResponse.getQueryResult().getFulfillmentText();
 
@@ -134,6 +134,7 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
 
          chatAdapter.notifyDataSetChanged();
          chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
+
 
        }else {
          Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
