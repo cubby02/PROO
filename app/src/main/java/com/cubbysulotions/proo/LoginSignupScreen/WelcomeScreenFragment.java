@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.cubbysulotions.proo.R;
 
@@ -41,7 +42,7 @@ public class WelcomeScreenFragment extends Fragment {
         BounceView.addAnimTo(login);
         BounceView.addAnimTo(register);
 
-        ConstraintLayout constraintLayout = view.findViewById(R.id.layout);
+        RelativeLayout constraintLayout = view.findViewById(R.id.layout);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
         animationDrawable.setExitFadeDuration(4000);

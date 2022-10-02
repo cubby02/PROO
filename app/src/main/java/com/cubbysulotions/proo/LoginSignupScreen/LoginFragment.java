@@ -3,11 +3,14 @@ package com.cubbysulotions.proo.LoginSignupScreen;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -18,8 +21,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +34,14 @@ import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
+
+import hari.bounceview.BounceView;
 
 import static android.content.ContentValues.TAG;
 
@@ -47,8 +57,10 @@ public class LoginFragment extends Fragment {
         return view = inflater.inflate(R.layout.fragment_login, container, false);
     }
 
-    private EditText email, password;
-    private Button btnBack, btnLogin;
+    private TextInputEditText email, password;
+    private TextInputLayout em, pass;
+    private Button btnBack;
+    private ImageButton btnLogin;
     private FirebaseAuth mAuth;
     private NavController navController;
     private NavOptions navOptions;
@@ -59,13 +71,28 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try{
+            em = view.findViewById(R.id.em);
+            pass = view.findViewById(R.id.pass);
             email = view.findViewById(R.id.txtEmailLogin);
             password = view.findViewById(R.id.txtPasswordLogin);
             btnBack = view.findViewById(R.id.btnBackLogin);
+            BounceView.addAnimTo(btnBack);
             btnLogin = view.findViewById(R.id.btnLogin);
+            BounceView.addAnimTo(btnLogin);
             navController = Navigation.findNavController(view);
             forgotPassword = view.findViewById(R.id.txtForgotPassword);
             loadingDialog = new LoadingDialog(getActivity());
+
+            /*
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            } */
+
+            RelativeLayout constraintLayout = view.findViewById(R.id.layout2);
+            AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+            animationDrawable.setEnterFadeDuration(2000);
+            animationDrawable.setExitFadeDuration(4000);
+            animationDrawable.start();
 
             navOptions = new NavOptions.Builder().setPopUpTo(R.id.welcomeScreenFragment, true)
                     .setEnterAnim(R.anim.slide_left_to_right)
@@ -166,8 +193,8 @@ public class LoginFragment extends Fragment {
             String passText = password.getText().toString();
 
             if (emailText.isEmpty() || passText.isEmpty()){
-                email.setError("Required");
-                password.setError("Required");
+                em.setError("Email required");
+                pass.setError("Password required");
             } else {
                 loadingDialog.startLoading("Logging in");
                 mAuth.signInWithEmailAndPassword(emailText, passText)

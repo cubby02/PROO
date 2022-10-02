@@ -26,4 +26,6 @@
     <color name="red">#fb5344</color>
     <color name="purple">#b787cb</color>
 
+    <color name="default_black">#323232</color>
+
 </resources>
