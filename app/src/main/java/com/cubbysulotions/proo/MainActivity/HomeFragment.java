@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.LoginSignupScreen.WelcomeActivity;
-import com.cubbysulotions.proo.ModelsClasses.Users;
+import com.cubbysulotions.proo.Firebase.Users;
 import com.cubbysulotions.proo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

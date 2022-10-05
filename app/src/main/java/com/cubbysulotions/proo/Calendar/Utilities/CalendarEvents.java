@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

@@ -13,22 +13,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cubbysulotions.proo.ModelsClasses.CalendarAdapter;
-import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
-import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
-import com.cubbysulotions.proo.ModelsClasses.EventAdapter;
-import com.cubbysulotions.proo.ModelsClasses.EventRVAdapter;
-import com.cubbysulotions.proo.ModelsClasses.HourEvent;
-import com.cubbysulotions.proo.ModelsClasses.HourRVAdapter;
+import com.cubbysulotions.proo.Calendar.Utilities.MainCalendar.CalendarAdapter;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
+import com.cubbysulotions.proo.Calendar.Utilities.Events.EventRVAdapter;
+import com.cubbysulotions.proo.Calendar.Utilities.Hours.HourEvent;
+import com.cubbysulotions.proo.Calendar.Utilities.Hours.HourRVAdapter;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,10 +41,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInMonthArray;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInWeekArray;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.monthYearFormatter;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.daysInWeekArray;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.monthYearFormatter;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
 public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
 

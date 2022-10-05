@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Firebase;
 
 public class Users {
     public String firstname;

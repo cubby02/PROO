@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities.Events;
 
 public class DailyEvent {
     private String name;

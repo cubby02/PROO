@@ -1,18 +1,18 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities.Events;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<CalendarEvents> {

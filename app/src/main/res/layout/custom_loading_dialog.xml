@@ -8,9 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp">
-
+        android:layout_height="match_parent">
 
         <com.github.ybq.android.spinkit.SpinKitView
             android:id="@+id/loading"
@@ -19,8 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
-            app:SpinKit_Color="@color/teal_200"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:SpinKit_Color="@color/blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="8dp"/>
 
         <TextView
             android:id="@+id/textView26"

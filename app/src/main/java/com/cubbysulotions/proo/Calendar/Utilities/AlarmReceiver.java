@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities;
 
 import android.app.Notification;
 import android.app.PendingIntent;

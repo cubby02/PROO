@@ -1,24 +1,20 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities.Events;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.R;
-
-import org.w3c.dom.Text;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EventRVAdapter extends RecyclerView.Adapter<EventRVAdapter.ViewHolder> {

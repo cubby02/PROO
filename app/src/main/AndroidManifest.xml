@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".ModelsClasses.FirebaseOffline"
+        android:name=".Firebase.FirebaseOffline"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -16,7 +16,7 @@
         android:theme="@style/Theme.PROO"
         android:usesCleartextTraffic="true">
 
-        <receiver android:name=".ModelsClasses.AlarmReceiver"/>
+        <receiver android:name=".Calendar.Utilities.AlarmReceiver"/>
 
         <activity
             android:name=".SplashScreen"

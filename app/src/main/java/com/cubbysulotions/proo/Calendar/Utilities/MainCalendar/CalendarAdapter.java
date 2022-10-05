@@ -1,31 +1,22 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities.MainCalendar;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
@@ -72,9 +63,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
             holder.parentView.setBackgroundResource(R.drawable.round_corner);
 
         if(date.getMonth().equals(CalendarUtils.selectedDate.getMonth()))
-            holder.dayOfMonth.setTextColor(Color.BLACK);
+            holder.dayOfMonth.setTextColor(Color.WHITE);
         else
-            holder.dayOfMonth.setTextColor(Color.LTGRAY);
+            holder.dayOfMonth.setTextColor(Color.parseColor("#4e4e4e"));
 
         /* Supposedly for adding dot if there's an event on that date
         List<CalendarEvents> events = new ArrayList<>();

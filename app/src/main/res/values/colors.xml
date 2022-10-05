@@ -11,6 +11,7 @@
     <color name="welcome">#FF5722</color>
     <color name="login">#FF9800</color>
     <color name="register">#FFC107</color>
+    <color name="gray">#B8B3B3</color>
 
     <!-- Night theme -->
     <color name="green_night">#86e3ce</color>

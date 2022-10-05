@@ -16,18 +16,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cubbysulotions.proo.ModelsClasses.CalendarAdapter;
+import com.cubbysulotions.proo.Calendar.Utilities.MainCalendar.CalendarAdapter;
 import com.cubbysulotions.proo.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.daysInMonthArray;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.monthYearFormatter;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.daysInMonthArray;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.monthYearFormatter;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
 public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
@@ -40,7 +41,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         return view = inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
-    private Button btnPrevious, btnNext, btnWeekly;
+    private ImageButton btnPrevious, btnNext, btnWeekly;
     private TextView txtMonth;
     private RecyclerView calendarRecyclerView;
     NavController navController;

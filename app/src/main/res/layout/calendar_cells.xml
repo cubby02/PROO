@@ -21,9 +21,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/cellDayText"
             android:text="1"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:layout_gravity="center"/>
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:fontFamily="@font/lato_regular"/>
 
         <ImageView
             android:id="@+id/check"

@@ -83,6 +83,8 @@ public class LoginFragment extends Fragment {
             forgotPassword = view.findViewById(R.id.txtForgotPassword);
             loadingDialog = new LoadingDialog(getActivity());
 
+
+
             /*
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
                 getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -146,8 +148,10 @@ public class LoginFragment extends Fragment {
             dialog.setContentView(R.layout.reset_password);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-            EditText resetEmail = dialog.findViewById(R.id.txtEmailReset);
+            TextInputEditText resetEmail = dialog.findViewById(R.id.txtEmailReset);
+            TextInputLayout reset = dialog.findViewById(R.id.txtlayout);
             Button buttonSend = dialog.findViewById(R.id.button3);
+            BounceView.addAnimTo(buttonSend);
 
             resetEmail.setText(email.getText().toString());
             buttonSend.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +159,7 @@ public class LoginFragment extends Fragment {
                 public void onClick(View view) {
 
                     if (resetEmail.getText().toString().isEmpty()){
-                        resetEmail.setError("Required");
+                        reset.setError("Email is required");
                     } else {
                         dialog.dismiss();
                         loadingDialog.startLoading("Please wait");

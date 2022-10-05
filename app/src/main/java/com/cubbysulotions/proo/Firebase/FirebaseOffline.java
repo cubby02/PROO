@@ -1,4 +1,4 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Firebase;
 
 import android.app.Application;
 

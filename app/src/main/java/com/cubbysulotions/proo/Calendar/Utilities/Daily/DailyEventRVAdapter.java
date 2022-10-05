@@ -1,6 +1,5 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities.Daily;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
 import com.cubbysulotions.proo.R;
 
 import java.util.List;

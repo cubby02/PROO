@@ -1,5 +1,6 @@
 package com.cubbysulotions.proo.LoginSignupScreen;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,18 +15,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.LoadingDialog;
-import com.cubbysulotions.proo.ModelsClasses.Users;
+import com.cubbysulotions.proo.Firebase.Users;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
+
+import hari.bounceview.BounceView;
 
 import static android.content.ContentValues.TAG;
 
@@ -40,8 +46,10 @@ public class SignInFragment extends Fragment {
         return view = inflater.inflate(R.layout.fragment_sign_in, container, false);
     }
 
-    private EditText fname, lname, email, password;
-    private Button btnBack, btnSubmit;
+    private TextInputEditText fname, lname, email, password;
+    private TextInputLayout fnameLayout, lnameLayout, emailLayout, passLayout;
+    private Button btnBack;
+    private ImageButton btnSubmit;
     private FirebaseAuth mAuth;
     private NavController navController;
     private NavOptions navOptions;
@@ -55,8 +63,14 @@ public class SignInFragment extends Fragment {
             lname = view.findViewById(R.id.txtLname);
             email = view.findViewById(R.id.txtEmail);
             password = view.findViewById(R.id.txtPassword);
+            fnameLayout = view.findViewById(R.id.fnameLayout);
+            lnameLayout = view.findViewById(R.id.lnamelayout);
+            emailLayout = view.findViewById(R.id.emailLayout);
+            passLayout = view.findViewById(R.id.passwordLayout);
             btnBack = view.findViewById(R.id.btnBack);
+            BounceView.addAnimTo(btnBack);
             btnSubmit = view.findViewById(R.id.btnSubmit);
+            BounceView.addAnimTo(btnSubmit);
             navController = Navigation.findNavController(view);
             navOptions = new NavOptions.Builder().setPopUpTo(R.id.welcomeScreenFragment, true)
                     .setEnterAnim(R.anim.slide_left_to_right)
@@ -65,6 +79,12 @@ public class SignInFragment extends Fragment {
                     .setPopExitAnim(R.anim.slide_l2r_reverse)
                     .build();
             loadingDialog = new LoadingDialog(getActivity());
+
+            RelativeLayout constraintLayout = view.findViewById(R.id.layout2);
+            AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();
+            animationDrawable.setEnterFadeDuration(2000);
+            animationDrawable.setExitFadeDuration(4000);
+            animationDrawable.start();
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
@@ -98,12 +118,12 @@ public class SignInFragment extends Fragment {
 
             //The first if-else is to validate the length of the password
             if (firstName.isEmpty() || lastName.isEmpty() || emailText.isEmpty() || passText.isEmpty()){
-                fname.setError("Required");
-                lname.setError("Required");
-                email.setError("Required");
-                password.setError("Required");
+                fnameLayout.setError("First Name is required");
+                lnameLayout.setError("Last Name is required");
+                emailLayout.setError("Email is required");
+                passLayout.setError("Password is required");
             } else if (password.getText().length() < 6){
-                password.setError("Password should be at least 6 characters");
+                passLayout.setError("Password should be at least 6 characters");
             } else {
                 loadingDialog.startLoading("Processing");
                 //Then this block of code is to check whether the email is existing or not
@@ -156,7 +176,7 @@ public class SignInFragment extends Fragment {
                                 } else {
                                     //Log.e("TAG", "Is Old User!");
                                     loadingDialog.stopLoading();
-                                    email.setError("The email address is already in use by another account.");
+                                    emailLayout.setError("The email address is already in use by another account.");
                                 }
                             }
                         });

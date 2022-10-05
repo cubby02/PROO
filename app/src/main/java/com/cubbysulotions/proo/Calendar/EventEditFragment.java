@@ -25,9 +25,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.cubbysulotions.proo.LoadingDialog;
-import com.cubbysulotions.proo.ModelsClasses.AlarmReceiver;
-import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
-import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
+import com.cubbysulotions.proo.Calendar.Utilities.AlarmReceiver;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,14 +38,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 
 import static android.content.Context.ALARM_SERVICE;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.localDateToCalendar;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.localDateToCalendar;
 
 
 public class EventEditFragment extends Fragment {

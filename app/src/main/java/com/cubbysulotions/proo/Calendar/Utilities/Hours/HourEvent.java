@@ -1,8 +1,10 @@
-package com.cubbysulotions.proo.ModelsClasses;
+package com.cubbysulotions.proo.Calendar.Utilities.Hours;
+
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
+import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HourEvent {
     LocalTime time;

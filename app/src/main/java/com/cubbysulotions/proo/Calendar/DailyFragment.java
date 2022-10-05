@@ -12,20 +12,16 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cubbysulotions.proo.ModelsClasses.CalendarEvents;
-import com.cubbysulotions.proo.ModelsClasses.CalendarUtils;
-import com.cubbysulotions.proo.ModelsClasses.EventRVAdapter;
-import com.cubbysulotions.proo.ModelsClasses.HourAdapter;
-import com.cubbysulotions.proo.ModelsClasses.HourEvent;
-import com.cubbysulotions.proo.ModelsClasses.HourRVAdapter;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
+import com.cubbysulotions.proo.Calendar.Utilities.Hours.HourEvent;
+import com.cubbysulotions.proo.Calendar.Utilities.Hours.HourRVAdapter;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,10 +32,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-import static com.cubbysulotions.proo.ModelsClasses.CalendarUtils.selectedDate;
+import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
 public class DailyFragment extends Fragment {
 
