@@ -28,11 +28,12 @@
 
         <ImageView
             android:id="@+id/check"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/round"
-            android:visibility="gone" />
+            android:background="@drawable/round_white"
+            android:visibility="gone"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

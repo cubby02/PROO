@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +57,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         return view = inflater.inflate(R.layout.fragment_weekly_calendar, container, false);
     }
 
-    private Button btnPrevious, btnNext, btnDaily;
+    private ImageButton btnPrevious, btnNext, btnDaily;
     private TextView txtMonth;
     private RecyclerView calendarRecyclerView;
     private RecyclerView eventList;
@@ -137,7 +138,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         txtMonth.setText(monthYearFormatter(selectedDate));
         days = daysInWeekArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(days, this, monthDate);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);

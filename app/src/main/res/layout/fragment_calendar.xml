@@ -83,7 +83,7 @@
                     android:id="@+id/btnPrevious"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight=".5"
                     android:background="@android:color/transparent"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -97,17 +97,15 @@
                     android:text="Calendar"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/lato_regular"/>
+                    android:textSize="24sp"
+                    android:fontFamily="@font/exo_medium"/>
 
                 <ImageButton
                     android:id="@+id/btnNext"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight=".5"
                     android:background="@android:color/transparent"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
                     android:textStyle="bold"
                     android:src="@drawable/ic_baseline_arrow_forward_ios_24"/>
 
@@ -124,17 +122,57 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="SUN"
+                    android:text="S"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:fontFamily="@font/lato_regular" />
+                    android:fontFamily="@font/lato_bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="MON"
+                    android:text="M"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/lato_bold"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="T"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/lato_bold"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="W"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/lato_bold"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Th"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/lato_bold"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="F"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -144,49 +182,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TUE"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="WED"
+                    android:text="S"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    android:fontFamily="@font/lato_regular"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="THU"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="FRI"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/lato_regular"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="SAT"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/lato_regular" />
+                    android:fontFamily="@font/lato_bold"/>
 
             </LinearLayout>
 

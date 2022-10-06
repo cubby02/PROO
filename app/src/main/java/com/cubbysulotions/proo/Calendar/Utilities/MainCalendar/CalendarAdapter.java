@@ -1,31 +1,41 @@
 package com.cubbysulotions.proo.Calendar.Utilities.MainCalendar;
 
 import android.graphics.Color;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
+import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
 import com.cubbysulotions.proo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
     private final ArrayList<LocalDate> days;
     private final OnItemListener onItemListener;
+    private String monthDate;
 
-    public CalendarAdapter(ArrayList<LocalDate> days, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<LocalDate> days, OnItemListener onItemListener, String monthDate) {
         this.days = days;
         this.onItemListener = onItemListener;
+        this.monthDate = monthDate;
     }
 
     private FirebaseAuth mAuth;
@@ -67,31 +77,41 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         else
             holder.dayOfMonth.setTextColor(Color.parseColor("#4e4e4e"));
 
-        /* Supposedly for adding dot if there's an event on that date
-        List<CalendarEvents> events = new ArrayList<>();
+        //Supposedly for adding dot if there's an event on that date
+        List<DailyEvent> events = new ArrayList<>();
 
         reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
+
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int size = (int) snapshot.getChildrenCount();
-                CalendarEvents ev = new CalendarEvents();
+
+                DailyEvent ev = new DailyEvent();
                 for(DataSnapshot data : snapshot.getChildren()){
-                    ev = data.getValue(CalendarEvents.class);
+                    ev = data.getValue(DailyEvent.class);
                     events.add(ev);
+
+                    String currentMonth = date.getMonth().toString();
+                    String fromDB = CalendarUtils.formatteFullMonth(LocalDate.parse(ev.getDateString())).toUpperCase();
+
+                    if(fromDB.equals(currentMonth)){
+                        if(Integer.parseInt(String.valueOf(date.getDayOfMonth())) == Integer.parseInt(String.valueOf(LocalDate.parse(ev.getDateString()).getDayOfMonth()))){
+                            holder.dot.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
 
-                if(CalendarUtils.selectedDate == LocalDate.parse(ev.getDateString())){
-                    if(size < 0)
-                        holder.dot.setVisibility(View.VISIBLE);
-                }
+
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        }); */
+
+
+        });
 
 
     }

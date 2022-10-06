@@ -4,12 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable-v24/round.xml" value="0.2015" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable-v24/round_white.xml" value="0.179" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable-xxhdpi/bg_btn_2.xml" value="0.178" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable-xxhdpi/ic_back_svgrepo_com.xml" value="0.178" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable-xxhdpi/ic_back_white_svgrepo_com.xml" value="0.178" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/bg_btn.xml" value="0.1765" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/border.xml" value="0.20046296296296295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/calendar_bg.xml" value="0.178" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/dotted.xml" value="0.2145" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/error_text.xml" value="0.2145" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/gradient_1.xml" value="0.1765" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/gradient_2.xml" value="0.1765" />
@@ -18,14 +20,17 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/ic_back_svgrepo_com.xml" value="0.2165" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.2165" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/ic_baseline_chat_bubble_24.xml" value="0.20046296296296295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/ic_baseline_more_horiz_24.xml" value="0.179" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/ic_launcher_background.xml" value="0.179" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/item_selector.xml" value="0.20046296296296295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/round.xml" value="0.2165" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/drawable/round_corner.xml" value="0.20046296296296295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_login_register.xml" value="0.209375" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/activity_welcome.xml" value="0.1953125" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/adapter_message_one.xml" value="0.14130434782608695" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_cells.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_cells.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_view_selector.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_view_selector_dialog.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/chatbot_layout.xml" value="0.18611111111111112" />
@@ -46,6 +51,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_welcome_screen.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/hour_cell.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/hour_cell_with_rv.xml" value="0.18611111111111112" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/item_task.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/reset_password.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/user_msg_item.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/menu/item_menu.xml" value="0.18611111111111112" />

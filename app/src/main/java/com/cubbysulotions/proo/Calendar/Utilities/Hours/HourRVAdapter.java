@@ -5,6 +5,7 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,11 +52,13 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
 
             public TextView txtTimeCell;
             private RecyclerView ChildRecyclerView;
+            private ImageView dotted;
             public ViewHolder(final View itemView){
                 super(itemView);
 
                 txtTimeCell = itemView.findViewById(R.id.txtTimeCell);
                 ChildRecyclerView = itemView.findViewById(R.id.dailyEventListRecyclerView);
+                dotted = itemView.findViewById(R.id.dottedLine);
             }
         }
 
@@ -101,6 +104,8 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
             holder.ChildRecyclerView.setRecycledViewPool(viewPool);
 
 
+
+
             reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
@@ -114,9 +119,12 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
 
                     for(DataSnapshot data : snapshot.getChildren()){
                         ev = data.getValue(DailyEvent.class);
+
                         if(monthDate.equals(CalendarUtils.monthDayFormatter(LocalDate.parse(ev.getDateString())))){
-                            if(CalendarUtils.formattedShortTime(hourEvent.time).equals(CalendarUtils.formattedShortTime(LocalTime.parse(ev.getTimeString()))))
+                            if(CalendarUtils.formattedShortTime(hourEvent.time).equals(CalendarUtils.formattedShortTime(LocalTime.parse(ev.getTimeString())))){
                                 events.add(ev);
+                                holder.dotted.setVisibility(View.GONE);
+                            }
                         }
                     }
 

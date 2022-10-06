@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_marginTop="10dp">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -14,30 +15,28 @@
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="12 PM"
             android:id="@+id/txtTimeCell"
-            android:textColor="@color/black"/>
+            android:textColor="@color/default_black"
+            android:fontFamily="@font/lato_regular"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#F4F4F4">
+            android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/dailyEventListRecyclerView"/>
+            <ImageView
+                android:id="@+id/dottedLine"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:src="@drawable/dotted"
+                android:layerType="software"
+                android:layout_centerInParent="true" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
-
-
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height=".3dp"
-        android:background="#4B000000"/>
-
 
 </LinearLayout>

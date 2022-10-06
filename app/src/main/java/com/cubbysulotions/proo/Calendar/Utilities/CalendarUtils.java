@@ -4,11 +4,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +27,33 @@ public class CalendarUtils {
 
     public static String formattedShortDate(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d");
+        return date.format(formatter);
+    }
+
+    public static String formattedDayOnly(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d");
+        return date.format(formatter);
+    }
+
+    public static String formattedDayOfWeek(LocalDate date){
+        ZonedDateTime zonedDateTime = date.atStartOfDay(ZoneId.systemDefault());
+        Instant instant = zonedDateTime.toInstant();
+        Date date1 = Date.from(instant);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date1);
+
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        return new SimpleDateFormat("EE").format(dayOfWeek);
+    }
+
+    public static String formattedMonth(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM");
+        return date.format(formatter);
+    }
+
+    public static String formatteFullMonth(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM");
         return date.format(formatter);
     }
 
