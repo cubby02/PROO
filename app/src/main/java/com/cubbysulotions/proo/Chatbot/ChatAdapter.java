@@ -33,17 +33,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
   @Override public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
     String message = messageList.get(position).getMessage();
     int code = messageList.get(position).getCode();
-    /*
-    boolean isReceived = messageList.get(position).getIsReceived();
-     if(isReceived){
-       holder.aiMessage.setVisibility(View.VISIBLE);
-       holder.userMessage.setVisibility(View.GONE);
-       holder.messageReceive.setText(message);
-     }else {
-       holder.userMessage.setVisibility(View.VISIBLE);
-       holder.aiMessage.setVisibility(View.GONE);
-       holder.messageSend.setText(message);
-     } */
 
     switch (code){
       case 0:

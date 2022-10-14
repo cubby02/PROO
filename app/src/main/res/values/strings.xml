@@ -24,4 +24,25 @@
         <item>Eighth month</item>
         <item>Ninth month</item>
     </string-array>
+    <string-array name="more_results">
+        <item>More results</item>
+        <item>Show me more</item>
+        <item>Tell me more</item>
+        <item>More information</item>
+        <item>Other results</item>
+        <item>Are there more</item>
+        <item>Anything else</item>
+        <item>What else</item>
+        <item>More</item>
+    </string-array>
+    <string-array name="topics">
+        <item>Pregnancy Symptoms</item>
+        <item>Baby\'s Development</item>
+        <item>What to expect in Prenatal Visit</item>
+    </string-array>
+    <string-array name="greetings">
+        <item>How may I help you?</item>
+        <item>What would you like know today?</item>
+        <item>Curious about your third month? Lemme know, I got you.</item>
+    </string-array>
 </resources>

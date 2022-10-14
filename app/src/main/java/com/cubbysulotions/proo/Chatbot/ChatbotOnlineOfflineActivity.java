@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cubbysulotions.proo.Chatbot.OptionVersion.ChoiceAdapter;
+import com.cubbysulotions.proo.Chatbot.OptionVersion.Choices;
 import com.cubbysulotions.proo.R;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -25,15 +27,24 @@ import com.google.common.collect.Lists;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements BotReply {
 
+
   RecyclerView chatView;
+  RecyclerView choiceRV;
   ChatAdapter chatAdapter;
+  ChoiceAdapter choiceAdapter;
   List<Message> messageList = new ArrayList<>();
+  List<Choices> choicesList = new ArrayList<>();
+  List<String> moreResult;
+  List<String> topicsList;
+  List<String> greetingsList;
   EditText editMessage;
   ImageButton btnSend;
 
@@ -56,17 +67,31 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     chatView = findViewById(R.id.rdChats);
     editMessage = findViewById(R.id.userMessage);
     btnSend = findViewById(R.id.sendBtn);
+    choiceRV = findViewById(R.id.selectionRecyclerView);
 
     chatAdapter = new ChatAdapter(messageList, this);
     LinearLayoutManager manager = new LinearLayoutManager(this);
     chatView.setLayoutManager(manager);
     chatView.setAdapter(chatAdapter);
 
+    choiceAdapter = new ChoiceAdapter(choicesList);
+    LinearLayoutManager manager2 = new LinearLayoutManager(this);
+    choiceRV.setLayoutManager(manager2);
+    choiceRV.setAdapter(choiceAdapter);
+
     dbController = new DBController(this);
     dbController.convertCSV(this);
 
     selectedMonth = getIntent().getStringExtra("month");
 
+    String[] more = getResources().getStringArray(R.array.more_results);
+    moreResult = Arrays.asList(more);
+
+    String[] topics = getResources().getStringArray(R.array.topics);
+    topicsList = Arrays.asList(topics);
+
+    String[] greetings = getResources().getStringArray(R.array.greetings);
+    greetingsList = Arrays.asList(greetings);
 
     btnSend.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
@@ -87,6 +112,8 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     setUpBot();
     messageList.add(new Message("", 2));
     sendMessageToBot(selectedMonth);
+
+
   }
 
   private void setUpBot() {
@@ -133,11 +160,22 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
          if(!list.isEmpty()){
            for (int i = 0; i <  returnResponse.getQueryResult().getFulfillmentMessagesList().size(); i++){
              messageList.add(new Message(list.get(i).getText(), 0));
+
+           }
+           String greetingsLast = list.get(list.size() -1).getText().trim();
+           if(greetingsList.contains(greetingsLast)){
+             for (int i = 0; i <  topicsList.size(); i++){
+               choicesList.add(new Choices(topicsList.get(i)));
+             }
            }
          } else {
            messageList.add(new Message(botReply, 0));
          }
 
+         //String text = moreResult.get(new Random().nextInt(moreResult.size()));
+         //choicesList.add(new Choices(text, 0));
+
+         choiceAdapter.notifyDataSetChanged();
          chatAdapter.notifyDataSetChanged();
          chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
 
