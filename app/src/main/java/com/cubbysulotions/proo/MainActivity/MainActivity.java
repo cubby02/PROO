@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.cubbysulotions.proo.Calendar.CalendarFragment;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new CalendarContainerFragment();
                             break;
                         case R.id.nav_todo:
-                            fragment = new TodoFragment();
+                            fragment = new JournalFragment();
                             break;
                         case R.id.nav_basicfood:
                             fragment = new BasicFoodFragment();

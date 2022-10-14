@@ -32,6 +32,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
 
   @Override public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
     String message = messageList.get(position).getMessage();
+    int code = messageList.get(position).getCode();
+    /*
     boolean isReceived = messageList.get(position).getIsReceived();
      if(isReceived){
        holder.aiMessage.setVisibility(View.VISIBLE);
@@ -41,7 +43,30 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
        holder.userMessage.setVisibility(View.VISIBLE);
        holder.aiMessage.setVisibility(View.GONE);
        holder.messageSend.setText(message);
-     }
+     } */
+
+    switch (code){
+      case 0:
+        holder.aiMessage.setVisibility(View.VISIBLE);
+        holder.userMessage.setVisibility(View.GONE);
+        holder.typing.setVisibility(View.GONE);
+        holder.messageReceive.setText(message);
+        break;
+      case 1:
+        holder.userMessage.setVisibility(View.VISIBLE);
+        holder.aiMessage.setVisibility(View.GONE);
+        holder.typing.setVisibility(View.GONE);
+        holder.messageSend.setText(message);
+        break;
+      case 2:
+        holder.userMessage.setVisibility(View.GONE);
+        holder.aiMessage.setVisibility(View.GONE);
+        holder.typing.setVisibility(View.VISIBLE);
+        break;
+    }
+
+
+
   }
 
   @Override public int getItemCount() {
@@ -54,6 +79,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     TextView messageReceive;
     RelativeLayout aiMessage;
     RelativeLayout userMessage;
+    RelativeLayout typing;
 
     MyViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -61,7 +87,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
       messageReceive = itemView.findViewById(R.id.message_receive);
       aiMessage = itemView.findViewById(R.id.aiMessage);
       userMessage = itemView.findViewById(R.id.userMessage);
+      typing = itemView.findViewById(R.id.aiMessage_Typing);
     }
+  }
+
+  public void removeAt(int position) {
+    messageList.remove(position);
+    notifyItemRemoved(position);
+    notifyItemRangeChanged(position, messageList.size());
   }
 
 }

@@ -96,6 +96,50 @@
 
       </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+  </RelativeLayout>
+
+  <RelativeLayout
+      android:id="@+id/aiMessage_Typing"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/botIMG2_typing"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ai"/>
+
+    <androidx.cardview.widget.CardView
+        android:layout_centerInParent="true"
+        android:layout_toRightOf="@id/botIMG2_typing"
+        android:id="@+id/aiContent_typing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="40dp"
+        app:cardBackgroundColor="#CFCFCF"
+        app:cardCornerRadius="8dp">
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            style="@style/SpinKitView.Small.ThreeBounce"
+            android:layout_height="28dp"
+            android:layout_width="70dp"
+            app:SpinKit_Color="@color/black"/>
+
+      </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
   </RelativeLayout>
 
 

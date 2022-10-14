@@ -5,6 +5,7 @@ public class Message {
   private String message;
   private boolean isReceived;
   private String text;
+  private int code;
 
   public Message() {
   }
@@ -16,6 +17,11 @@ public class Message {
   public Message(String message, boolean isReceived) {
     this.message = message;
     this.isReceived = isReceived;
+  }
+
+  public Message(String message, int code) {
+    this.message = message;
+    this.code = code;
   }
 
   public String getMessage() {
@@ -40,5 +46,13 @@ public class Message {
 
   public void setText(String text) {
     this.text = text;
+  }
+
+  public int getCode() {
+    return code;
+  }
+
+  public void setCode(int code) {
+    this.code = code;
   }
 }

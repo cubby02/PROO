@@ -12,4 +12,16 @@
     <string name="next"><![CDATA[->]]></string>
     <string name="prev"><![CDATA[<-]]></string>
     <string name="reminder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed velit lorem, semper et sagittis pretium, lobortis sit amet ligula. Morbi dapibus neque a tortor aliquam, nec porta ligula semper. Proin tincidunt malesuada dolor sit amet imperdiet. Nam mattis eros tempus enim cursus, a tempor tellus porta. Phasellus suscipit enim eget posuere lobortis. Vestibulum eu diam nulla. Etiam ultrices diam diam, venenatis semper ipsum aliquet fringilla. Cras ultricies tincidunt lacus ut vehicula.</string>
+    <string name="welcome">Hello there! My name is Proo your personal pregnancy organizer. You can ask me about the basic knowledge in pregnancy but first let me know first you current month.</string>
+    <string-array name="months">
+        <item>First month</item>
+        <item>Second month</item>
+        <item>Third month</item>
+        <item>Fourth month</item>
+        <item>Fifth month</item>
+        <item>Sixth month</item>
+        <item>Seventh month</item>
+        <item>Eighth month</item>
+        <item>Ninth month</item>
+    </string-array>
 </resources>

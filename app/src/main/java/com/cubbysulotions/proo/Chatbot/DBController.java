@@ -52,12 +52,17 @@ public class DBController extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(create_tbl2);
         Log.e("create Query", create_tbl2);
 
+        String create_tbl3 = "CREATE TABLE IF NOT EXISTS tblMonth(ID INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT)";
+        sqLiteDatabase.execSQL(create_tbl3);
+
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS tblWeather");
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS tblTestQuestion");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS tblMonth");
         onCreate(sqLiteDatabase);
     }
 
@@ -72,6 +77,34 @@ public class DBController extends SQLiteOpenHelper {
         }
 
         return output;
+    }
+
+    @SuppressLint("Range")
+    public String getSavedMonth(){
+        db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT month FROM tblMonth", null);
+        String output = "";
+
+        if(c.moveToFirst()){
+            output = c.getString(c.getColumnIndex("month"));
+        }
+
+        return output;
+    }
+
+    public boolean saveMonth(String month){
+        db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("month", month);
+
+        long insert = db.insert("tblMonth", null, contentValues);
+
+        if (insert == -1){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public void convertCSV(Context context){
@@ -125,5 +158,7 @@ public class DBController extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+
+
 
 }

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.cubbysulotions.proo">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".Firebase.FirebaseOffline"
@@ -17,6 +24,16 @@
         android:usesCleartextTraffic="true">
 
         <receiver android:name=".Calendar.Utilities.AlarmReceiver"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cubbysulotions.proo"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <activity
             android:name=".SplashScreen"
@@ -33,11 +50,11 @@
         </activity>
         <activity
             android:name=".MainActivity.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
 
         <activity
             android:name=".Chatbot.ChatbotOnlineOfflineActivity"
-            android:exported="true"></activity>
+            android:exported="true"/>
     </application>
 
 

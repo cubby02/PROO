@@ -47,6 +47,8 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
 
   String message ="";
 
+  String selectedMonth="";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,14 +65,17 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     dbController = new DBController(this);
     dbController.convertCSV(this);
 
+    selectedMonth = getIntent().getStringExtra("month");
+
 
     btnSend.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         message = editMessage.getText().toString();
         if (!message.isEmpty()) {
-          messageList.add(new Message(message, false));
+          messageList.add(new Message(message, 1));
           editMessage.setText("");
           sendMessageToBot(message);
+          messageList.add(new Message("", 2));
           chatView.getAdapter().notifyDataSetChanged();
           chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
         } else {
@@ -80,7 +85,8 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     });
 
     setUpBot();
-    //sendMessageToBot("Welcome");
+    messageList.add(new Message("", 2));
+    sendMessageToBot(selectedMonth);
   }
 
   private void setUpBot() {
@@ -110,8 +116,8 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
 
   @Override
   public void callback(DetectIntentResponse returnResponse) {
-    Log.d("Test", "Response" + returnResponse);
      if(returnResponse!=null) {
+       chatAdapter.removeAt(chatAdapter.getItemCount() - 1);
        String botReply = returnResponse.getQueryResult().getFulfillmentText();
 
        List<Message> list = new ArrayList<>();
@@ -126,10 +132,10 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
        if(!botReply.isEmpty()){
          if(!list.isEmpty()){
            for (int i = 0; i <  returnResponse.getQueryResult().getFulfillmentMessagesList().size(); i++){
-             messageList.add(new Message(list.get(i).getText(), true));
+             messageList.add(new Message(list.get(i).getText(), 0));
            }
          } else {
-           messageList.add(new Message(botReply, true));
+           messageList.add(new Message(botReply, 0));
          }
 
          chatAdapter.notifyDataSetChanged();
@@ -140,8 +146,9 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
          Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
        }
      } else {
+       chatAdapter.removeAt(chatAdapter.getItemCount() - 1);
        String response = dbController.getResponse(message);
-       messageList.add(new Message(response, true));
+       messageList.add(new Message(response, 0));
        chatAdapter.notifyDataSetChanged();
        chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
      }

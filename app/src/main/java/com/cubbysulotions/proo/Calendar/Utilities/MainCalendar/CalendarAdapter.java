@@ -72,10 +72,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         if(date.equals(CalendarUtils.selectedDate))
             holder.parentView.setBackgroundResource(R.drawable.round_corner);
 
-        if(date.getMonth().equals(CalendarUtils.selectedDate.getMonth()))
+        if(date.getMonth().equals(CalendarUtils.selectedDate.getMonth())){
             holder.dayOfMonth.setTextColor(Color.WHITE);
-        else
+        } else {
             holder.dayOfMonth.setTextColor(Color.parseColor("#4e4e4e"));
+            holder.dayOfMonth.setAlpha(0.5F);
+        }
+
+
 
         //Supposedly for adding dot if there's an event on that date
         List<DailyEvent> events = new ArrayList<>();

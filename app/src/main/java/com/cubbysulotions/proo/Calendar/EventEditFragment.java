@@ -250,7 +250,6 @@ public class EventEditFragment extends Fragment {
                 String flag = getArguments().getString("flag");
                 eventNameTxt = eventName.getText().toString();
 
-
                 String id = reference.push().getKey();
                 CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt, id, String.valueOf(selectedDate), String.valueOf(time), String.valueOf(requestCode), String.valueOf(notificationID));
 
