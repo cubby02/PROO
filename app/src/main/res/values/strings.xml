@@ -35,6 +35,13 @@
         <item>What else</item>
         <item>More</item>
     </string-array>
+    <string-array name="exit">
+        <item>Stop</item>
+        <item>End conversation</item>
+        <item>Cancel</item>
+        <item>I\'m satisfied</item>
+        <item>Never mind</item>
+    </string-array>
     <string-array name="topics">
         <item>Pregnancy Symptoms</item>
         <item>Baby\'s Development</item>
@@ -42,7 +49,36 @@
     </string-array>
     <string-array name="greetings">
         <item>How may I help you?</item>
-        <item>What would you like know today?</item>
+        <item>What would you like to know today?</item>
+        <item>Curious about your first month? Lemme know, I got you.</item>
+        <item>Curious about your second month? Lemme know, I got you.</item>
         <item>Curious about your third month? Lemme know, I got you.</item>
+        <item>Curious about your fourth month? Lemme know, I got you.</item>
+        <item>Curious about your fifth month? Lemme know, I got you.</item>
+        <item>Curious about your sixth month? Lemme know, I got you.</item>
+        <item>Curious about your seventh month? Lemme know, I got you.</item>
+        <item>Curious about your eighth month? Lemme know, I got you.</item>
+        <item>Curious about your ninth month? Lemme know, I got you.</item>
     </string-array>
+    <string-array name="closing">
+        <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides symptoms?</item>
+        <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides baby\'s development?</item>
+        <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides what to expect on your pre-natal visit?</item>
+        <item>That\'s all I know. Want to know more about other things on your first month?</item>
+        <item>That\'s all I know. Want to know more about other things on your second month?</item>
+        <item>That\'s all I know. Want to know more about other things on your third month?</item>
+        <item>That\'s all I know. Want to know more about other things on your fourth month?</item>
+        <item>That\'s all I know. Want to know more about other things on your fifth month?</item>
+        <item>That\'s all I know. Want to know more about other things on your sixth month?</item>
+        <item>That\'s all I know. Want to know more about other things on your seventh month?</item>
+        <item>That\'s all I know. Want to know more about other things on your eighth month?</item>
+        <item>That\'s all I know. Want to know more about other things on your ninth month?</item>
+    </string-array>
+    <string-array name="exit_response">
+        <item>I\'m very pleased that I\'ve been able to help you today. Would you like to know more about your pregnancy, or you want to exit?</item>
+        <item>Thanks for stopping by! Still curious about your pregnancy? Ask away or you want to go?</item>
+    </string-array>
+    <string name="symptoms">I want to know about my pregnancy symptoms</string>
+    <string name="baby">I want to know about my baby\'s development</string>
+    <string name="expect">I want to know what happens during prenatal visits</string>
 </resources>

@@ -1,40 +1,40 @@
 package com.cubbysulotions.proo.Chatbot.OptionVersion;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
-import com.cubbysulotions.proo.Journal.Journal;
 import com.cubbysulotions.proo.R;
-import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import hari.bounceview.BounceView;
 
 public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder> {
 
-        private List<Choices> list;
+    private List<Choices> list;
+    private OnItemClickListener mListener;
 
 
     public ChoiceAdapter(List<Choices> list) {
-            this.list = list;
-        }
+        this.list = list;
+    }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
             public TextView choice;
             public ViewHolder(final View itemView){
@@ -62,6 +62,17 @@ public class ChoiceAdapter extends RecyclerView.Adapter<ChoiceAdapter.ViewHolder
             Choices choices = list.get(position);
             BounceView.addAnimTo(holder.choice);
             holder.choice.setText(choices.getChoice());
+            holder.choice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        int position = holder.getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
 
     public void updateDataSet(List<Choices> newResult){
