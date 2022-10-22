@@ -77,6 +77,8 @@ dependencies {
 
     implementation 'id.zelory:compressor:2.1.1'
 
+    implementation "com.github.skydoves:powerspinner:1.2.4"
+
 
 }
 

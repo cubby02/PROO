@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,8 @@ import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.cloud.dialogflow.v2.SessionsSettings;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.common.collect.Lists;
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
+import com.skydoves.powerspinner.PowerSpinnerView;
 
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -50,6 +53,7 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
   List<String> exitResponseList;
   EditText editMessage;
   ImageButton btnSend;
+  PowerSpinnerView topicLists;
 
   //dialogFlow
   private SessionsClient sessionsClient;
@@ -71,6 +75,7 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     editMessage = findViewById(R.id.userMessage);
     btnSend = findViewById(R.id.sendBtn);
     choiceRV = findViewById(R.id.selectionRecyclerView);
+    topicLists = findViewById(R.id.topics);
 
     chatAdapter = new ChatAdapter(messageList, this);
     LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -126,8 +131,48 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     setUpBot();
     messageList.add(new Message("", 2));
     sendMessageToBot(selectedMonth);
+    spinnerSelection();
 
+  }
 
+  private void spinnerSelection() {
+    topicLists.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
+      @Override public void onItemSelected(int oldIndex, @Nullable String oldItem, int newIndex, String newItem) {
+        switch (newItem.trim()){
+          case "Pregnancy Symptoms":
+            messageList.add(new Message(getResources().getString(R.string.symptoms), 1));
+            sendMessageToBot("i want to know about pregnancy symptoms during my " + selectedMonth);
+            break;
+          case "Baby's Development":
+            messageList.add(new Message(getResources().getString(R.string.baby), 1));
+            sendMessageToBot("i want to know about my baby's development during " + selectedMonth);
+            break;
+          case "What to expect in Prenatal Visit":
+            messageList.add(new Message(getResources().getString(R.string.expect), 1));
+            sendMessageToBot("what will happen during my "+ selectedMonth +" prenatal check-up");
+            break;
+          case "Basic Food Recommendations":
+            messageList.add(new Message(getResources().getString(R.string.food), 1));
+            sendMessageToBot("i want to know about food preferences for pregnant women");
+            break;
+          case "Pregnant women's weight":
+            messageList.add(new Message("I want to know more about recommended pregnancy weight", 1));
+            sendMessageToBot("i want to know more about my weight during my " + selectedMonth);
+            break;
+          case "Go Home":
+            finish();
+            break;
+          default:
+            //messageList.add(new Message(clickedItem.getChoice(), 1));
+            //sendMessageToBot(clickedItem.getChoice());
+            toast("Something went wrong");
+            break;
+        }
+        chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
+        messageList.add(new Message("", 2));
+        chatView.getAdapter().notifyDataSetChanged();
+      }
+    });
   }
 
   private void setUpBot() {
@@ -174,13 +219,14 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
          if(!list.isEmpty()){
            //adding the list of ai response to Model class
            for (int i = 0; i <  returnResponse.getQueryResult().getFulfillmentMessagesList().size(); i++){
-             messageList.add(new Message(list.get(i).getText(), 0));
+             messageList.add(new Message(list.get(i).getText().trim(), 0));
            }
            //populating the choices
+
            populateChoices(list);
 
          } else {
-           messageList.add(new Message(botReply, 0));
+           messageList.add(new Message(botReply.trim(), 0));
            populateChoices(botReply);
          }
 
@@ -205,16 +251,26 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
   private void populateChoices(String botReply) {
     choiceAdapter.clear();
     if(exitResponseList.contains(botReply.trim())){
+      /*
       for (int i = 0; i <  topicsList.size(); i++){
         choicesList.add(new Choices(topicsList.get(i)));
       }
-      choicesList.add(new Choices("Go Home"));
+      choicesList.add(new Choices("Go Home")); */
+      topicLists.setVisibility(View.VISIBLE);
+      topicLists.clearSelectedItem();
+      choiceRV.setVisibility(View.GONE);
     } else {
       if(closingList.contains(botReply.trim())){
-        for (int i = 0; i <  topicsList.size(); i++){
-          choicesList.add(new Choices(topicsList.get(i)));
-        }
+        /*
+          for (int i = 0; i <  topicsList.size(); i++){
+            choicesList.add(new Choices(topicsList.get(i)));
+          }*/
+        topicLists.setVisibility(View.VISIBLE);
+        topicLists.clearSelectedItem();
+        choiceRV.setVisibility(View.GONE);
       } else {
+        choiceRV.setVisibility(View.VISIBLE);
+        topicLists.setVisibility(View.GONE);
         String text = moreResult.get(new Random().nextInt(moreResult.size()));
         String exit = exitList.get(new Random().nextInt(exitList.size()));
         choicesList.add(new Choices(text));
@@ -228,25 +284,45 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     String lastMessage = list.get(list.size() -1).getText().trim();
     choiceAdapter.clear();
     if(exitResponseList.contains(lastMessage)){
+      /*
       for (int i = 0; i <  topicsList.size(); i++){
         choicesList.add(new Choices(topicsList.get(i)));
       }
-      choicesList.add(new Choices("Go Home"));
+      choicesList.add(new Choices("Go Home")); */
+      topicLists.setVisibility(View.VISIBLE);
+      topicLists.clearSelectedItem();
+      choiceRV.setVisibility(View.GONE);
     } else {
       if(greetingsList.contains(lastMessage)){
+        /*
         for (int i = 0; i <  topicsList.size(); i++){
           choicesList.add(new Choices(topicsList.get(i)));
-        }
+        } */
+        topicLists.setVisibility(View.VISIBLE);
+        topicLists.clearSelectedItem();
+        choiceRV.setVisibility(View.GONE);
       } else{
         if(closingList.contains(lastMessage)){
+          /*
           for (int i = 0; i <  topicsList.size(); i++){
             choicesList.add(new Choices(topicsList.get(i)));
-          }
+          }*/
+          topicLists.setVisibility(View.VISIBLE);
+          topicLists.clearSelectedItem();
+          choiceRV.setVisibility(View.GONE);
         } else {
-          String text = moreResult.get(new Random().nextInt(moreResult.size()));
-          String exit = exitList.get(new Random().nextInt(exitList.size()));
-          choicesList.add(new Choices(text));
-          choicesList.add(new Choices(exit));
+          choiceRV.setVisibility(View.VISIBLE);
+          topicLists.setVisibility(View.GONE);
+          if(lastMessage.equals(getResources().getString(R.string.more_result_continue))){
+            choicesList.add(new Choices("Yes"));
+            choicesList.add(new Choices("No"));
+          } else {
+            String text = moreResult.get(new Random().nextInt(moreResult.size()));
+            String exit = exitList.get(new Random().nextInt(exitList.size()));
+            choicesList.add(new Choices(text));
+            choicesList.add(new Choices(exit));
+          }
+
         }
       }
     }
@@ -258,20 +334,9 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
   public void onItemClick(int position) {
     Choices clickedItem = choicesList.get(position);
     switch (clickedItem.getChoice()){
-      case "Pregnancy Symptoms":
-        messageList.add(new Message(getResources().getString(R.string.symptoms), 1));
-        sendMessageToBot("i want to know about pregnancy symptoms during my " + selectedMonth);
-        break;
-      case "Baby's Development":
-        messageList.add(new Message(getResources().getString(R.string.baby), 1));
-        sendMessageToBot("i want to know about my baby's development during " + selectedMonth);
-        break;
-      case "What to expect in Prenatal Visit":
-        messageList.add(new Message(getResources().getString(R.string.expect), 1));
-        sendMessageToBot("what will happen during my "+ selectedMonth +" prenatal check-up");
-        break;
-      case "Go Home":
-        finish();
+      case "Yes":
+        messageList.add(new Message("Yes", 1));
+        sendMessageToBot("yes. i want to know more about weight");
         break;
       default:
         messageList.add(new Message(clickedItem.getChoice(), 1));

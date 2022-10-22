@@ -46,6 +46,9 @@
         <item>Pregnancy Symptoms</item>
         <item>Baby\'s Development</item>
         <item>What to expect in Prenatal Visit</item>
+        <item>Basic Food Recommendations</item>
+        <item>Pregnant women\'s weight</item>
+        <item>Go Home</item>
     </string-array>
     <string-array name="greetings">
         <item>How may I help you?</item>
@@ -62,6 +65,9 @@
     </string-array>
     <string-array name="closing">
         <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides symptoms?</item>
+        <item>That\'s all I know. Want to know more about other things on your pregnancy?</item>
+        <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides this?</item>
+        <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides food preference?</item>
         <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides baby\'s development?</item>
         <item>If you\'re still curious, you might want to contact your OB-GYN. So, want to know anything else besides what to expect on your pre-natal visit?</item>
         <item>That\'s all I know. Want to know more about other things on your first month?</item>
@@ -81,4 +87,6 @@
     <string name="symptoms">I want to know about my pregnancy symptoms</string>
     <string name="baby">I want to know about my baby\'s development</string>
     <string name="expect">I want to know what happens during prenatal visits</string>
+    <string name="food">I want to know about basic food preferences for pregnant women</string>
+    <string name="more_result_continue">Do you want more results?</string>
 </resources>
