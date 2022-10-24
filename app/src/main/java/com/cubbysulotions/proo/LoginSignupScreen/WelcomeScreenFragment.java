@@ -1,6 +1,7 @@
 package com.cubbysulotions.proo.LoginSignupScreen;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,8 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -41,6 +44,8 @@ public class WelcomeScreenFragment extends Fragment {
         register = view.findViewById(R.id.btnRegister);
         BounceView.addAnimTo(login);
         BounceView.addAnimTo(register);
+
+
 
         RelativeLayout constraintLayout = view.findViewById(R.id.layout);
         AnimationDrawable animationDrawable = (AnimationDrawable) constraintLayout.getBackground();

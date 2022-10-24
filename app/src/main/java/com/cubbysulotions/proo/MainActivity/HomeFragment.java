@@ -1,6 +1,8 @@
 package com.cubbysulotions.proo.MainActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,13 +61,9 @@ public class HomeFragment extends Fragment {
             currentUser = mAuth.getCurrentUser();
             database = FirebaseDatabase.getInstance();
 
-            /*
-            if(currentUser == null){
-                Intent intent = new Intent(this, WelcomeActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            } */
+
+            ((MainActivity)getActivity()).updateStatusBarColor("#50d7b8");
+            ((MainActivity)getActivity()).setLightStatusBar(false);
 
             btnLogout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
                         lname = users.lastname;
                         email = users.email;
 
-                        greetingsUser.setText("Hello, " + fname + "!");
+                        greetingsUser.setText("Hello, " + fname.trim() + "!");
                     }
                 }
 

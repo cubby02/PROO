@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import com.cubbysulotions.proo.Calendar.Utilities.AllTaskAdapter;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
 import com.cubbysulotions.proo.Calendar.Utilities.MainCalendar.CalendarAdapter;
+import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -95,6 +98,9 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         calendarLayout = view.findViewById(R.id.calendarLayoutView);
         allTaskLayout = view.findViewById(R.id.allTasksLayout);
         allTaskRecylerView = view.findViewById(R.id.allTasksRV);
+
+        ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
+        ((MainActivity)getActivity()).setLightStatusBar(true);
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();

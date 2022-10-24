@@ -131,6 +131,9 @@ public class JournalFragment extends Fragment {
         journalRV = view.findViewById(R.id.timeLineRV);
         camera = view.findViewById(R.id.camera);
 
+        ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
+        ((MainActivity)getActivity()).setLightStatusBar(true);
+
         list = new ArrayList<>();
         journalAdapter = new JournalAdapter(list);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -254,73 +257,85 @@ public class JournalFragment extends Fragment {
 
 
     private void populateTimeline() {
-        reference.addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Journal ev = new Journal();
+        try {
+            reference.addValueEventListener(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    try {
+                        Journal ev = new Journal();
 
-                for(DataSnapshot data : snapshot.getChildren()){
-                    ev = data.getValue(Journal.class);
-                    list.add(ev);
+                        for(DataSnapshot data : snapshot.getChildren()){
+                            ev = data.getValue(Journal.class);
+                            list.add(ev);
 
+
+                        }
+                        journalAdapter.updateDataSet(list);
+                        journalRV.setHasFixedSize(true);
+
+                        if(journalAdapter.getItemCount() < 1){
+                            noPost.setVisibility(View.VISIBLE);
+                        } else {
+                            noPost.setVisibility(View.GONE);
+                        }
+                    } catch (Exception e){
+                        Log.e("PopulateJournal_Error", "Message: ", e);
+                        toast("Please wait...");
+                    }
 
                 }
-                journalAdapter.updateDataSet(list);
-                journalRV.setHasFixedSize(true);
 
-                if(journalAdapter.getItemCount() < 1){
-                    noPost.setVisibility(View.VISIBLE);
-                } else {
-                    noPost.setVisibility(View.GONE);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+            });
+        } catch (Exception e){
+            Log.e("MainAct Error", "Message: ", e);
+            toast("Please wait...");
+        }
     }
 
     private void uploadImage(){
-        if(contentURI != null){
-            imageFileName = UUID.randomUUID().toString() + "." +getFileExtension(contentURI);
-            StorageReference ref = storageReference.child(imageFileName);
-            ref.putFile(contentURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    toast("Image Uploaded");
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String id = reference.push().getKey();
-                            Journal journal = new Journal(
-                                    content.getText().toString(),
-                                    uri.toString(),
-                                    String.valueOf(date),
-                                    String.valueOf(time),
-                                    "unlike"
-                            );
+        try {
+            if(contentURI != null){
+                imageFileName = UUID.randomUUID().toString() + "." +getFileExtension(contentURI);
+                StorageReference ref = storageReference.child(imageFileName);
+                ref.putFile(contentURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        toast("Image Uploaded");
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String id = reference.push().getKey();
+                                Journal journal = new Journal(
+                                        content.getText().toString(),
+                                        uri.toString(),
+                                        String.valueOf(date),
+                                        String.valueOf(time),
+                                        "unlike"
+                                );
 
-                            reference.child(id).setValue(journal);
+                                reference.child(id).setValue(journal);
 
-                            journalAdapter.clear();
-                            content.setText("");
-                            uploadImage.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_24);
+                                journalAdapter.clear();
+                                content.setText("");
+                                uploadImage.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_24);
 
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), "Image not uploaded", Toast.LENGTH_SHORT).show();
-                    Log.e("Upload image", "Error ", e);
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Image not uploaded", Toast.LENGTH_SHORT).show();
+                        Log.e("Upload image", "Error ", e);
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                     /*
                     double progress
                             = (100.0
@@ -329,9 +344,14 @@ public class JournalFragment extends Fragment {
                     progressDialog.setMessage(
                             "Uploaded "
                                     + (int)progress + "%"); */
-                }
-            });
+                    }
+                });
+            }
+        } catch (Exception e){
+            Log.e("upload_error", "Message: ", e);
+            toast("Please wait...");
         }
+
     }
 
     private String getFileExtension(Uri uri){
@@ -372,34 +392,41 @@ public class JournalFragment extends Fragment {
     }
 
     private void takePicture() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if(checkStoragePermissions()){
-            if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File photoFile = null;
-                File compressedFile = null;
-                try {
-                    photoFile = createImageFile();
-                    //compressedFile = new Compressor(getActivity()).compressToFile(photoFile);
+        try {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if(checkStoragePermissions()){
+                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    File compressedFile = null;
+                    try {
+                        photoFile = createImageFile();
+                        //compressedFile = new Compressor(getActivity()).compressToFile(photoFile);
 
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    // Error occurred while creating the File
-                }
-                // Continue only if the File was successfully created
-                if (photoFile != null) {
-                    photoURI = FileProvider.getUriForFile(getActivity(),
-                            "com.cubbysulotions.proo",
-                            photoFile);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        // Error occurred while creating the File
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        photoURI = FileProvider.getUriForFile(getActivity(),
+                                "com.cubbysulotions.proo",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    }
                 }
             }
+            else{
+                requestStoragePermission();
+            }
+        } catch (Exception e){
+            Log.e("TakePic_Error", "Message: ", e);
+            toast("Please wait...");
         }
-        else{
-            requestStoragePermission();
-        }
+
+
     }
 
     // creating root img file  (only for the application and cannot be seen in gallery)

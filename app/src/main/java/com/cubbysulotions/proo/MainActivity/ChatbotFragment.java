@@ -42,6 +42,9 @@ public class ChatbotFragment extends Fragment {
         month = view.findViewById(R.id.month);
         db = new DBController(getActivity());
 
+        ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
+        ((MainActivity)getActivity()).setLightStatusBar(true);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.months, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

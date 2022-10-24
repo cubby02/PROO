@@ -45,7 +45,7 @@
             app:spinner_divider_size="0.4dp"
             app:spinner_item_array="@array/topics"
             app:spinner_item_height="46dp"
-            app:spinner_popup_animation="bounce"
+            app:spinner_popup_animation="fade"
             app:spinner_popup_background="@color/yellow"
             app:spinner_popup_elevation="14dp"
             android:visibility="gone"/>
