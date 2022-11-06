@@ -40,14 +40,13 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.ViewHold
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public TextView content, time, date;
-            public ImageButton like;
+            public TextView title, time, date, content;
             public ViewHolder(final View itemView){
                 super(itemView);
-                content = itemView.findViewById(R.id.contentTxtView);
+                title = itemView.findViewById(R.id.titleTxtView);
+                content = itemView.findViewById(R.id.content_mini);
                 time = itemView.findViewById(R.id.timeTxt);
                 date = itemView.findViewById(R.id.dateTxt);
-                like = itemView.findViewById(R.id.likeBtn);
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -85,7 +84,16 @@ public class JournalAdapter extends RecyclerView.Adapter<JournalAdapter.ViewHold
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             Journal journal = list.get(position);
-            holder.content.setText(journal.getTitle());
+
+            String content = journal.getContent();
+            holder.title.setText(journal.getTitle());
+            if(content.length() > 25){
+                content = content.substring(0, Math.min(content.length(), 25));
+                holder.content.setText(content + "...");
+            } else {
+                holder.content.setText(content);
+            }
+
             holder.time.setText(CalendarUtils.formattedTime(LocalTime.parse(journal.getTime())));
             holder.date.setText(CalendarUtils.formattedShortDate(LocalDate.parse(journal.getDate())));
         }

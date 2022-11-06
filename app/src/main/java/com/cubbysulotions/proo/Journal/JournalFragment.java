@@ -71,6 +71,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -127,6 +128,7 @@ public class JournalFragment extends Fragment implements JournalAdapter.OnItemCl
         //camera = view.findViewById(R.id.camera);
 
         dialog = new LoadingDialog(getActivity());
+        ((MainActivity)getActivity()).hideNavigationBar(false);
 
         //((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
         //((MainActivity)getActivity()).setLightStatusBar(true);
@@ -181,6 +183,8 @@ public class JournalFragment extends Fragment implements JournalAdapter.OnItemCl
                             ev = data.getValue(Journal.class);
                             list.add(ev);
                         }
+
+                        Collections.reverse(list);
                         journalAdapter.updateDataSet(list);
 
                         if(journalAdapter.getItemCount() < 1){

@@ -9,6 +9,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,11 @@ import android.widget.ImageView;
 import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import static org.apache.commons.lang3.StringUtils.split;
 
 public class ZoomImageFragment extends Fragment implements BackpressedListener {
 
@@ -54,6 +59,9 @@ public class ZoomImageFragment extends Fragment implements BackpressedListener {
         ((MainActivity)getActivity()).hideNavigationBar(true);
 
         Picasso.get().load(getArguments().getString("photo")).into(photo);
+
+        String url = getArguments().getString("photo");
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -57,6 +57,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -92,7 +93,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
 
     EditText content, title;
     ImageView viewPhoto, editPhoto;
-    Button save, more,edit;
+    Button save, more,edit, update;
     private NavOptions navOptions;
     RelativeLayout backLayout, editMode, viewMode;
     String modeString = "";
@@ -127,28 +128,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
         viewPhoto = view.findViewById(R.id.viewImage);
         viewTitle = view.findViewById(R.id.textTitle);
         viewContent = view.findViewById(R.id.contentText);
-
-        ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
-        ((MainActivity)getActivity()).setLightStatusBar(true);
-        ((MainActivity)getActivity()).hideNavigationBar(false);
-
-        dialog = new LoadingDialog(getActivity());
-
-        modeString = getArguments().getString("save");
-
-        if (modeString.equals("save")) {
-            editMode.setVisibility(View.VISIBLE);
-            save.setVisibility(View.VISIBLE);
-            viewMode.setVisibility(View.GONE);
-            edit.setVisibility(View.GONE);
-            more.setVisibility(View.GONE);
-        } else {
-            viewMode.setVisibility(View.VISIBLE);
-            edit.setVisibility(View.VISIBLE);
-            more.setVisibility(View.VISIBLE);
-            editMode.setVisibility(View.GONE);
-            save.setVisibility(View.GONE);
-        }
+        update = view.findViewById(R.id.btnUpdateEntry);
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -162,8 +142,31 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
         time = LocalTime.now();
         date = LocalDate.now();
 
-        id = getArguments().getString("id");
-        showEntry();
+        ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
+        ((MainActivity)getActivity()).setLightStatusBar(true);
+        ((MainActivity)getActivity()).hideNavigationBar(true);
+
+        dialog = new LoadingDialog(getActivity());
+
+        modeString = getArguments().getString("save");
+
+        if (modeString.equals("save")) {
+            editMode.setVisibility(View.VISIBLE);
+            save.setVisibility(View.VISIBLE);
+            update.setVisibility(View.GONE);
+            viewMode.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+            more.setVisibility(View.GONE);
+        } else {
+            viewMode.setVisibility(View.VISIBLE);
+            edit.setVisibility(View.VISIBLE);
+            more.setVisibility(View.VISIBLE);
+            editMode.setVisibility(View.GONE);
+            save.setVisibility(View.GONE);
+            update.setVisibility(View.GONE);
+            id = getArguments().getString("id");
+            showEntry();
+        }
 
         BounceView.addAnimTo(save);
         BounceView.addAnimTo(edit);
@@ -193,7 +196,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                 toast("Favorite");
                                 return true;
                             case R.id.del:
-                                toast("Delete");
+                                delete();
                                 return true;
                             default:
                                 return false;
@@ -249,7 +252,6 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                 } else if(contentURI == null) {
                     Toast.makeText(getActivity(), "No Image Uploaded", Toast.LENGTH_SHORT).show();
                 } else {
-                    dialog.startLoading("Uploading...");
                     uploadImage();
                 }
             }
@@ -263,6 +265,139 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                 bundle.putString("photo", photoLink);
                 bundle.putString("save", modeString);
                 navController.navigate(R.id.action_addEntryFragment_to_zoomImageFragment, bundle);
+            }
+        });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editMode.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                update.setVisibility(View.VISIBLE);
+                save.setVisibility(View.GONE);
+
+                title.setText(viewTitle.getText().toString());
+                content.setText(viewContent.getText().toString());
+                Picasso.get().load(photoLink).into(editPhoto);
+
+                viewMode.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+                more.setVisibility(View.GONE);
+
+                contentURI = Uri.parse(photoLink);
+            }
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateEntry();
+            }
+        });
+    }
+
+    private void updateEntry() {
+        DatabaseReference reference1 = reference.child(id);
+        try {
+            if(contentURI != null){
+                dialog.startLoading("Uploading...");
+                imageFileName = UUID.randomUUID().toString() + "." +getFileExtension(contentURI);
+                StorageReference ref = storageReference.child(imageFileName);
+                ref.putFile(contentURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        toast("Image Uploaded");
+                        dialog.stopLoading();
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Journal journal = new Journal(
+                                        id,
+                                        title.getText().toString(),
+                                        content.getText().toString(),
+                                        uri.toString(),
+                                        "unlike",
+                                        String.valueOf(date),
+                                        String.valueOf(time)
+                                );
+
+                                reference1.setValue(journal);
+                                viewMode.setVisibility(View.VISIBLE);
+                                edit.setVisibility(View.VISIBLE);
+                                more.setVisibility(View.VISIBLE);
+                                editMode.setVisibility(View.GONE);
+                                save.setVisibility(View.GONE);
+                                update.setVisibility(View.GONE);
+                                id = getArguments().getString("id");
+                                showEntry();
+
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Image not uploaded", Toast.LENGTH_SHORT).show();
+                        dialog.stopLoading();
+                        Log.e("Upload image", "Error ", e);
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    /*
+                    double progress
+                            = (100.0
+                            * taskSnapshot.getBytesTransferred()
+                            / taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage(
+                            "Uploaded "
+                                    + (int)progress + "%"); */
+                    }
+                });
+            } else {
+                toast("No photo included");
+            }
+        } catch (Exception e){
+            Log.e("upload_error", "Message: ", e);
+            toast("Please wait...");
+        }
+    }
+
+    private void delete(){
+        DatabaseReference reference1 = reference.child(id);
+        dialog.startLoading("Deleting...");
+        reference1.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(photoLink);
+                String name = ref.getName();
+
+                StorageReference ref2 = storageReference.child(name);
+
+                ref2.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        dialog.stopLoading();
+                        toast("Deleted");
+                        navController.navigate(R.id.action_addEntryFragment_to_journalFragment, null, navOptions);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.stopLoading();
+                        toast("Something went wrong..");
+                        Log.e("delete_error", "Message: ", e);
+                    }
+                });
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                dialog.stopLoading();
+                toast("Something went wrong");
+                Log.e("delete_error", "Message: ", e);
             }
         });
     }
@@ -352,6 +487,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
     private void uploadImage(){
         try {
             if(contentURI != null){
+                dialog.startLoading("Uploading...");
                 imageFileName = UUID.randomUUID().toString() + "." +getFileExtension(contentURI);
                 StorageReference ref = storageReference.child(imageFileName);
                 ref.putFile(contentURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -386,6 +522,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(getActivity(), "Image not uploaded", Toast.LENGTH_SHORT).show();
+                        dialog.stopLoading();
                         Log.e("Upload image", "Error ", e);
                     }
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -401,6 +538,8 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                     + (int)progress + "%"); */
                     }
                 });
+            } else {
+                toast("No photo included");
             }
         } catch (Exception e){
             Log.e("upload_error", "Message: ", e);

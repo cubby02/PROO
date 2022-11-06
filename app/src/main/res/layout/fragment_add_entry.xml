@@ -43,7 +43,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/ic_three_dots_svgrepo_com"
+        android:background="@drawable/ic_baseline_delete_24"
         android:backgroundTint="@color/green" />
 
     <RelativeLayout
@@ -158,6 +158,24 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUpdateEntry"
+        android:layout_width="130dp"
+        android:layout_height="35dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_btn_3"
+        android:elevation="5dp"
+        android:fontFamily="@font/exo_medium"
+        android:text="Update"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnEdit"
