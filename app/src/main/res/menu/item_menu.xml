@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_edit_date_calendar_icon"
         app:cnb_iconColor="@color/blue"/>
     <item android:id="@+id/nav_todo"
-        android:title="To Do"
+        android:title="Journal"
         android:icon="@drawable/ic_notebook_pen_icon"
         app:cnb_iconColor="@color/blue"/>
 </menu>

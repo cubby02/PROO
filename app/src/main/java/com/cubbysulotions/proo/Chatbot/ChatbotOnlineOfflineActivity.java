@@ -219,12 +219,18 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
          if(!list.isEmpty()){
            //adding the list of ai response to Model class
            for (int i = 0; i <  returnResponse.getQueryResult().getFulfillmentMessagesList().size(); i++){
+             /*
+             if(i == 0){
+               messageList.add(new Message(list.get(0).getText().trim(), 3));
+             } else if (i == returnResponse.getQueryResult().getFulfillmentMessagesList().size() - 1){
+               messageList.add(new Message(list.get(returnResponse.getQueryResult().getFulfillmentMessagesList().size() - 1).getText().trim(), 5));
+             } else {
+               messageList.add(new Message(list.get(i).getText().trim(), 4));
+             } */
              messageList.add(new Message(list.get(i).getText().trim(), 0));
            }
            //populating the choices
-
            populateChoices(list);
-
          } else {
            messageList.add(new Message(botReply.trim(), 0));
            populateChoices(botReply);

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,7 +54,40 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         holder.typing.setVisibility(View.VISIBLE);
         break;
       case 3: //first index
+        holder.userMessage.setVisibility(View.GONE);
+        holder.aiMessage.setVisibility(View.GONE);
+        holder.typing.setVisibility(View.GONE);
+        holder.midContent.setVisibility(View.GONE);
+        holder.lastContent.setVisibility(View.GONE);
+        holder.bot.setVisibility(View.INVISIBLE);
+
         holder.list.setVisibility(View.VISIBLE);
+        holder.firstContent.setVisibility(View.VISIBLE);
+        holder.firstIndex.setText(message);
+        break;
+      case 4: //mid index
+        holder.userMessage.setVisibility(View.GONE);
+        holder.aiMessage.setVisibility(View.GONE);
+        holder.typing.setVisibility(View.GONE);
+        holder.firstContent.setVisibility(View.GONE);
+        holder.lastContent.setVisibility(View.GONE);
+        holder.bot.setVisibility(View.INVISIBLE);
+
+        holder.list.setVisibility(View.VISIBLE);
+        holder.midContent.setVisibility(View.VISIBLE);
+        holder.midIndex.setText(message);
+        break;
+      case 5: //last index
+        holder.userMessage.setVisibility(View.GONE);
+        holder.aiMessage.setVisibility(View.GONE);
+        holder.typing.setVisibility(View.GONE);
+        holder.firstContent.setVisibility(View.GONE);
+        holder.midContent.setVisibility(View.GONE);
+        holder.bot.setVisibility(View.VISIBLE);
+
+        holder.list.setVisibility(View.VISIBLE);
+        holder.lastContent.setVisibility(View.VISIBLE);
+        holder.lastIndex.setText(message);
         break;
     }
 
@@ -74,6 +108,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     RelativeLayout typing;
     RelativeLayout list, firstContent, midContent, lastContent;
     TextView firstIndex, midIndex, lastIndex;
+    ImageView bot, bot2;
 
 
     MyViewHolder(@NonNull View itemView) {
@@ -90,7 +125,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
       firstIndex = itemView.findViewById(R.id.ai_firstIndex);
       midIndex = itemView.findViewById(R.id.ai_midIndex);
       lastIndex = itemView.findViewById(R.id.ai_lastIndex);
-
+      bot = itemView.findViewById(R.id.botIMG3);
+      //bot2 = itemView.findViewById(R.id.botIMG2);
 
     }
   }

@@ -14,6 +14,8 @@ import android.view.Window;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 
+import com.cubbysulotions.proo.Journal.AddEntryFragment;
+import com.cubbysulotions.proo.Journal.ZoomImageFragment;
 import com.cubbysulotions.proo.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new CalendarContainerFragment();
                             break;
                         case R.id.nav_todo:
-                            fragment = new JournalFragment();
+                            fragment = new JournalContainer();
                             break;
                     }
 
@@ -78,5 +80,27 @@ public class MainActivity extends AppCompatActivity {
             view.setSystemUiVisibility(0);
         }
 
+    }
+
+    public void hideNavigationBar(boolean flag){
+        if(flag){
+            navigationView.setVisibility(View.GONE);
+        } else{
+            navigationView.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(AddEntryFragment.backpressedlistener !=null){
+            // accessing the backpressedlistener of fragment
+            AddEntryFragment.backpressedlistener.onBackPressed();
+        } else if (ZoomImageFragment.backpressedlistener != null){
+            ZoomImageFragment.backpressedlistener.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

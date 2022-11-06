@@ -21,4 +21,6 @@ public class WelcomeActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
+
+
 }

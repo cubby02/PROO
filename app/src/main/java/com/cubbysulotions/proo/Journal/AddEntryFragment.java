@@ -1,51 +1,47 @@
-package com.cubbysulotions.proo.MainActivity;
+package com.cubbysulotions.proo.Journal;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
-import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
-import com.cubbysulotions.proo.Journal.Journal;
-import com.cubbysulotions.proo.Journal.JournalAdapter;
+import com.cubbysulotions.proo.BackpressedListener;
+import com.cubbysulotions.proo.Firebase.Users;
+import com.cubbysulotions.proo.LoadingDialog;
+import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -59,34 +55,24 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
-
 import hari.bounceview.BounceView;
-import id.zelory.compressor.Compressor;
-
-import static android.app.Activity.RESULT_OK;
 
 
-public class JournalFragment extends Fragment {
-
+public class AddEntryFragment extends Fragment implements BackpressedListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_journal, container, false);
+        return inflater.inflate(R.layout.fragment_add_entry, container, false);
     }
 
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
@@ -98,17 +84,20 @@ public class JournalFragment extends Fragment {
     private final int REQUEST_WRITE_STORAGE = 2;
     private String currentPhotoPath;
 
-    private Uri contentURI, photoURI;
-
-    private EditText content;
-    private ImageView uploadImage, camera;
-    private Button post;
-    private TextView noPost;
-    private RecyclerView journalRV;
     private String imageFileName;
 
-    JournalAdapter journalAdapter;
-    List<Journal> list;
+    private String id;
+
+    private Uri contentURI, photoURI;
+
+    EditText content, title;
+    ImageView viewPhoto, editPhoto;
+    Button save, more,edit;
+    private NavOptions navOptions;
+    RelativeLayout backLayout, editMode, viewMode;
+    String modeString = "";
+    TextView viewTitle, viewContent;
+    String photoLink = "";
 
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
@@ -116,6 +105,8 @@ public class JournalFragment extends Fragment {
     DatabaseReference reference;
     FirebaseStorage storage;
     StorageReference storageReference;
+    LoadingDialog dialog;
+    NavController navController;
 
     LocalTime time;
     LocalDate date;
@@ -123,23 +114,41 @@ public class JournalFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        content = view.findViewById(R.id.contentTxt);
-        uploadImage = view.findViewById(R.id.imageContainer);
-        post = view.findViewById(R.id.postBtn);
-        noPost = view.findViewById(R.id.txtNoJournal);
-        BounceView.addAnimTo(post);
-        journalRV = view.findViewById(R.id.timeLineRV);
-        camera = view.findViewById(R.id.camera);
+        navController = Navigation.findNavController(view);
+        content = view.findViewById(R.id.editContent);
+        title = view.findViewById(R.id.editTitle);
+        more = view.findViewById(R.id.btnMore);
+        save = view.findViewById(R.id.btnSaveEntry);
+        edit = view.findViewById(R.id.btnEdit);
+        backLayout = view.findViewById(R.id.backLayout);
+        editMode = view.findViewById(R.id.editTexts);
+        viewMode = view.findViewById(R.id.viewTexts);
+        editPhoto = view.findViewById(R.id.editImage);
+        viewPhoto = view.findViewById(R.id.viewImage);
+        viewTitle = view.findViewById(R.id.textTitle);
+        viewContent = view.findViewById(R.id.contentText);
 
         ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
         ((MainActivity)getActivity()).setLightStatusBar(true);
+        ((MainActivity)getActivity()).hideNavigationBar(false);
 
-        list = new ArrayList<>();
-        journalAdapter = new JournalAdapter(list);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        journalRV.setLayoutManager(manager);
-        journalAdapter.setHasStableIds(true);
-        journalRV.setAdapter(journalAdapter);
+        dialog = new LoadingDialog(getActivity());
+
+        modeString = getArguments().getString("save");
+
+        if (modeString.equals("save")) {
+            editMode.setVisibility(View.VISIBLE);
+            save.setVisibility(View.VISIBLE);
+            viewMode.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+            more.setVisibility(View.GONE);
+        } else {
+            viewMode.setVisibility(View.VISIBLE);
+            edit.setVisibility(View.VISIBLE);
+            more.setVisibility(View.VISIBLE);
+            editMode.setVisibility(View.GONE);
+            save.setVisibility(View.GONE);
+        }
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -153,42 +162,127 @@ public class JournalFragment extends Fragment {
         time = LocalTime.now();
         date = LocalDate.now();
 
-        populateTimeline();
+        id = getArguments().getString("id");
+        showEntry();
 
+        BounceView.addAnimTo(save);
+        BounceView.addAnimTo(edit);
+        navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                .setEnterAnim(R.anim.slide_left_to_right)
+                .setExitAnim(R.anim.wait_anim)
+                .setPopEnterAnim(R.anim.wait_anim)
+                .setPopExitAnim(R.anim.slide_l2r_reverse)
+                .build();
 
-        uploadImage.setOnClickListener(new View.OnClickListener() {
+        backLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkGalleryPermissions()){
-                    openGallery();
-                }else{
-                    requestGalleryPermission();
-                }
-                //choosePhoto();
+                navController.navigate(R.id.action_addEntryFragment_to_journalFragment, null, navOptions);
             }
         });
 
-        camera.setOnClickListener(new View.OnClickListener() {
+        more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkCamPermissions()){
-                    takePicture();
-                }else{
-                    requestCamPermission();
-                }
-                //openCamera();
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.fav:
+                                toast("Favorite");
+                                return true;
+                            case R.id.del:
+                                toast("Delete");
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+                popupMenu.inflate(R.menu.add_entry_menu2);
+                popupMenu.show();
             }
         });
 
-        post.setOnClickListener(new View.OnClickListener() {
+        editPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (contentURI == null && content.getText().length() == 0){
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()){
+                            case R.id.upload:
+                                if(checkGalleryPermissions()){
+                                    openGallery();
+                                }else{
+                                    requestGalleryPermission();
+                                }
+                                return true;
+                            case R.id.camera:
+                                if(checkCamPermissions()){
+                                    takePicture();
+                                }else{
+                                    requestCamPermission();
+                                }
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+
+                popupMenu.inflate(R.menu.add_entry_menu);
+                popupMenu.show();
+
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (content.getText().length() == 0){
+                    title.setError("Required");
                     content.setError("Required");
+                } else if(contentURI == null) {
                     Toast.makeText(getActivity(), "No Image Uploaded", Toast.LENGTH_SHORT).show();
                 } else {
+                    dialog.startLoading("Uploading...");
                     uploadImage();
                 }
+            }
+        });
+
+        viewPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", id);
+                bundle.putString("photo", photoLink);
+                bundle.putString("save", modeString);
+                navController.navigate(R.id.action_addEntryFragment_to_zoomImageFragment, bundle);
+            }
+        });
+    }
+
+    private void showEntry() {
+        DatabaseReference reference1 = reference.child(id);
+        reference1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Journal journal = dataSnapshot.getValue(Journal.class);
+                if (journal != null){
+                    photoLink = journal.photo;
+                    viewTitle.setText(journal.title);
+                    viewContent.setText(journal.content);
+                    Picasso.get().load(journal.photo).into(viewPhoto);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -202,12 +296,12 @@ public class JournalFragment extends Fragment {
             if(requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK
                     && data != null && data.getData() != null){
                 contentURI = data.getData();
-                Picasso.get().load(contentURI).into(uploadImage);
+                Picasso.get().load(contentURI).into(editPhoto);
             }
 
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
                 contentURI = photoURI;
-                uploadImage.setImageBitmap(setPic());
+                editPhoto.setImageBitmap(setPic());
                 //Picasso.get().load(contentURI).into(uploadImage);
             }
         } catch (Exception e) {
@@ -255,48 +349,6 @@ public class JournalFragment extends Fragment {
         }
     }
 
-
-    private void populateTimeline() {
-        try {
-            reference.addValueEventListener(new ValueEventListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    try {
-                        Journal ev = new Journal();
-
-                        for(DataSnapshot data : snapshot.getChildren()){
-                            ev = data.getValue(Journal.class);
-                            list.add(ev);
-
-
-                        }
-                        journalAdapter.updateDataSet(list);
-                        journalRV.setHasFixedSize(true);
-
-                        if(journalAdapter.getItemCount() < 1){
-                            noPost.setVisibility(View.VISIBLE);
-                        } else {
-                            noPost.setVisibility(View.GONE);
-                        }
-                    } catch (Exception e){
-                        Log.e("PopulateJournal_Error", "Message: ", e);
-                        toast("Please wait...");
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        } catch (Exception e){
-            Log.e("MainAct Error", "Message: ", e);
-            toast("Please wait...");
-        }
-    }
-
     private void uploadImage(){
         try {
             if(contentURI != null){
@@ -306,23 +358,26 @@ public class JournalFragment extends Fragment {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         toast("Image Uploaded");
+                        dialog.stopLoading();
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String id = reference.push().getKey();
                                 Journal journal = new Journal(
+                                        id,
+                                        title.getText().toString(),
                                         content.getText().toString(),
                                         uri.toString(),
+                                        "unlike",
                                         String.valueOf(date),
-                                        String.valueOf(time),
-                                        "unlike"
+                                        String.valueOf(time)
                                 );
 
                                 reference.child(id).setValue(journal);
-
-                                journalAdapter.clear();
+                                title.setText("");
                                 content.setText("");
-                                uploadImage.setBackgroundResource(R.drawable.ic_baseline_add_photo_alternate_24);
+                                contentURI = null;
+                                editPhoto.setBackgroundResource(R.drawable.splash_bg);
 
                             }
                         });
@@ -351,7 +406,6 @@ public class JournalFragment extends Fragment {
             Log.e("upload_error", "Message: ", e);
             toast("Please wait...");
         }
-
     }
 
     private String getFileExtension(Uri uri){
@@ -454,8 +508,8 @@ public class JournalFragment extends Fragment {
 
     private Bitmap setPic() {
         // Get the dimensions of the View
-        int targetW = uploadImage.getWidth();
-        int targetH = uploadImage.getHeight();
+        int targetW = editPhoto.getWidth();
+        int targetH = editPhoto.getHeight();
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -479,5 +533,25 @@ public class JournalFragment extends Fragment {
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        navController.navigate(R.id.action_addEntryFragment_to_journalFragment, null, navOptions);
+    }
+
+    public static BackpressedListener backpressedlistener;
+
+    @Override
+    public void onPause() {
+        backpressedlistener = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backpressedlistener = this;
     }
 }

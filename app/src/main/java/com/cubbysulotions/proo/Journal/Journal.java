@@ -1,13 +1,26 @@
 package com.cubbysulotions.proo.Journal;
 
 public class Journal {
-    private String content;
-    private String photo;
-    private String date;
-    private String time;
-    private String like;
+    public String id;
+    public String title;
+    public String content;
+    public String photo;
+    public String like;
+    public String date;
+    public String time;
+
 
     public Journal() {
+    }
+
+    public Journal(String id, String title, String content, String photo, String like, String date, String time) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.photo = photo;
+        this.like = like;
+        this.date = date;
+        this.time = time;
     }
 
     public Journal(String content, String photo, String date, String time, String like) {
@@ -16,6 +29,22 @@ public class Journal {
         this.date = date;
         this.time = time;
         this.like = like;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -34,6 +63,14 @@ public class Journal {
         this.photo = photo;
     }
 
+    public String getLike() {
+        return like;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
     public String getDate() {
         return date;
     }
@@ -48,13 +85,5 @@ public class Journal {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getLike() {
-        return like;
-    }
-
-    public void setLike(String like) {
-        this.like = like;
     }
 }

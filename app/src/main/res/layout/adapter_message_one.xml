@@ -58,6 +58,7 @@
       android:id="@+id/aiMessage"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/botIMG2"
         android:layout_width="30dp"
@@ -67,7 +68,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/ai"/>
+        android:background="@drawable/ai" />
 
     <RelativeLayout
         android:layout_centerInParent="true"
@@ -158,22 +159,22 @@
         android:id="@+id/botIMG3"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_alignTop="@id/aiContent_last"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/ai"
-        android:layout_alignTop="@id/aiContent_last"/>
+        android:src="@drawable/ai" />
 
     <RelativeLayout
         android:id="@+id/aiContent_firstIndex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/chat_index_1"
-        android:layout_toRightOf="@id/botIMG3">
+        android:layout_toRightOf="@id/botIMG3"
+        android:background="@drawable/chat_index_1">
 
       <LinearLayout
           android:layout_width="wrap_content"
@@ -198,15 +199,15 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_toRightOf="@id/botIMG3"
         android:id="@+id/aiContent_midIndex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_below="@id/aiContent_firstIndex"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/chat_index_x"
-        android:layout_below="@id/aiContent_firstIndex">
+        android:layout_toRightOf="@id/botIMG3"
+        android:background="@drawable/chat_index_x">
 
       <LinearLayout
           android:layout_width="wrap_content"
@@ -231,16 +232,16 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_toRightOf="@id/botIMG3"
         android:id="@+id/aiContent_last"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_below="@id/aiContent_midIndex"
         android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="2dp"
         android:layout_marginRight="40dp"
-        android:background="@drawable/chat_index_3"
-        android:layout_below="@id/aiContent_midIndex">
+        android:layout_marginBottom="5dp"
+        android:layout_toRightOf="@id/botIMG3"
+        android:background="@drawable/chat_index_3">
 
       <LinearLayout
           android:layout_width="wrap_content"
