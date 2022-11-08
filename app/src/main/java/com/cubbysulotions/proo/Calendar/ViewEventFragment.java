@@ -35,8 +35,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -65,19 +68,8 @@ public class ViewEventFragment extends Fragment {
     FirebaseUser currentUser;
     FirebaseDatabase database;
     DatabaseReference reference;
-
-    LocalTime time;
-
     NavController navController;
-
-    LoadingDialog loadingDialog;
-
-    int hour, minute;
-    int year, months, day;
-
-    int requestCode, notificationID;
-
-    String eventNameTxt;
+    String id, name, content, dateString, timeString, notificationID, requestCode;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -95,6 +87,14 @@ public class ViewEventFragment extends Fragment {
         currentUser = mAuth.getCurrentUser();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference().child("events").child(currentUser.getUid());
+        id = getArguments().getString("id");
+        name = getArguments().getString("name");
+        content = getArguments().getString("content");
+        dateString = getArguments().getString("dateString");
+        timeString = getArguments().getString("timeString");
+        notificationID = getArguments().getString("notificationID");
+        requestCode = getArguments().getString("requestCode");
+        showDetails();
 
         btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +112,6 @@ public class ViewEventFragment extends Fragment {
     }
 
     private void cancel(){
-        String flag = getArguments().getString("flag");
         String date = getArguments().getString("date");
         Bundle bundle = new Bundle();
         bundle.putString("date", date);
@@ -135,17 +134,18 @@ public class ViewEventFragment extends Fragment {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()){
                         case R.id.edit:
-                            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
-                                    .setEnterAnim(R.anim.slide_in_up)
-                                    .setExitAnim(R.anim.wait_anim)
-                                    .setPopEnterAnim(R.anim.wait_anim)
-                                    .setPopExitAnim(R.anim.slide_in_down)
-                                    .build();
-
                             Bundle bundle = new Bundle();
                             String date = getArguments().getString("date");
                             bundle.putString("date", date);
-                            navController.navigate(R.id.action_viewEventFragment_to_editEventFragment, bundle, navOptions);
+                            bundle.putString("id", id);
+                            bundle.putString("name", name);
+                            bundle.putString("content", content);
+                            bundle.putString("dateString",dateString);
+                            bundle.putString("timeString", timeString);
+                            bundle.putString("notificationID", notificationID);
+                            bundle.putString("requestCode", requestCode);
+                            Log.e("Request", "Request Code: " + requestCode);
+                            navController.navigate(R.id.action_viewEventFragment_to_editEventFragment, bundle);
                             return true;
                         case R.id.delete:
                             //delete();
@@ -167,6 +167,27 @@ public class ViewEventFragment extends Fragment {
 
 
 
+    }
+
+    private void showDetails(){
+        DatabaseReference ref1 = reference.child(id);
+        ref1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CalendarEvents calendarEvents = snapshot.getValue(CalendarEvents.class);
+                if (calendarEvents != null){
+                    eventName.setText(calendarEvents.name);
+                    eventContent.setText(calendarEvents.content);
+                    btnDate.setText(CalendarUtils.formattedDate(LocalDate.parse(calendarEvents.dateString)));
+                    btnTime.setText(CalendarUtils.formattedTime(LocalTime.parse(calendarEvents.timeString)));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void toast(String message){

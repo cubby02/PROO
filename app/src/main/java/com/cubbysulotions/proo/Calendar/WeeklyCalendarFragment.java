@@ -73,12 +73,14 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     NavController navController;
     NavOptions navOptions;
 
+    View viewGlobal;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        viewGlobal = view;
         back = view.findViewById(R.id.backCalendar);
         btnPrevious = view.findViewById(R.id.btnPreviousWeekly);
         btnNext = view.findViewById(R.id.btnNextWeekly);
@@ -171,7 +173,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
         //setEventAdapter();
-
+        setHourAdapter(viewGlobal);
     }
 
     private void setEventAdapter() {

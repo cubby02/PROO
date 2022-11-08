@@ -7,6 +7,7 @@ public class DailyEvent {
     private String timeString;
     private String requestCode;
     private String notificationID;
+    private String content;
 
     public DailyEvent(String name, String id, String dateString, String timeString) {
         this.name = name;
@@ -16,6 +17,14 @@ public class DailyEvent {
     }
 
     public DailyEvent(){}
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public String getName() {
         return name;

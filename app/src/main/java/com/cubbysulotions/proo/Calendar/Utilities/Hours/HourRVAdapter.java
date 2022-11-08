@@ -36,10 +36,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
-public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder> implements DailyEventRVAdapter.OnItemClickListener {
+public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder>{
 
         private List<HourEvent> hour;
         private Context context;
@@ -90,7 +91,8 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
         FirebaseUser currentUser;
         FirebaseDatabase database;
         DatabaseReference reference;
-        List<DailyEvent> events = new ArrayList<>();
+        //List<DailyEvent> globalEvents;
+
 
         @Override
         public void onBindViewHolder(@NonNull HourRVAdapter.ViewHolder holder, int position)  {
@@ -105,16 +107,15 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
             holder.txtTimeCell.setText(CalendarUtils.formattedShortTime(hourEvent.time));
 
 
-
+            List<DailyEvent> events = new ArrayList<>();
             GridLayoutManager layoutManager = new GridLayoutManager(holder.ChildRecyclerView.getContext(), 1, GridLayoutManager.VERTICAL, false);
             layoutManager.setInitialPrefetchItemCount(events.size());
 
-            DailyEventRVAdapter childItemAdapter = new DailyEventRVAdapter(events);
+            DailyEventRVAdapter childItemAdapter = new DailyEventRVAdapter(events, date);
             holder.ChildRecyclerView.setLayoutManager(layoutManager);
             holder.ChildRecyclerView.setAdapter(childItemAdapter);
             holder.ChildRecyclerView.setRecycledViewPool(viewPool);
 
-            childItemAdapter.setOnItemClickListener(HourRVAdapter.this);
             reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
@@ -132,12 +133,11 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
                             if(CalendarUtils.formattedShortTime(hourEvent.time).equals(CalendarUtils.formattedShortTime(LocalTime.parse(ev.getTimeString())))){
                                 events.add(ev);
                                 holder.dotted.setVisibility(View.GONE);
-                            } else {
-                                holder.ChildRecyclerView.setVisibility(View.GONE);
                             }
                         }
                     }
                     childItemAdapter.updateDataSet(events);
+                    //Log.d("test", "Time: " + CalendarUtils.formattedShortTime(hourEvent.time) +"Global events: " + globalEvents);
                 }
 
                 @Override
@@ -146,6 +146,8 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
                 }
             });
         }
+
+
 
         private ArrayList<HourEvent> hourEventList() {
             ArrayList<HourEvent> list = new ArrayList<>();
@@ -156,24 +158,5 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
                 list.add(hourEvent);
             }
             return list;
-        }
-
-        @Override
-        public void onItemClick(int position) {
-            DailyEvent clicked = events.get(position);
-            Log.v("CLICKED", "Title: " + clicked.getName());
-
-            NavController navController = Navigation.findNavController(view);
-            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
-                    .setEnterAnim(R.anim.slide_in_up)
-                    .setExitAnim(R.anim.wait_anim)
-                    .setPopEnterAnim(R.anim.wait_anim)
-                    .setPopExitAnim(R.anim.slide_in_down)
-                    .build();
-
-            Bundle bundle = new Bundle();
-            bundle.putString("id", clicked.getId());
-            bundle.putString("date", date);
-            navController.navigate(R.id.action_weeklyCalendarFragment_to_viewEventFragment, bundle, navOptions);
         }
 }

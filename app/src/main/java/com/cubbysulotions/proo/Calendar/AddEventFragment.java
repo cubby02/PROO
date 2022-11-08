@@ -249,7 +249,8 @@ public class AddEventFragment extends Fragment {
                 eventNameTxt = eventName.getText().toString();
 
                 String id = reference.push().getKey();
-                CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt, id,
+                CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt,
+                        id,
                         String.valueOf(selectedDate),
                         String.valueOf(time),
                         String.valueOf(requestCode),

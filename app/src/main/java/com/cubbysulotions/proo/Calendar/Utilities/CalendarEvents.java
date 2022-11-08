@@ -32,15 +32,15 @@ public class CalendarEvents {
         return events;
     }
 
-    private String name;
-    private LocalDate date;
-    private LocalTime time;
-    private String id;
-    private String dateString;
-    private String timeString;
-    private String requestCode;
-    private String notificationID;
-    private String content;
+    public String name;
+    public LocalDate date;
+    public LocalTime time;
+    public String id;
+    public String dateString;
+    public String timeString;
+    public String requestCode;
+    public String notificationID;
+    public String content;
 
     public CalendarEvents(){}
 

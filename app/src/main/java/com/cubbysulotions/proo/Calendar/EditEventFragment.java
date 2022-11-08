@@ -33,8 +33,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -74,11 +77,11 @@ public class EditEventFragment extends Fragment {
     int hour, minute;
     int year, months, day;
 
-    int requestCode, notificationID;
+    //int requestCode, notificationID;
 
     String eventNameTxt;
 
-    private String id;
+    String id, name, content, dateString, timeString, notificationID, requestCode;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -104,10 +107,20 @@ public class EditEventFragment extends Fragment {
         reference = database.getReference().child("events").child(currentUser.getUid());
 
         id = getArguments().getString("id");
+        name = getArguments().getString("name");
+        content = getArguments().getString("content");
+        dateString = getArguments().getString("dateString");
+        timeString = getArguments().getString("timeString");
+        notificationID = getArguments().getString("notificationID");
+        requestCode = getArguments().getString("requestCode");
 
-        Random random = new Random();
-        requestCode = random.nextInt(9999 - 1000 + 1) + 1000;
-        notificationID = random.nextInt(9999 - 1000 + 1) + 1000;
+        Log.e("Request", "Request Code: " + requestCode);
+
+        showDetails();
+
+        //Random random = new Random();
+        //requestCode = random.nextInt(9999 - 1000 + 1) + 1000;
+        //notificationID = random.nextInt(9999 - 1000 + 1) + 1000;
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +193,7 @@ public class EditEventFragment extends Fragment {
         String date = getArguments().getString("date");
         Bundle bundle = new Bundle();
         bundle.putString("date", date);
+        bundle.putString("id", getArguments().getString("id"));
 
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
                 .setEnterAnim(R.anim.slide_in_down_reverse)
@@ -213,13 +227,13 @@ public class EditEventFragment extends Fragment {
 
         //set notification id and text
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-        intent.putExtra("requestCode", requestCode);
-        intent.putExtra("notificationID", notificationID);
+        intent.putExtra("requestCode", Integer.valueOf(requestCode));
+        intent.putExtra("notificationID", Integer.valueOf(notificationID));
         intent.putExtra("todo", eventNameTxt);
 
         //getBroadcast context, requestCode, intent, flags
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getActivity(),
-                requestCode,
+                Integer.valueOf(requestCode),
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
@@ -267,15 +281,10 @@ public class EditEventFragment extends Fragment {
                         setNotification();
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("date", String.valueOf(selectedDate));
-                        switch (flag){
-                            case "FROM_WEEKLY":
-                                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment, bundle);
-                                break;
-                            case "FROM_DAILY":
-                                //navController.navigate(R.id.action_eventEditFragment_to_dailyFragment, bundle);
-                                break;
-                        }
+                        bundle.putString("id", id);
+                        String date = getArguments().getString("date");
+                        bundle.putString("date", date);
+                        navController.navigate(R.id.action_editEventFragment_to_viewEventFragment, bundle);
                     } else {
                         loadingDialog.stopLoading();
                         toast("Error: " + task.getException().getMessage());
@@ -288,10 +297,27 @@ public class EditEventFragment extends Fragment {
             toast("Something went wrong, please try again");
             Log.e("Logout error", "exception", e);
         }
+    }
 
+    private void showDetails(){
+        DatabaseReference ref1 = reference.child(id);
+        ref1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                CalendarEvents calendarEvents = snapshot.getValue(CalendarEvents.class);
+                if (calendarEvents != null){
+                    eventName.setText(calendarEvents.name);
+                    eventContent.setText(calendarEvents.content);
+                    btnDate.setText(CalendarUtils.formattedDate(LocalDate.parse(calendarEvents.dateString)));
+                    btnTime.setText(CalendarUtils.formattedTime(LocalTime.parse(calendarEvents.timeString)));
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-
+            }
+        });
     }
 
     private void toast(String message){
