@@ -16,11 +16,12 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.Chatbot.ChatbotOnlineOfflineActivity;
 import com.cubbysulotions.proo.Chatbot.DBController;
 import com.cubbysulotions.proo.R;
 
-public class ChatbotFragment extends Fragment {
+public class ChatbotFragment extends Fragment implements BackpressedListener {
 
 
     @Override
@@ -80,5 +81,24 @@ public class ChatbotFragment extends Fragment {
 
     public void toast(String msg){
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((MainActivity) getActivity()).home();
+    }
+
+    public static BackpressedListener backpressedlistener;
+
+    @Override
+    public void onPause() {
+        backpressedlistener = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backpressedlistener = this;
     }
 }

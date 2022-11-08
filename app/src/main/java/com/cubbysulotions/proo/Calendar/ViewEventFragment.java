@@ -26,6 +26,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
+import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.Calendar.Utilities.AlarmReceiver;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
@@ -51,7 +52,7 @@ import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.localDate
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
 
-public class ViewEventFragment extends Fragment {
+public class ViewEventFragment extends Fragment implements BackpressedListener {
 
     View view;
 
@@ -192,5 +193,24 @@ public class ViewEventFragment extends Fragment {
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        cancel();
+    }
+
+    public static BackpressedListener backpressedlistener;
+
+    @Override
+    public void onPause() {
+        backpressedlistener = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backpressedlistener = this;
     }
 }

@@ -40,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
 import com.cubbysulotions.proo.Journal.Journal;
@@ -85,7 +86,7 @@ import id.zelory.compressor.Compressor;
 import static android.app.Activity.RESULT_OK;
 
 
-public class JournalFragment extends Fragment implements JournalAdapter.OnItemClickListener {
+public class JournalFragment extends Fragment implements JournalAdapter.OnItemClickListener, BackpressedListener {
 
 
     @Override
@@ -223,5 +224,24 @@ public class JournalFragment extends Fragment implements JournalAdapter.OnItemCl
         bundle.putString("save", "edit");
         bundle.putString("id", journal.getId());
         navController.navigate(R.id.action_journalFragment_to_addEntryFragment, bundle);
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((MainActivity) getActivity()).home();
+    }
+
+    public static BackpressedListener backpressedlistener;
+
+    @Override
+    public void onPause() {
+        backpressedlistener = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backpressedlistener = this;
     }
 }

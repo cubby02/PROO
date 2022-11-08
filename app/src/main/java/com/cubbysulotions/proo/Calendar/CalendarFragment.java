@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.Calendar.Utilities.AllTaskAdapter;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
@@ -54,7 +55,7 @@ import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.daysInMon
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.monthYearFormatter;
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
-public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener {
+public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, BackpressedListener {
 
     View view;
 
@@ -102,6 +103,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
         ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
         ((MainActivity)getActivity()).setLightStatusBar(true);
+        ((MainActivity)getActivity()).hideNavigationBar(false);
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -233,5 +235,24 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((MainActivity) getActivity()).home();
+    }
+
+    public static BackpressedListener backpressedlistener;
+
+    @Override
+    public void onPause() {
+        backpressedlistener = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backpressedlistener = this;
     }
 }

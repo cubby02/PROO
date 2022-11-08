@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.LoadingDialog;
 import com.cubbysulotions.proo.Calendar.Utilities.AlarmReceiver;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
@@ -47,7 +48,7 @@ import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedD
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.localDateToCalendar;
 
 
-public class AddEventFragment extends Fragment {
+public class AddEventFragment extends Fragment implements BackpressedListener {
 
     View view;
 
@@ -286,5 +287,24 @@ public class AddEventFragment extends Fragment {
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        cancel();
+    }
+
+    public static BackpressedListener backpressedlistener;
+
+    @Override
+    public void onPause() {
+        backpressedlistener = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        backpressedlistener = this;
     }
 }

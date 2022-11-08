@@ -11,7 +11,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.cubbysulotions.proo.Calendar.AddEventFragment;
+import com.cubbysulotions.proo.Calendar.CalendarFragment;
+import com.cubbysulotions.proo.Calendar.EditEventFragment;
+import com.cubbysulotions.proo.Calendar.ViewEventFragment;
+import com.cubbysulotions.proo.Calendar.WeeklyCalendarFragment;
 import com.cubbysulotions.proo.Journal.AddEntryFragment;
+import com.cubbysulotions.proo.Journal.JournalFragment;
 import com.cubbysulotions.proo.Journal.ZoomImageFragment;
 import com.cubbysulotions.proo.R;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -26,9 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try{
-            navigationView = findViewById(R.id.bottom_nav);
-            getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomeFragment()).commit();
-            navigationView.setItemSelected(R.id.nav_home, true);
+            home();
 
             navigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
                 @Override
@@ -85,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void home(){
+        navigationView = findViewById(R.id.bottom_nav);
+        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomeFragment()).commit();
+        navigationView.setItemSelected(R.id.nav_home, true);
+    }
+
 
 
     @Override
@@ -95,6 +105,20 @@ public class MainActivity extends AppCompatActivity {
             AddEntryFragment.backpressedlistener.onBackPressed();
         } else if (ZoomImageFragment.backpressedlistener != null){
             ZoomImageFragment.backpressedlistener.onBackPressed();
+        } else if (WeeklyCalendarFragment.backpressedlistener != null){
+            WeeklyCalendarFragment.backpressedlistener.onBackPressed();
+        } else if (AddEventFragment.backpressedlistener != null){
+            AddEventFragment.backpressedlistener.onBackPressed();
+        } else if (ViewEventFragment.backpressedlistener != null){
+            ViewEventFragment.backpressedlistener.onBackPressed();
+        } else if (EditEventFragment.backpressedlistener != null){
+            EditEventFragment.backpressedlistener.onBackPressed();
+        } else if (CalendarFragment.backpressedlistener != null){
+            CalendarFragment.backpressedlistener.onBackPressed();
+        } else if (JournalFragment.backpressedlistener != null){
+            JournalFragment.backpressedlistener.onBackPressed();
+        } else if (ChatbotFragment.backpressedlistener != null){
+            ChatbotFragment.backpressedlistener.onBackPressed();
         } else {
             super.onBackPressed();
         }
