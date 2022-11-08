@@ -16,17 +16,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:layout_marginStart="10dp"
+            <RelativeLayout
+                android:id="@+id/backCalendar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today"
-                android:id="@+id/txtCalendar"
-                android:textSize="30sp"
-                android:fontFamily="@font/exo_bold"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/default_black"/>
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnBackCalendar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/ic_back_svgrepo_com"
+                    android:backgroundTint="@color/green" />
+
+                <TextView
+                    android:id="@+id/journalTXT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/btnBackCalendar"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_toRightOf="@id/btnBackCalendar"
+                    android:fontFamily="@font/exo_bold"
+                    android:text="Calendar"
+                    android:textColor="@color/green"
+                    android:textSize="18sp" />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/btnDaily"
@@ -44,8 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/green"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 app:cardCornerRadius="10dp">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -180,8 +197,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/yellow"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 style="@style/CustomCardViewStyle"
                 android:layout_marginTop="10dp">
                 <RelativeLayout
@@ -218,7 +235,8 @@
                             android:layout_marginEnd="10dp"
                             android:layout_marginBottom="10dp"
                             android:src="@drawable/ic_baseline_add_24"
-                            app:backgroundTint="@color/white"/>
+                            app:backgroundTint="@color/white"
+                            app:tint="@color/default_black"/>
                     </RelativeLayout>
 
 
@@ -227,7 +245,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/banner" />
-
 
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>

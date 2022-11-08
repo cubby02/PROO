@@ -40,16 +40,18 @@ public class CalendarEvents {
     private String timeString;
     private String requestCode;
     private String notificationID;
+    private String content;
 
     public CalendarEvents(){}
 
-    public CalendarEvents(String name, String id, String dateString, String timeString, String requestCode, String notificationID) {
+    public CalendarEvents(String name, String id, String dateString, String timeString, String requestCode, String notificationID, String content) {
         this.name = name;
         this.id = id;
         this.dateString = dateString;
         this.timeString = timeString;
         this.requestCode = requestCode;
         this.notificationID = notificationID;
+        this.content = content;
     }
 
 

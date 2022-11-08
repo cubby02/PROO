@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
+import com.cubbysulotions.proo.Journal.JournalAdapter;
 import com.cubbysulotions.proo.R;
 
 import java.util.List;
@@ -16,6 +17,16 @@ import java.util.List;
 public class DailyEventRVAdapter extends RecyclerView.Adapter<DailyEventRVAdapter.ViewHolder> {
 
         private List<DailyEvent> list;
+
+        private OnItemClickListener mListener;
+
+        public interface OnItemClickListener {
+            void onItemClick(int position);
+        }
+
+        public void setOnItemClickListener(OnItemClickListener listener) {
+            mListener = listener;
+        }
 
 
         public DailyEventRVAdapter(List<DailyEvent> list) {
@@ -28,6 +39,17 @@ public class DailyEventRVAdapter extends RecyclerView.Adapter<DailyEventRVAdapte
             public ViewHolder(final View itemView){
                 super(itemView);
                 eventTxt = itemView.findViewById(R.id.dailyEventCell);
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mListener != null) {
+                            int position = getAdapterPosition();
+                            if (position != RecyclerView.NO_POSITION) {
+                                mListener.onItemClick(position);
+                            }
+                        }
+                    }
+                });
             }
         }
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,6 +110,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         reference = database.getReference().child("events").child(currentUser.getUid());
 
         selectedDate = LocalDate.now();
+
         setMonthView();
         setAlltasks();
 
@@ -161,7 +163,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
             allTaskRecylerView.setLayoutManager(manager);
             allTaskRecylerView.setAdapter(allTaskAdapter);
 
-
             reference.orderByChild("dateString").addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
@@ -202,8 +203,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

@@ -16,8 +16,8 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBAckNotes"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:background="@drawable/ic_back_svgrepo_com"
             android:backgroundTint="@color/green" />
 
@@ -32,7 +32,7 @@
             android:fontFamily="@font/exo_bold"
             android:text="Journal"
             android:textColor="@color/green"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
     </RelativeLayout>
 
 

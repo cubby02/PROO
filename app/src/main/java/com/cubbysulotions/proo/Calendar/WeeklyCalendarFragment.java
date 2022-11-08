@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,9 +65,13 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     private RecyclerView eventList;
     private FloatingActionButton btnNewEvent;
     private FirebaseAuth mAuth;
+    RelativeLayout back;
     FirebaseUser currentUser;
     FirebaseDatabase database;
     DatabaseReference reference;
+
+    NavController navController;
+    NavOptions navOptions;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,6 +79,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        back = view.findViewById(R.id.backCalendar);
         btnPrevious = view.findViewById(R.id.btnPreviousWeekly);
         btnNext = view.findViewById(R.id.btnNextWeekly);
         txtMonth = view.findViewById(R.id.txtMonthWeekly);
@@ -80,7 +87,13 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         calendarRecyclerView = view.findViewById(R.id.calendarDatesRecyclerViewWeekly);
         btnNewEvent = view.findViewById(R.id.addEvent);
         eventList = view.findViewById(R.id.eventList);
-        NavController navController = Navigation.findNavController(view);
+        navController = Navigation.findNavController(view);
+        navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                .setEnterAnim(R.anim.slide_left_to_right)
+                .setExitAnim(R.anim.wait_anim)
+                .setPopEnterAnim(R.anim.wait_anim)
+                .setPopExitAnim(R.anim.slide_l2r_reverse)
+                .build();
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -91,12 +104,20 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         String date = getArguments().getString("date");
         selectedDate = LocalDate.parse(date);
         setWeekVIew();
+        setHourAdapter(view);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedDate = selectedDate.plusWeeks(1);
                 setWeekVIew();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.action_weeklyCalendarFragment_to_calendarFragment, null, navOptions);
             }
         });
 
@@ -113,10 +134,17 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
             public void onClick(View view) {
                 String flag = "FROM_WEEKLY";
 
+                NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                        .setEnterAnim(R.anim.slide_in_up)
+                        .setExitAnim(R.anim.wait_anim)
+                        .setPopEnterAnim(R.anim.wait_anim)
+                        .setPopExitAnim(R.anim.slide_in_down)
+                        .build();
+
                 Bundle bundle = new Bundle();
                 bundle.putString("flag", flag);
                 bundle.putString("date", String.valueOf(selectedDate));
-                navController.navigate(R.id.action_weeklyCalendarFragment_to_eventEditFragment, bundle);
+                navController.navigate(R.id.action_weeklyCalendarFragment_to_eventEditFragment, bundle, navOptions);
             }
         });
 
@@ -143,7 +171,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
         //setEventAdapter();
-        setHourAdapter();
+
     }
 
     private void setEventAdapter() {
@@ -180,9 +208,9 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         }
     }
 
-    private void setHourAdapter() {
+    private void setHourAdapter(View view) {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
-        HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate);
+        HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate, view, String.valueOf(selectedDate));
         eventList.setLayoutManager(layoutManager);
         eventList.setAdapter(adapter);
     }

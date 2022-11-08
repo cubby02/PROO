@@ -45,7 +45,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/adapter_message_one.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/ai_msg_item.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/btn_choice_item.xml" value="0.33" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_cells.xml" value="0.33" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_cells.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_view_selector.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/calendar_view_selector_dialog.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/chatbot_layout.xml" value="0.18611111111111112" />
@@ -58,14 +58,16 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_calendar_container.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_chatbot.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_daily.xml" value="0.25" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_event_edit.xml" value="0.18" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_event_add.xml" value="0.18611111111111112" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_event_edit.xml" value="0.33" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_event_view.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_journal.xml" value="0.22" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_journal_container.xml" value="0.1736111111111111" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_sign_in.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_todo.xml" value="0.1736111111111111" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_weekly_calendar.xml" value="0.22" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_weekly_calendar.xml" value="0.3901098901098901" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_welcome_screen.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/fragment_zoom_image.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/layout/hour_cell.xml" value="0.5" />
@@ -77,6 +79,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/menu/add_entry_menu.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/menu/add_entry_menu2.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/menu/item_menu.xml" value="0.18611111111111112" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/PROO/app/src/main/res/menu/view_details_menu.xml" value="0.18611111111111112" />
       </map>
     </option>
   </component>

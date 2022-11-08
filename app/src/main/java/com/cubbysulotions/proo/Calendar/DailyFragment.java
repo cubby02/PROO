@@ -99,7 +99,7 @@ public class DailyFragment extends Fragment {
                 String flag = "FROM_DAILY";
                 Bundle bundle = new Bundle();
                 bundle.putString("flag", flag);
-                navController.navigate(R.id.action_dailyFragment_to_eventEditFragment, bundle);
+                //navController.navigate(R.id.action_dailyFragment_to_eventEditFragment, bundle);
             }
         });
     }
@@ -123,9 +123,9 @@ public class DailyFragment extends Fragment {
 
     private void setHourAdapter() {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
-        HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate);
-        eventList.setLayoutManager(layoutManager);
-        eventList.setAdapter(adapter);
+        //HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate, );
+        //eventList.setLayoutManager(layoutManager);
+        //eventList.setAdapter(adapter);
     }
 
     private ArrayList<HourEvent> hourEventList() {

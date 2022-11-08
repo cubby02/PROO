@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Calendar.EditEventFragment"
+    tools:context=".Calendar.ViewEventFragment"
     android:id="@+id/newEvent"
     android:background="@color/white">
 
@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             android:padding="10dp">
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEditCancel"
+                android:id="@+id/btnCancelDetails"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/ic_baseline_close_24"
@@ -30,7 +30,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit Event"
+                android:text="Details"
                 android:fontFamily="@font/exo_medium"
                 android:textSize="23sp"
                 android:textColor="@color/default_black"
@@ -39,29 +39,27 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"/>
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEditSaveEvent"
+                android:id="@+id/btnDetailsMore"
                 android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_baseline_check_24"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_three_dots_svgrepo_com"
                 android:textAllCaps="false"
                 android:textColor="@color/welcome"
                 android:backgroundTint="@color/green"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"/>
         </LinearLayout>
 
 
-        <EditText
-            android:id="@+id/editEventName"
+        <TextView
+            android:id="@+id/eventNameTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:background="@null"
-            android:ems="10"
             android:fontFamily="@font/lato_bold"
-            android:hint="Title"
-            android:inputType="textPersonName"
+            android:text="Title"
             android:padding="10dp"
             android:textColor="@color/default_black"
             android:textSize="25sp"/>
@@ -90,7 +88,7 @@
                 android:layout_marginEnd="5dp"/>
 
             <Button
-                android:id="@+id/btnEditDate"
+                android:id="@+id/btnDateTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -100,7 +98,8 @@
                 android:textAllCaps="false"
                 android:background="@android:color/transparent"
                 android:textColor="@color/green"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:fontFamily="@font/lato_bold"/>
         </LinearLayout>
 
         <LinearLayout
@@ -117,7 +116,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="5dp"/>
             <Button
-                android:id="@+id/btnEditTime"
+                android:id="@+id/btnTimeTxt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -127,7 +126,8 @@
                 android:textAllCaps="false"
                 android:background="@android:color/transparent"
                 android:textColor="@color/green"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:fontFamily="@font/lato_bold"/>
         </LinearLayout>
 
         <ImageView
@@ -137,8 +137,8 @@
             android:layout_height="1dp"
             android:background="#D6D6D6" />
 
-        <EditText
-            android:id="@+id/editEventContent"
+        <TextView
+            android:id="@+id/eventContentTxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -148,8 +148,7 @@
             android:ems="10"
             android:fontFamily="@font/lato_regular"
             android:gravity="top"
-            android:hint="Description"
-            android:inputType="textMultiLine"
+            android:text="Description"
             android:padding="10dp"
             android:textColor="@color/default_black" />
     </LinearLayout>

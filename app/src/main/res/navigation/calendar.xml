@@ -12,10 +12,11 @@
         tools:layout="@layout/fragment_calendar" >
         <action
             android:id="@+id/action_calendarFragment_to_weeklyCalendarFragment"
-            app:destination="@id/weeklyCalendarFragment" />
-        <action
-            android:id="@+id/action_calendarFragment_to_eventEditFragment"
-            app:destination="@id/eventEditFragment" />
+            app:destination="@id/weeklyCalendarFragment"
+            app:enterAnim="@anim/slide_right_to_left"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_r2l_reverse" />
     </fragment>
     <fragment
         android:id="@+id/weeklyCalendarFragment"
@@ -24,39 +25,50 @@
         tools:layout="@layout/fragment_weekly_calendar" >
         <action
             android:id="@+id/action_weeklyCalendarFragment_to_eventEditFragment"
-            app:destination="@id/eventEditFragment" />
+            app:destination="@id/eventEditFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_in_down" />
         <action
             android:id="@+id/action_weeklyCalendarFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
+            app:destination="@id/calendarFragment"
+            app:enterAnim="@anim/slide_left_to_right"
+            app:popExitAnim="@anim/slide_l2r_reverse" />
         <action
-            android:id="@+id/action_weeklyCalendarFragment_to_dailyFragment"
-            app:destination="@id/dailyFragment" />
+            android:id="@+id/action_weeklyCalendarFragment_to_viewEventFragment"
+            app:destination="@id/viewEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventEditFragment"
-        android:name="com.cubbysulotions.proo.Calendar.EventEditFragment"
+        android:name="com.cubbysulotions.proo.Calendar.AddEventFragment"
+        android:label="fragment_event_edit"
+        tools:layout="@layout/fragment_event_add" >
+        <action
+            android:id="@+id/action_eventEditFragment_to_weeklyCalendarFragment"
+            app:destination="@id/weeklyCalendarFragment"
+            app:enterAnim="@anim/slide_left_to_right"
+            app:popExitAnim="@anim/slide_l2r_reverse" />
+    </fragment>
+    <fragment
+        android:id="@+id/editEventFragment"
+        android:name="com.cubbysulotions.proo.Calendar.EditEventFragment"
         android:label="fragment_event_edit"
         tools:layout="@layout/fragment_event_edit" >
         <action
-            android:id="@+id/action_eventEditFragment_to_weeklyCalendarFragment"
-            app:destination="@id/weeklyCalendarFragment" />
-        <action
-            android:id="@+id/action_eventEditFragment_to_dailyFragment"
-            app:destination="@id/dailyFragment" />
-        <action
-            android:id="@+id/action_eventEditFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
+            android:id="@+id/action_editEventFragment_to_viewEventFragment"
+            app:destination="@id/viewEventFragment" />
     </fragment>
     <fragment
-        android:id="@+id/dailyFragment"
-        android:name="com.cubbysulotions.proo.Calendar.DailyFragment"
-        android:label="fragment_daily"
-        tools:layout="@layout/fragment_daily" >
+        android:id="@+id/viewEventFragment"
+        android:name="com.cubbysulotions.proo.Calendar.ViewEventFragment"
+        android:label="fragment_event_view"
+        tools:layout="@layout/fragment_event_view" >
         <action
-            android:id="@+id/action_dailyFragment_to_weeklyCalendarFragment"
+            android:id="@+id/action_viewEventFragment_to_weeklyCalendarFragment"
             app:destination="@id/weeklyCalendarFragment" />
         <action
-            android:id="@+id/action_dailyFragment_to_eventEditFragment"
-            app:destination="@id/eventEditFragment" />
+            android:id="@+id/action_viewEventFragment_to_editEventFragment"
+            app:destination="@id/editEventFragment" />
     </fragment>
 </navigation>

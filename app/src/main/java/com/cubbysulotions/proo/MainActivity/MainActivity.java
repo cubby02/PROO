@@ -1,6 +1,5 @@
 package com.cubbysulotions.proo.MainActivity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -8,19 +7,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowInsetsController;
 import android.view.WindowManager;
 
 import com.cubbysulotions.proo.Journal.AddEntryFragment;
 import com.cubbysulotions.proo.Journal.ZoomImageFragment;
 import com.cubbysulotions.proo.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-
-import kotlin.Suppress;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
     @Override
     public void onBackPressed() {

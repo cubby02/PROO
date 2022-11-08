@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Calendar.EditEventFragment"
+    tools:context=".Calendar.AddEventFragment"
     android:id="@+id/newEvent"
     android:background="@color/white">
 
@@ -19,7 +19,7 @@
             android:orientation="horizontal"
             android:padding="10dp">
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEditCancel"
+                android:id="@+id/btnCancel"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/ic_baseline_close_24"
@@ -30,7 +30,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit Event"
+                android:text="New Event"
                 android:fontFamily="@font/exo_medium"
                 android:textSize="23sp"
                 android:textColor="@color/default_black"
@@ -39,7 +39,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"/>
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEditSaveEvent"
+                android:id="@+id/btnSaveEvent"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/ic_baseline_check_24"
@@ -51,7 +51,7 @@
 
 
         <EditText
-            android:id="@+id/editEventName"
+            android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -90,7 +90,7 @@
                 android:layout_marginEnd="5dp"/>
 
             <Button
-                android:id="@+id/btnEditDate"
+                android:id="@+id/btnDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -117,7 +117,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="5dp"/>
             <Button
-                android:id="@+id/btnEditTime"
+                android:id="@+id/btnTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -138,7 +138,7 @@
             android:background="#D6D6D6" />
 
         <EditText
-            android:id="@+id/editEventContent"
+            android:id="@+id/eventContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import android.util.Log;
@@ -46,7 +47,7 @@ import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedD
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.localDateToCalendar;
 
 
-public class EventEditFragment extends Fragment {
+public class AddEventFragment extends Fragment {
 
     View view;
 
@@ -54,12 +55,12 @@ public class EventEditFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return view = inflater.inflate(R.layout.fragment_event_edit, container, false);
+        return view = inflater.inflate(R.layout.fragment_event_add, container, false);
     }
 
     private Button btnSave, btnCancel, btnDate, btnTime;
     private TextView eventDate, eventTime;
-    private EditText eventName;
+    private EditText eventName, eventContent;
     private FirebaseAuth mAuth;
     FirebaseUser currentUser;
     FirebaseDatabase database;
@@ -85,9 +86,8 @@ public class EventEditFragment extends Fragment {
         btnCancel = view.findViewById(R.id.btnCancel);
         btnDate = view.findViewById(R.id.btnDate);
         btnTime = view.findViewById(R.id.btnTime);
-        eventDate = view.findViewById(R.id.eventDate);
-        eventTime = view.findViewById(R.id.eventTime);
         eventName = view.findViewById(R.id.eventName);
+        eventContent = view.findViewById(R.id.eventContent);
         navController = Navigation.findNavController(view);
 
         time = LocalTime.now();
@@ -177,17 +177,15 @@ public class EventEditFragment extends Fragment {
         String date = getArguments().getString("date");
         Bundle bundle = new Bundle();
         bundle.putString("date", date);
-        switch (flag){
-            case "FROM_WEEKLY":
-                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment, bundle);
-                break;
-            case "FROM_DAILY":
-                navController.navigate(R.id.action_eventEditFragment_to_dailyFragment);
-                break;
-            case "FROM_MONTH":
-                navController.navigate(R.id.action_eventEditFragment_to_calendarFragment);
-                break;
-        }
+
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                .setEnterAnim(R.anim.slide_in_down_reverse)
+                .setExitAnim(R.anim.wait_anim)
+                .setPopEnterAnim(R.anim.wait_anim)
+                .setPopExitAnim(R.anim.slide_in_down)
+                .build();
+
+        navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment, bundle, navOptions);
     }
 
     private void setNotification(){
@@ -251,7 +249,12 @@ public class EventEditFragment extends Fragment {
                 eventNameTxt = eventName.getText().toString();
 
                 String id = reference.push().getKey();
-                CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt, id, String.valueOf(selectedDate), String.valueOf(time), String.valueOf(requestCode), String.valueOf(notificationID));
+                CalendarEvents newEventToDB = new CalendarEvents(eventNameTxt, id,
+                        String.valueOf(selectedDate),
+                        String.valueOf(time),
+                        String.valueOf(requestCode),
+                        String.valueOf(notificationID),
+                        eventContent.getText().toString());
 
 
             reference.child(id).setValue(newEventToDB).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -261,16 +264,7 @@ public class EventEditFragment extends Fragment {
                         loadingDialog.stopLoading();
                         setNotification();
 
-                        Bundle bundle = new Bundle();
-                        bundle.putString("date", String.valueOf(selectedDate));
-                        switch (flag){
-                            case "FROM_WEEKLY":
-                                navController.navigate(R.id.action_eventEditFragment_to_weeklyCalendarFragment, bundle);
-                                break;
-                            case "FROM_DAILY":
-                                navController.navigate(R.id.action_eventEditFragment_to_dailyFragment, bundle);
-                                break;
-                        }
+                        cancel();
                     } else {
                         loadingDialog.stopLoading();
                         toast("Error: " + task.getException().getMessage());

@@ -2,14 +2,20 @@ package com.cubbysulotions.proo.Calendar.Utilities.Hours;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,34 +39,38 @@ import java.util.List;
 
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
-public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder> {
+public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder> implements DailyEventRVAdapter.OnItemClickListener {
 
         private List<HourEvent> hour;
         private Context context;
         private String monthDate;
+        private View view;
+        private String date;
 
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+        private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
-        public HourRVAdapter(Context context, List<HourEvent> hour, String monthDate) {
-            this.context = context;
-            this.hour = hour;
-            this.monthDate = monthDate;
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-
-
-            public TextView txtTimeCell;
-            private RecyclerView ChildRecyclerView;
-            private ImageView dotted;
-            public ViewHolder(final View itemView){
-                super(itemView);
-
-                txtTimeCell = itemView.findViewById(R.id.txtTimeCell);
-                ChildRecyclerView = itemView.findViewById(R.id.dailyEventListRecyclerView);
-                dotted = itemView.findViewById(R.id.dottedLine);
+            public HourRVAdapter(Context context, List<HourEvent> hour, String monthDate, View view, String date) {
+                this.context = context;
+                this.hour = hour;
+                this.monthDate = monthDate;
+                this.view = view;
+                this.date = date;
             }
-        }
+
+            public class ViewHolder extends RecyclerView.ViewHolder {
+
+
+                public TextView txtTimeCell;
+                private RecyclerView ChildRecyclerView;
+                private ImageView dotted;
+                public ViewHolder(final View itemView){
+                    super(itemView);
+
+                    txtTimeCell = itemView.findViewById(R.id.txtTimeCell);
+                    ChildRecyclerView = itemView.findViewById(R.id.dailyEventListRecyclerView);
+                    dotted = itemView.findViewById(R.id.dottedLine);
+                }
+            }
 
         @Override
         public int getItemCount() {
@@ -76,13 +86,14 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
             return vh;
         }
 
-    private FirebaseAuth mAuth;
-    FirebaseUser currentUser;
-    FirebaseDatabase database;
-    DatabaseReference reference;
+        private FirebaseAuth mAuth;
+        FirebaseUser currentUser;
+        FirebaseDatabase database;
+        DatabaseReference reference;
+        List<DailyEvent> events = new ArrayList<>();
 
         @Override
-        public void onBindViewHolder(@NonNull HourRVAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull HourRVAdapter.ViewHolder holder, int position)  {
 
             //Initialize firebase
             mAuth = FirebaseAuth.getInstance();
@@ -94,7 +105,7 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
             holder.txtTimeCell.setText(CalendarUtils.formattedShortTime(hourEvent.time));
 
 
-            List<DailyEvent> events = new ArrayList<>();
+
             GridLayoutManager layoutManager = new GridLayoutManager(holder.ChildRecyclerView.getContext(), 1, GridLayoutManager.VERTICAL, false);
             layoutManager.setInitialPrefetchItemCount(events.size());
 
@@ -103,9 +114,7 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
             holder.ChildRecyclerView.setAdapter(childItemAdapter);
             holder.ChildRecyclerView.setRecycledViewPool(viewPool);
 
-
-
-
+            childItemAdapter.setOnItemClickListener(HourRVAdapter.this);
             reference.orderByChild("timeString").addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
@@ -119,17 +128,16 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
 
                     for(DataSnapshot data : snapshot.getChildren()){
                         ev = data.getValue(DailyEvent.class);
-
                         if(monthDate.equals(CalendarUtils.monthDayFormatter(LocalDate.parse(ev.getDateString())))){
                             if(CalendarUtils.formattedShortTime(hourEvent.time).equals(CalendarUtils.formattedShortTime(LocalTime.parse(ev.getTimeString())))){
                                 events.add(ev);
                                 holder.dotted.setVisibility(View.GONE);
+                            } else {
+                                holder.ChildRecyclerView.setVisibility(View.GONE);
                             }
                         }
                     }
-
                     childItemAdapter.updateDataSet(events);
-
                 }
 
                 @Override
@@ -139,14 +147,33 @@ public class HourRVAdapter extends RecyclerView.Adapter<HourRVAdapter.ViewHolder
             });
         }
 
-    private ArrayList<HourEvent> hourEventList() {
-        ArrayList<HourEvent> list = new ArrayList<>();
-        for (int hour = 1; hour < 24; hour++){
-            LocalTime time = LocalTime.of(hour, 0);
-            ArrayList<CalendarEvents> events = CalendarEvents.eventsForDateandTime(selectedDate, time);
-            HourEvent hourEvent = new HourEvent(time, events);
-            list.add(hourEvent);
+        private ArrayList<HourEvent> hourEventList() {
+            ArrayList<HourEvent> list = new ArrayList<>();
+            for (int hour = 1; hour < 24; hour++){
+                LocalTime time = LocalTime.of(hour, 0);
+                ArrayList<CalendarEvents> events = CalendarEvents.eventsForDateandTime(selectedDate, time);
+                HourEvent hourEvent = new HourEvent(time, events);
+                list.add(hourEvent);
+            }
+            return list;
         }
-        return list;
-    }
+
+        @Override
+        public void onItemClick(int position) {
+            DailyEvent clicked = events.get(position);
+            Log.v("CLICKED", "Title: " + clicked.getName());
+
+            NavController navController = Navigation.findNavController(view);
+            NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                    .setEnterAnim(R.anim.slide_in_up)
+                    .setExitAnim(R.anim.wait_anim)
+                    .setPopEnterAnim(R.anim.wait_anim)
+                    .setPopExitAnim(R.anim.slide_in_down)
+                    .build();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("id", clicked.getId());
+            bundle.putString("date", date);
+            navController.navigate(R.id.action_weeklyCalendarFragment_to_viewEventFragment, bundle, navOptions);
+        }
 }
