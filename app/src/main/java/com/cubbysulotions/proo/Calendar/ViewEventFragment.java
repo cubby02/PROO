@@ -2,8 +2,10 @@ package com.cubbysulotions.proo.Calendar;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
@@ -33,6 +36,8 @@ import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.LoadingDialog;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +46,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -70,7 +77,11 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
     FirebaseDatabase database;
     DatabaseReference reference;
     NavController navController;
-    String id, name, content, dateString, timeString, notificationID, requestCode;
+    String id, name, content, dateString, timeString, notificationID, requestCode, notifIDFromDB;
+    LoadingDialog dialog;
+
+    int hour, minute;
+    int year, months, day;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -82,6 +93,7 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
         eventName = view.findViewById(R.id.eventNameTxt);
         eventContent = view.findViewById(R.id.eventContentTxt);
         navController = Navigation.findNavController(view);
+        dialog = new LoadingDialog(getActivity());
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -149,7 +161,7 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
                             navController.navigate(R.id.action_viewEventFragment_to_editEventFragment, bundle);
                             return true;
                         case R.id.delete:
-                            //delete();
+                            delete();
                             return true;
                         default:
                             return false;
@@ -177,10 +189,12 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 CalendarEvents calendarEvents = snapshot.getValue(CalendarEvents.class);
                 if (calendarEvents != null){
+                    notifIDFromDB = calendarEvents.notificationID;
                     eventName.setText(calendarEvents.name);
                     eventContent.setText(calendarEvents.content);
                     btnDate.setText(CalendarUtils.formattedDate(LocalDate.parse(calendarEvents.dateString)));
                     btnTime.setText(CalendarUtils.formattedTime(LocalTime.parse(calendarEvents.timeString)));
+
                 }
             }
 
@@ -189,6 +203,73 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
 
             }
         });
+    }
+
+    private void delete(){
+        DatabaseReference reference1 = reference.child(id);
+        dialog.startLoading("Deleting...");
+        reference1.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                dialog.stopLoading();
+                toast("Deleted");
+                cancelNotification();
+                cancel();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                dialog.stopLoading();
+                toast("Something went wrong");
+                Log.e("delete_error", "Message: ", e);
+            }
+        });
+    }
+
+    private void cancelNotification(){
+        LocalDate selectedDate = LocalDate.parse(dateString);
+        LocalTime time = LocalTime.parse(timeString);
+
+        if (months == 0 && day == 0 && year == 0){
+            year = localDateToCalendar(selectedDate).get(Calendar.YEAR);
+            months = localDateToCalendar(selectedDate).get(Calendar.MONTH);
+            day = localDateToCalendar(selectedDate).get(Calendar.DAY_OF_MONTH);
+        }
+
+        if (hour == 0 && minute == 0){
+            hour = time.getHour();
+            minute = time.getMinute();
+        }
+
+        //set notification id and text
+        Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+        intent.putExtra("requestCode", requestCode);
+        intent.putExtra("notificationID", notificationID);
+        intent.putExtra("todo", content);
+        intent.putExtra("delete", "delete");
+
+        //getBroadcast context, requestCode, intent, flags
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getActivity(),
+                Integer.valueOf(requestCode),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+
+        //Create time
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, hour);
+        startTime.set(Calendar.MINUTE, minute);
+        startTime.set(Calendar.SECOND, 0);
+
+        startTime.set(Calendar.MONTH, months);
+        startTime.set(Calendar.DAY_OF_MONTH, day);
+        startTime.set(Calendar.YEAR, year);
+
+        long alarmStart = startTime.getTimeInMillis();
+
+        //set alarm
+        //set type millisecond, intent
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmStart, alarmIntent);
     }
 
     private void toast(String message){

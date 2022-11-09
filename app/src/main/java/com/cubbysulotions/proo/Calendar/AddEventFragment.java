@@ -202,18 +202,12 @@ public class AddEventFragment extends Fragment implements BackpressedListener {
             minute = time.getMinute();
         }
 
-        //toast("Month: " + months + ", day: " + day);
-        //toast(hour + ":" + minute);
-
-        //Calendar startTime = Calendar.getInstance();
-        //selectedDate = startTime.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-
         //set notification id and text
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         intent.putExtra("requestCode", requestCode);
         intent.putExtra("notificationID", notificationID);
         intent.putExtra("todo", eventNameTxt);
+        intent.putExtra("delete", "null");
 
         //getBroadcast context, requestCode, intent, flags
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getActivity(),

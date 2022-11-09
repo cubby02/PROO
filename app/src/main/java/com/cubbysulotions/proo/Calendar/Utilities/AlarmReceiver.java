@@ -14,6 +14,8 @@ import com.cubbysulotions.proo.SplashScreen;
 import java.util.Random;
 
 public class AlarmReceiver extends BroadcastReceiver {
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //Get id and message from intent
@@ -21,6 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         int notificationID = intent.getIntExtra("notificationID", 0);
         int requestCode = intent.getIntExtra("requestCode", 0);
         String message = intent.getStringExtra("todo");
+        String del = intent.getStringExtra("delete");
 
         //When notification is tapped call main activity
         Intent main = new Intent(context, SplashScreen.class);
@@ -45,6 +48,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //notify
 
-        notificationManager.notify(notificationID, builder.build());
+        if(del.equals("delete")){
+            notificationManager.cancel(notificationID);
+        } else {
+            notificationManager.notify(notificationID, builder.build());
+        }
     }
 }

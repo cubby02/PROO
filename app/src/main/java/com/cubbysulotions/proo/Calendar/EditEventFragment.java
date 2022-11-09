@@ -231,6 +231,7 @@ public class EditEventFragment extends Fragment implements BackpressedListener {
         intent.putExtra("requestCode", Integer.valueOf(requestCode));
         intent.putExtra("notificationID", Integer.valueOf(notificationID));
         intent.putExtra("todo", eventNameTxt);
+        intent.putExtra("delete", "null");
 
         //getBroadcast context, requestCode, intent, flags
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getActivity(),
