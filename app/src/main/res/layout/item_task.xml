@@ -85,7 +85,7 @@
                 android:singleLine="true"
                 android:textSize="20sp"
                 android:layout_weight="1"
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtAgendaTitle"
                 android:textColor="@color/default_black"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/lato_bold"/>

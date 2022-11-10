@@ -1,10 +1,15 @@
 package com.cubbysulotions.proo.Chatbot;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cubbysulotions.proo.Chatbot.OptionVersion.ChoiceAdapter;
 import com.cubbysulotions.proo.Chatbot.OptionVersion.Choices;
+import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -61,6 +67,8 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
   private String uuid = UUID.randomUUID().toString();
   private String TAG = "mainactivity";
 
+  RelativeLayout back;
+
   DBController dbController;
 
   String message ="";
@@ -76,6 +84,8 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
     btnSend = findViewById(R.id.sendBtn);
     choiceRV = findViewById(R.id.selectionRecyclerView);
     topicLists = findViewById(R.id.topics);
+
+    back = findViewById(R.id.backChatbot);
 
     chatAdapter = new ChatAdapter(messageList, this);
     LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -112,6 +122,9 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
 
     choiceAdapter.setOnItemClickListener(ChatbotOnlineOfflineActivity.this);
 
+    updateStatusBarColor("#FFFFFFFF");
+    setLightStatusBar(true);
+
     btnSend.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         message = editMessage.getText().toString();
@@ -125,6 +138,13 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
         } else {
           Toast.makeText(ChatbotOnlineOfflineActivity.this, "Please enter text!", Toast.LENGTH_SHORT).show();
         }
+      }
+    });
+
+    back.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        finish();
       }
     });
 
@@ -158,9 +178,6 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
           case "Pregnant women's weight":
             messageList.add(new Message("I want to know more about recommended pregnancy weight", 1));
             sendMessageToBot("i want to know more about my weight during my " + selectedMonth);
-            break;
-          case "Go Home":
-            finish();
             break;
           default:
             //messageList.add(new Message(clickedItem.getChoice(), 1));
@@ -343,15 +360,35 @@ public class ChatbotOnlineOfflineActivity extends AppCompatActivity implements B
       case "Yes":
         messageList.add(new Message("Yes", 1));
         sendMessageToBot("yes. i want to know more about weight");
+        chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
         break;
       default:
         messageList.add(new Message(clickedItem.getChoice(), 1));
         sendMessageToBot(clickedItem.getChoice());
+        chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
         break;
     }
-    chatView.scrollToPosition(chatAdapter.getItemCount() - 1);
+
     messageList.add(new Message("", 2));
     chatView.getAdapter().notifyDataSetChanged();
+  }
+
+  public void updateStatusBarColor(String color){// Color must be in hexadecimal fromat
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      Window window = getWindow();
+      window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      window.setStatusBarColor(Color.parseColor(color));
+    }
+  }
+
+  public void setLightStatusBar(boolean flag){
+    View view = getWindow().getDecorView();
+    if(flag){
+      view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    } else {
+      view.setSystemUiVisibility(0);
+    }
+
   }
 
   private void toast(String message){

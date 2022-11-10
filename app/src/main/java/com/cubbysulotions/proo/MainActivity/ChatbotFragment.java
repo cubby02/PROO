@@ -20,6 +20,8 @@ import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.Chatbot.ChatbotOnlineOfflineActivity;
 import com.cubbysulotions.proo.Chatbot.DBController;
 import com.cubbysulotions.proo.R;
+import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
+import com.skydoves.powerspinner.PowerSpinnerView;
 
 public class ChatbotFragment extends Fragment implements BackpressedListener {
 
@@ -32,7 +34,7 @@ public class ChatbotFragment extends Fragment implements BackpressedListener {
     }
 
     private Button start;
-    private Spinner month;
+    private PowerSpinnerView month;
     private String selectedMonth="";
     DBController db;
 
@@ -40,28 +42,28 @@ public class ChatbotFragment extends Fragment implements BackpressedListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         start = view.findViewById(R.id.btnStartChat);
-        month = view.findViewById(R.id.month);
+        month = view.findViewById(R.id.monthSpinner);
         db = new DBController(getActivity());
 
         ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
         ((MainActivity)getActivity()).setLightStatusBar(true);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.months, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        month.setAdapter(adapter);
 
         String savedMonth = db.getSavedMonth();
 
         if(savedMonth != null){
-            int pos = adapter.getPosition(savedMonth);
-            month.setSelection(pos);
+            month.setPreferenceName(savedMonth);
         }
+
+        month.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
+            @Override public void onItemSelected(int oldIndex, @Nullable String oldItem, int newIndex, String newItem) {
+                selectedMonth = newItem;
+            }
+        });
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedMonth = month.getSelectedItem().toString();
                 add(selectedMonth);
                 Intent chat = new Intent(getActivity(), ChatbotOnlineOfflineActivity.class);
                 chat.putExtra("month", selectedMonth);

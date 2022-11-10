@@ -30,7 +30,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.ViewHold
             public TextView day, date, month, time, description;
             public ViewHolder(final View itemView){
                 super(itemView);
-                title = itemView.findViewById(R.id.txtTitle);
+                title = itemView.findViewById(R.id.txtAgendaTitle);
                 day = itemView.findViewById(R.id.day);
                 date = itemView.findViewById(R.id.date);
                 month = itemView.findViewById(R.id.month);

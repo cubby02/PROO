@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,10 @@ import com.cubbysulotions.proo.Journal.ZoomImageFragment;
 import com.cubbysulotions.proo.R;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import java.lang.ref.WeakReference;
+
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     ChipNavigationBar navigationView;
 
@@ -37,8 +41,9 @@ public class MainActivity extends AppCompatActivity {
             navigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(int i) {
+                    //SetHome setHome = new SetHome(MainActivity.this);
+                    //setHome.execute(i);
                     Fragment fragment = null;
-
                     switch (i){
                         case R.id.nav_home:
                             fragment = new HomeFragment();
@@ -53,12 +58,11 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new JournalContainer();
                             break;
                     }
-
                     getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
                 }
             });
         } catch (Exception e){
-            Log.e("MainAct Error", "Message: ", e);
+            Log.e(TAG, "onCreate: ", e);
         }
     }
 
@@ -95,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setItemSelected(R.id.nav_home, true);
     }
 
-
-
     @Override
     public void onBackPressed() {
 
@@ -121,6 +123,42 @@ public class MainActivity extends AppCompatActivity {
             ChatbotFragment.backpressedlistener.onBackPressed();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private static class SetHome extends AsyncTask<Integer, Void, Fragment>{
+        private WeakReference<MainActivity> mainActivityWeakReference;
+
+        public SetHome(MainActivity mainActivity){
+            mainActivityWeakReference = new WeakReference<MainActivity>(mainActivity);
+        }
+
+        @Override
+        protected Fragment doInBackground(Integer... integers) {
+            Fragment fragment = null;
+            switch (integers[0]){
+                case R.id.nav_home:
+                    fragment = new HomeFragment();
+                    break;
+                case R.id.nav_chat:
+                    fragment = new ChatbotFragment();
+                    break;
+                case R.id.nav_calendar:
+                    fragment = new CalendarContainerFragment();
+                    break;
+                case R.id.nav_todo:
+                    fragment = new JournalContainer();
+                    break;
+            }
+            return fragment;
+        }
+
+        @Override
+        protected void onPostExecute(Fragment fragment) {
+            super.onPostExecute(fragment);
+            MainActivity mainActivity = mainActivityWeakReference.get();
+            if (mainActivity == null) {return;}
+            mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
         }
     }
 }

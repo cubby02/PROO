@@ -104,9 +104,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
                         }
                     }
                 }
-
-
-
             }
 
             @Override

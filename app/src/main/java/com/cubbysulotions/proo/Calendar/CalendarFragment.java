@@ -1,6 +1,7 @@
 package com.cubbysulotions.proo.Calendar;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -9,7 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,11 +33,15 @@ import android.widget.Toast;
 
 import com.cubbysulotions.proo.BackpressedListener;
 import com.cubbysulotions.proo.Calendar.Utilities.AllTaskAdapter;
+import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
+import com.cubbysulotions.proo.Calendar.Utilities.Hours.HourEvent;
+import com.cubbysulotions.proo.Calendar.Utilities.Hours.HourRVAdapter;
 import com.cubbysulotions.proo.Calendar.Utilities.MainCalendar.CalendarAdapter;
 import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,9 +51,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.ref.WeakReference;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,6 +89,11 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     FirebaseUser currentUser;
     FirebaseDatabase database;
     DatabaseReference reference;
+    CalendarAdapter calendarAdapter;
+    RecyclerView.LayoutManager layoutManager;
+    String monthDate;
+    NavOptions navOptions;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -100,10 +115,17 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         calendarLayout = view.findViewById(R.id.calendarLayoutView);
         allTaskLayout = view.findViewById(R.id.allTasksLayout);
         allTaskRecylerView = view.findViewById(R.id.allTasksRV);
+        navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                .setEnterAnim(R.anim.slide_right_to_left)
+                .setExitAnim(R.anim.wait_anim)
+                .setPopEnterAnim(R.anim.wait_anim)
+                .setPopExitAnim(R.anim.slide_r2l_reverse)
+                .build();
 
         ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
         ((MainActivity)getActivity()).setLightStatusBar(true);
         ((MainActivity)getActivity()).hideNavigationBar(false);
+
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -113,7 +135,14 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
 
         selectedDate = LocalDate.now();
 
-        setMonthView();
+        txtMonth.setText(monthYearFormatter(selectedDate));
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setMonthView();
+            }
+        }, 330);
         setAlltasks();
 
         allTaskTxtLayout.setOnClickListener(new View.OnClickListener() {
@@ -194,17 +223,18 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         }
     }
 
-    String monthDate;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
-        monthDate = CalendarUtils.monthDayFormatter(selectedDate);
         txtMonth.setText(monthYearFormatter(selectedDate));
+        monthDate = CalendarUtils.monthDayFormatter(selectedDate);
         ArrayList<LocalDate> daysInMonth = daysInMonthArray();
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this, monthDate);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
+        calendarAdapter = new CalendarAdapter(daysInMonth, this, monthDate);
+        layoutManager = new GridLayoutManager(getActivity(), 7);
+
+        SetMonthName setMonth = new SetMonthName(CalendarFragment.this);
+        setMonth.execute(selectedDate);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -219,8 +249,6 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         setMonthView();
     }
 
-
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onItemClick(int position, LocalDate date) {
@@ -229,7 +257,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
             setMonthView();
             Bundle bundle = new Bundle();
             bundle.putString("date", String.valueOf(selectedDate));
-            navController.navigate(R.id.action_calendarFragment_to_weeklyCalendarFragment, bundle);
+            navController.navigate(R.id.action_calendarFragment_to_weeklyCalendarFragment, bundle, navOptions);
         }
     }
 
@@ -254,5 +282,41 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     public void onResume() {
         super.onResume();
         backpressedlistener = this;
+    }
+
+    private static class SetMonthName extends AsyncTask<LocalDate, Void, String>{
+        private WeakReference<CalendarFragment> calendarFragmentWeakReference;
+
+        public SetMonthName(CalendarFragment context) {
+            calendarFragmentWeakReference = new WeakReference<CalendarFragment>(context);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            CalendarFragment calendarFragment = calendarFragmentWeakReference.get();
+            if (calendarFragment == null) {return;}
+            //calendarFragment.calendarRecyclerView.setVisibility(View.GONE);
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected String doInBackground(LocalDate... localDates) {
+            String monthDate = CalendarUtils.monthDayFormatter(selectedDate);
+            return monthDate;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            CalendarFragment calendarFragment = calendarFragmentWeakReference.get();
+            if (calendarFragment == null) {return;}
+
+            //calendarFragment.calendarRecyclerView.setVisibility(View.VISIBLE);
+            calendarFragment.calendarRecyclerView.setLayoutManager(calendarFragment.layoutManager);
+            calendarFragment.calendarRecyclerView.setAdapter(calendarFragment.calendarAdapter);
+        }
     }
 }

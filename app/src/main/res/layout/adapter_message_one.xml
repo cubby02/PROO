@@ -10,6 +10,7 @@
       android:id="@+id/userMessage"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/botIMG"
         android:layout_width="30dp"
@@ -19,37 +20,40 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/man" />
+        android:background="@drawable/man"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/botIMG"
+        android:layout_marginStart="50dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/chat_user">
+        android:background="@drawable/chat_user"
+        android:layout_alignParentEnd="true">
+
       <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:orientation="horizontal"
           android:padding="3dp">
+
         <TextView
-            android:textSize="15sp"
-            android:fontFamily="@font/lato_regular"
+            android:id="@+id/message_send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pregnancy Topics"
-            android:id="@+id/message_send"
-            android:textColor="@color/white"
+            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_gravity="center"/>
+            android:fontFamily="@font/lato_regular"
+            android:text="@string/symptoms"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
       </LinearLayout>
     </RelativeLayout>
   </RelativeLayout>
@@ -68,7 +72,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/ai" />
+        android:background="@drawable/ai_headshot" />
 
     <RelativeLayout
         android:layout_centerInParent="true"
@@ -119,7 +123,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/ai" />
+        android:background="@drawable/ai_headshot" />
 
     <RelativeLayout
         android:layout_centerInParent="true"

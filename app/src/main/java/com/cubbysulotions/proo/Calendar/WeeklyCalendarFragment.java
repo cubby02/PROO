@@ -1,5 +1,6 @@
 package com.cubbysulotions.proo.Calendar;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.ref.WeakReference;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -78,6 +81,16 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
 
     View viewGlobal;
 
+    String monthDate;
+    ArrayList<LocalDate> days;
+
+    CalendarAdapter calendarAdapter;
+    RecyclerView.LayoutManager layoutManagerWeek;
+
+    RecyclerView.LayoutManager layoutManagerHour;
+    HourRVAdapter adapter;
+
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -110,14 +123,22 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
 
         String date = getArguments().getString("date");
         selectedDate = LocalDate.parse(date);
-        setWeekVIew();
-        setHourAdapter(view);
+
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setWeekVIew(view);
+            }
+        }, 330);
+
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectedDate = selectedDate.plusWeeks(1);
-                setWeekVIew();
+                setWeekVIew(view);
             }
         });
 
@@ -132,7 +153,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
             @Override
             public void onClick(View view) {
                 selectedDate = selectedDate.minusWeeks(1);
-                setWeekVIew();
+                setWeekVIew(view);
             }
         });
 
@@ -165,20 +186,21 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     }
 
 
-    String monthDate;
-    ArrayList<LocalDate> days;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setWeekVIew() {
+    private void setWeekVIew(View view) {
         monthDate = CalendarUtils.monthDayFormatter(selectedDate);
         txtMonth.setText(monthYearFormatter(selectedDate));
         days = daysInWeekArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(days, this, monthDate);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-        //setEventAdapter();
-        setHourAdapter(viewGlobal);
+        calendarAdapter = new CalendarAdapter(days, this, monthDate);
+        layoutManagerWeek = new GridLayoutManager(getActivity(), 7);
+
+        layoutManagerHour = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
+        adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate, view, String.valueOf(selectedDate));
+
+        SetWeekHour setWeekHour = new SetWeekHour(WeeklyCalendarFragment.this);
+        setWeekHour.execute();
     }
 
     private void setEventAdapter() {
@@ -215,14 +237,6 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
         }
     }
 
-    private void setHourAdapter(View view) {
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1, GridLayoutManager.VERTICAL, false);
-        HourRVAdapter adapter = new HourRVAdapter(getActivity(), hourEventList(), monthDate, view, String.valueOf(selectedDate));
-        eventList.setLayoutManager(layoutManager);
-        eventList.setAdapter(adapter);
-        eventList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-    }
-
     private ArrayList<HourEvent> hourEventList() {
         ArrayList<HourEvent> list = new ArrayList<>();
         for (int hour = 0; hour < 24; hour++){
@@ -238,7 +252,7 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     @Override
     public void onItemClick(int position, LocalDate date) {
         selectedDate = date;
-        setWeekVIew();
+        setWeekVIew(viewGlobal);
     }
 
 
@@ -264,5 +278,30 @@ public class WeeklyCalendarFragment extends Fragment implements CalendarAdapter.
     public void onResume() {
         super.onResume();
         backpressedlistener = this;
+    }
+
+    private static class SetWeekHour extends AsyncTask<Void, Void, Void>{
+        private WeakReference<WeeklyCalendarFragment> weakReference;
+
+        public SetWeekHour(WeeklyCalendarFragment context){
+            weakReference = new WeakReference<WeeklyCalendarFragment>(context);
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            WeeklyCalendarFragment weeklyCalendarFragment = weakReference.get();
+            if (weeklyCalendarFragment == null) return;
+
+            weeklyCalendarFragment.calendarRecyclerView.setLayoutManager(weeklyCalendarFragment.layoutManagerWeek);
+            weeklyCalendarFragment.calendarRecyclerView.setAdapter(weeklyCalendarFragment.calendarAdapter);
+            weeklyCalendarFragment.eventList.setLayoutManager(weeklyCalendarFragment.layoutManagerHour);
+            weeklyCalendarFragment.eventList.setAdapter(weeklyCalendarFragment.adapter);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
     }
 }
