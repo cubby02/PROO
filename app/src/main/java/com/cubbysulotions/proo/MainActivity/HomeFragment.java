@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.cubbysulotions.proo.Calendar.Utilities.AllTaskAdapter;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
+import com.cubbysulotions.proo.Chatbot.DBController;
 import com.cubbysulotions.proo.Journal.Journal;
 import com.cubbysulotions.proo.LoginSignupScreen.WelcomeActivity;
 import com.cubbysulotions.proo.Firebase.Users;
@@ -44,6 +45,7 @@ import java.lang.ref.WeakReference;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,6 +73,7 @@ public class HomeFragment extends Fragment {
     public FirebaseAuth mAuth;
     public FirebaseUser currentUser;
     public FirebaseDatabase database;
+    DBController db;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -93,6 +96,19 @@ public class HomeFragment extends Fragment {
             mAuth = FirebaseAuth.getInstance();
             currentUser = mAuth.getCurrentUser();
             database = FirebaseDatabase.getInstance();
+            db = new DBController(getActivity());
+
+            DBController db = new DBController(getActivity());
+            String savedMonth = db.getSavedMonth();
+
+            if(savedMonth.equals("")){
+                boolean add = db.saveMonth("First month");
+                if(add){
+                    Log.e(TAG, "onCreate: " + "Saved month");
+                } else {
+                    Log.e(TAG, "onCreate: " + "Failed");
+                }
+            }
 
             ((MainActivity)getActivity()).updateStatusBarColor("#FFB787CB");
             ((MainActivity)getActivity()).setLightStatusBar(false);
@@ -105,6 +121,7 @@ public class HomeFragment extends Fragment {
             });
 
             firstName();
+            setTrismester();
             setAgenda();
             setMoments();
 
@@ -113,6 +130,54 @@ public class HomeFragment extends Fragment {
             toast("Something went wrong, please try again");
             Log.e("Main Screen error", "exception", e);
         }
+    }
+
+    private void setTrismester() {
+        String savedMonth = db.getSavedMonth();
+        switch (savedMonth){
+            case "First month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Hi there! You are on your first month of pregnancy, I hope you're doing fine.");
+                break;
+            case "Second month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("You're doing great! Congrats on your second month of pregnancy.");
+                break;
+            case "Third month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Keep up the good work, here comes the third month of pregnancy!");
+                break;
+            case "Fourth month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("You're now on second trimester, fourth month here it comes!");
+                break;
+            case "Fifth month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Keep up the good work, continue what your doctor advice you to do. Fifth month here it comes!");
+                break;
+            case "Sixth month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Congrats on your sixth months of pregnancy!");
+                break;
+            case "Seventh month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Whoa! Look where you are right now, you're on your third trimester.");
+                break;
+            case "Eighth month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Hello there! You are on your eighth month of pregnancy. I hope you're doing fine.");
+                break;
+            case "Ninth month":
+                txtTrimester.setText(savedMonth);
+                txtTrimesterContent.setText("Ready for your little one? Your due is around the corner, be more careful now.");
+                break;
+            default:
+                txtTrimester.setText("First Month");
+                txtTrimesterContent.setText("Hi there! You are on your first month of pregnancy, I hope you're doing fine.");
+                break;
+        }
+
+
     }
 
     private void setAgenda() {

@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardUseCompatPadding="true"
-    app:cardElevation="5dp"
-    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="5dp"
     app:contentPadding="10dp"
     android:layout_height="150dp">
 
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:orientation="vertical">
 
@@ -90,11 +90,6 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/lato_bold"/>
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/options"
-                    android:background="@drawable/ic_baseline_more_horiz_24"/>
 
             </LinearLayout>
 
@@ -110,6 +105,11 @@
                 android:fontFamily="@font/lato_regular"
                 android:layout_marginTop="4dp"/>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -120,9 +120,11 @@
                 android:textSize="13sp"
                 android:textColor="@color/default_black"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/lato_regular"/>
+                android:fontFamily="@font/lato_regular"
+                android:layout_gravity="end"/>
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"

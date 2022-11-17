@@ -17,6 +17,9 @@
             app:exitAnim="@anim/wait_anim"
             app:popEnterAnim="@anim/wait_anim"
             app:popExitAnim="@anim/slide_r2l_reverse" />
+        <action
+            android:id="@+id/action_calendarFragment_to_viewEventFragment"
+            app:destination="@id/viewEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/weeklyCalendarFragment"
@@ -70,5 +73,8 @@
         <action
             android:id="@+id/action_viewEventFragment_to_editEventFragment"
             app:destination="@id/editEventFragment" />
+        <action
+            android:id="@+id/action_viewEventFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
 </navigation>

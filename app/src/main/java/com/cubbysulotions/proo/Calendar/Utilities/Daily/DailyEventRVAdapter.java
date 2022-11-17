@@ -99,7 +99,7 @@ public class DailyEventRVAdapter extends RecyclerView.Adapter<DailyEventRVAdapte
                     bundle.putString("timeString", event.getTimeString());
                     bundle.putString("notificationID", event.getNotificationID());
                     bundle.putString("requestCode", event.getRequestCode());
-
+                    bundle.putString("source", "weekly");
                     bundle.putString("date", date);
 
                     navController.navigate(R.id.action_weeklyCalendarFragment_to_viewEventFragment, bundle, navOptions);

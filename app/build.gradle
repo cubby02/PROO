@@ -87,5 +87,9 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
+    def emojiVersion = "1.0.0-alpha03"
+    implementation "androidx.emoji2:emoji2:$emojiVersion"
+    implementation "androidx.emoji2:emoji2-views:$emojiVersion"
 }
 

@@ -12,9 +12,9 @@
     <string name="next"><![CDATA[->]]></string>
     <string name="prev"><![CDATA[<-]]></string>
     <string name="reminder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed velit lorem, semper et sagittis pretium, lobortis sit amet ligula. Morbi dapibus neque a tortor aliquam, nec porta ligula semper. Proin tincidunt malesuada dolor sit amet imperdiet. Nam mattis eros tempus enim cursus, a tempor tellus porta. Phasellus suscipit enim eget posuere lobortis. Vestibulum eu diam nulla. Etiam ultrices diam diam, venenatis semper ipsum aliquet fringilla. Cras ultricies tincidunt lacus ut vehicula.</string>
-    <string name="welcome">You can ask me about the basic knowledge in pregnancy but first let me know first you current month.</string>
-    <string name="reminder_final">Hello there! Reminder before chatting with me.</string>
-    <string name="one_reminder">I CANNOT diagnose any illness.\n\nI CANNOT prescribe any medication.\n\nYour medical provider should do that.</string>
+    <string name="welcome">✅ You can ask me about the basic knowledge in pregnancy but first let me know first you current month.</string>
+    <string name="reminder_final">Hello there! Reminder before chatting with me. ☺</string>
+    <string name="one_reminder">🚫 I CANNOT diagnose any illness.\n\n🚫 I CANNOT prescribe any medication.\n\n❗ Your medical provider should do that.</string>
     <string name="symptoms">I want to know about my pregnancy symptoms</string>
     <string name="baby">I want to know about my baby\'s development</string>
     <string name="expect">I want to know what happens during prenatal visits</string>

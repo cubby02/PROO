@@ -17,6 +17,7 @@ import com.cubbysulotions.proo.Calendar.CalendarFragment;
 import com.cubbysulotions.proo.Calendar.EditEventFragment;
 import com.cubbysulotions.proo.Calendar.ViewEventFragment;
 import com.cubbysulotions.proo.Calendar.WeeklyCalendarFragment;
+import com.cubbysulotions.proo.Chatbot.DBController;
 import com.cubbysulotions.proo.Journal.AddEntryFragment;
 import com.cubbysulotions.proo.Journal.JournalFragment;
 import com.cubbysulotions.proo.Journal.ZoomImageFragment;
@@ -38,12 +39,16 @@ public class MainActivity extends AppCompatActivity {
         try{
             home();
 
+
+
             navigationView.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(int i) {
                     //SetHome setHome = new SetHome(MainActivity.this);
                     //setHome.execute(i);
                     Fragment fragment = null;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("details", "calendar");
                     switch (i){
                         case R.id.nav_home:
                             fragment = new HomeFragment();
@@ -58,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                             fragment = new JournalContainer();
                             break;
                     }
+                    assert fragment != null;
+                    fragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
                 }
             });

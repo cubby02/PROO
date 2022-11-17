@@ -65,7 +65,9 @@ import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.daysInMon
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.monthYearFormatter;
 import static com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils.selectedDate;
 
-public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, BackpressedListener {
+public class CalendarFragment extends Fragment implements CalendarAdapter.OnItemListener, BackpressedListener, AllTaskAdapter.OnItemClickListener {
+
+    private static final String TAG = "CalendarFragment";
 
     View view;
 
@@ -93,6 +95,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     RecyclerView.LayoutManager layoutManager;
     String monthDate;
     NavOptions navOptions;
+    List<DailyEvent> events;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -126,6 +129,14 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         ((MainActivity)getActivity()).setLightStatusBar(true);
         ((MainActivity)getActivity()).hideNavigationBar(false);
 
+        try{
+            String source = getArguments().getString("details");
+            if(source.equals("details")) {
+                viewTasks();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onViewCreated: ", e);
+        }
 
         //Initialize firebase
         mAuth = FirebaseAuth.getInstance();
@@ -148,13 +159,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         allTaskTxtLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                allTaskTxtLayout.setBackgroundResource(R.drawable.bg_btn_2);
-                allTaskTxtLayout.setTextColor(Color.WHITE);
-                calendarTxtLayout.setBackground(null);
-                calendarTxtLayout.setTextColor(Color.parseColor("#323232"));
-                calendarLayout.setVisibility(View.GONE);
-                allTaskLayout.setVisibility(View.VISIBLE);
-
+                viewTasks();
             }
         });
 
@@ -186,13 +191,23 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         });
     }
 
+    private void viewTasks(){
+        allTaskTxtLayout.setBackgroundResource(R.drawable.bg_btn_2);
+        allTaskTxtLayout.setTextColor(Color.WHITE);
+        calendarTxtLayout.setBackground(null);
+        calendarTxtLayout.setTextColor(Color.parseColor("#323232"));
+        calendarLayout.setVisibility(View.GONE);
+        allTaskLayout.setVisibility(View.VISIBLE);
+    }
+
     private void setAlltasks() {
         try{
-            List<DailyEvent> events = new ArrayList<>();
+            events = new ArrayList<>();
             AllTaskAdapter allTaskAdapter = new AllTaskAdapter(events);
             LinearLayoutManager manager = new LinearLayoutManager(getActivity());
             allTaskRecylerView.setLayoutManager(manager);
             allTaskRecylerView.setAdapter(allTaskAdapter);
+            allTaskAdapter.setOnItemClickListener(CalendarFragment.this);
 
             reference.orderByChild("dateString").addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -282,6 +297,32 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     public void onResume() {
         super.onResume();
         backpressedlistener = this;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        DailyEvent event = events.get(position);
+        NavController navController = Navigation.findNavController(view);
+        NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
+                .setEnterAnim(R.anim.slide_in_up)
+                .setExitAnim(R.anim.wait_anim)
+                .setPopEnterAnim(R.anim.wait_anim)
+                .setPopExitAnim(R.anim.slide_in_down)
+                .build();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("id", event.getId());
+        bundle.putString("name", event.getName());
+        bundle.putString("content", event.getContent());
+        bundle.putString("dateString", event.getDateString());
+        bundle.putString("timeString", event.getTimeString());
+        bundle.putString("notificationID", event.getNotificationID());
+        bundle.putString("requestCode", event.getRequestCode());
+        bundle.putString("source", "task");
+        bundle.putString("date", String.valueOf(selectedDate));
+
+        navController.navigate(R.id.action_calendarFragment_to_viewEventFragment, bundle, navOptions);
+
     }
 
     private static class SetMonthName extends AsyncTask<LocalDate, Void, String>{

@@ -48,12 +48,9 @@ public class ChatbotFragment extends Fragment implements BackpressedListener {
         ((MainActivity)getActivity()).updateStatusBarColor("#FFFFFFFF");
         ((MainActivity)getActivity()).setLightStatusBar(true);
 
-
         String savedMonth = db.getSavedMonth();
 
-        if(savedMonth != null){
-            month.setPreferenceName(savedMonth);
-        }
+        month.setPreferenceName(savedMonth);
 
         month.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener<String>() {
             @Override public void onItemSelected(int oldIndex, @Nullable String oldItem, int newIndex, String newItem) {
@@ -73,9 +70,9 @@ public class ChatbotFragment extends Fragment implements BackpressedListener {
     }
 
     public void add(String month){
-        boolean add = db.saveMonth(month);
+        boolean add = db.update(month);
         if(add){
-            toast("Month saved");
+            toast("Month updated");
         } else {
             toast("Failed!");
         }

@@ -34,6 +34,7 @@ import com.cubbysulotions.proo.Calendar.Utilities.AlarmReceiver;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarEvents;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.LoadingDialog;
+import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -83,9 +84,12 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
     int hour, minute;
     int year, months, day;
 
+    String source ="";
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).hideNavigationBar(true);
         btnMore = view.findViewById(R.id.btnDetailsMore);
         btnCancel = view.findViewById(R.id.btnCancelDetails);
         btnDate = view.findViewById(R.id.btnDateTxt);
@@ -107,7 +111,9 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
         timeString = getArguments().getString("timeString");
         notificationID = getArguments().getString("notificationID");
         requestCode = getArguments().getString("requestCode");
+        source = getArguments().getString("source");
         showDetails();
+
 
         btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +134,7 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
         String date = getArguments().getString("date");
         Bundle bundle = new Bundle();
         bundle.putString("date", date);
-
+        bundle.putString("details", "details");
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
                 .setEnterAnim(R.anim.slide_in_down_reverse)
                 .setExitAnim(R.anim.wait_anim)
@@ -136,7 +142,13 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
                 .setPopExitAnim(R.anim.slide_in_down)
                 .build();
 
-        navController.navigate(R.id.action_viewEventFragment_to_weeklyCalendarFragment, bundle, navOptions);
+        if(source.equals("task")){
+            navController.navigate(R.id.action_viewEventFragment_to_calendarFragment, bundle, navOptions);
+        } else {
+            navController.navigate(R.id.action_viewEventFragment_to_weeklyCalendarFragment, bundle, navOptions);
+        }
+
+
     }
 
     private void moreMenu(View view) {

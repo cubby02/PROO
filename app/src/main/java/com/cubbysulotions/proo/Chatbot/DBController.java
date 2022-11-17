@@ -82,7 +82,7 @@ public class DBController extends SQLiteOpenHelper {
     @SuppressLint("Range")
     public String getSavedMonth(){
         db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT month FROM tblMonth", null);
+        Cursor c = db.rawQuery("SELECT month FROM tblMonth WHERE ID='1'", null);
         String output = "";
 
         if(c.moveToFirst()){
@@ -101,6 +101,19 @@ public class DBController extends SQLiteOpenHelper {
         long insert = db.insert("tblMonth", null, contentValues);
 
         if (insert == -1){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean update(String month){
+        db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("month", month); //These Fields should be your String values of actual column names
+        long update = db.update("tblMonth", cv, "ID = ?", new String[]{"1"});
+
+        if (update == -1){
             return false;
         } else {
             return true;
