@@ -115,6 +115,11 @@ public class EditEventFragment extends Fragment implements BackpressedListener {
         notificationID = getArguments().getString("notificationID");
         requestCode = getArguments().getString("requestCode");
 
+        time = LocalTime.parse(timeString);
+        selectedDate = LocalDate.parse(dateString);
+        btnDate.setText(CalendarUtils.formattedDate(LocalDate.parse(dateString)));
+        btnTime.setText(CalendarUtils.formattedTime(LocalTime.parse(timeString)));
+
         Log.e("Request", "Request Code: " + requestCode);
 
         showDetails();
@@ -194,6 +199,7 @@ public class EditEventFragment extends Fragment implements BackpressedListener {
         String date = getArguments().getString("date");
         Bundle bundle = new Bundle();
         bundle.putString("date", date);
+        bundle.putString("source", "weekly");
         bundle.putString("id", getArguments().getString("id"));
 
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
@@ -230,7 +236,8 @@ public class EditEventFragment extends Fragment implements BackpressedListener {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         intent.putExtra("requestCode", Integer.valueOf(requestCode));
         intent.putExtra("notificationID", Integer.valueOf(notificationID));
-        intent.putExtra("todo", eventNameTxt);
+        intent.putExtra("title", eventNameTxt);
+        intent.putExtra("content", eventContent.getText().toString());
         intent.putExtra("delete", "null");
 
         //getBroadcast context, requestCode, intent, flags
@@ -286,6 +293,7 @@ public class EditEventFragment extends Fragment implements BackpressedListener {
                         bundle.putString("id", id);
                         String date = getArguments().getString("date");
                         bundle.putString("date", date);
+                        bundle.putString("source", "weekly");
                         navController.navigate(R.id.action_editEventFragment_to_viewEventFragment, bundle);
                     } else {
                         loadingDialog.stopLoading();

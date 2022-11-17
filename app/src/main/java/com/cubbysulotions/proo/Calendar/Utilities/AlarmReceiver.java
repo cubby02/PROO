@@ -22,7 +22,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         int notificationID = intent.getIntExtra("notificationID", 0);
         int requestCode = intent.getIntExtra("requestCode", 0);
-        String message = intent.getStringExtra("todo");
+        String title = intent.getStringExtra("title");
+        String message = intent.getStringExtra("content");
+        if(message.equals("")){
+            message = "No content";
+        }
         String del = intent.getStringExtra("delete");
 
         //When notification is tapped call main activity
@@ -38,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //Prepare notification
         Notification.Builder builder = new Notification.Builder(context);
         builder.setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("It's Time")
+                .setContentTitle(title)
                 .setContentText(message)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

@@ -206,7 +206,8 @@ public class AddEventFragment extends Fragment implements BackpressedListener {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         intent.putExtra("requestCode", requestCode);
         intent.putExtra("notificationID", notificationID);
-        intent.putExtra("todo", eventNameTxt);
+        intent.putExtra("title", eventNameTxt);
+        intent.putExtra("content", eventContent.getText().toString());
         intent.putExtra("delete", "null");
 
         //getBroadcast context, requestCode, intent, flags

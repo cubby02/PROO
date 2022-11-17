@@ -169,6 +169,7 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
                             bundle.putString("timeString", timeString);
                             bundle.putString("notificationID", notificationID);
                             bundle.putString("requestCode", requestCode);
+                            bundle.putString("source", "weekly");
                             Log.e("Request", "Request Code: " + requestCode);
                             navController.navigate(R.id.action_viewEventFragment_to_editEventFragment, bundle);
                             return true;
@@ -257,7 +258,8 @@ public class ViewEventFragment extends Fragment implements BackpressedListener {
         Intent intent = new Intent(getActivity(), AlarmReceiver.class);
         intent.putExtra("requestCode", requestCode);
         intent.putExtra("notificationID", notificationID);
-        intent.putExtra("todo", content);
+        intent.putExtra("title", eventName.getText().toString());
+        intent.putExtra("content", eventContent.getText().toString());
         intent.putExtra("delete", "delete");
 
         //getBroadcast context, requestCode, intent, flags
