@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/userDetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/border"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/week"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#D6D6D6" />
+
+        <LinearLayout
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topPanel"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_baseline_person_24"
+                app:tint="@color/green" />
+
+            <TextView
+                android:id="@+id/userFullName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/lato_bold"
+                android:padding="10dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/default_black"
+                android:textSize="25sp"
+                tools:text="Jane Doe" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_baseline_calendar_today_24"
+                app:tint="@color/green" />
+
+            <TextView
+                android:id="@+id/userWeek"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="2"
+                android:fontFamily="@font/lato_regular"
+                android:padding="10dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/default_black"
+                android:textSize="20sp"
+                tools:text="5th week of Pregnancy" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/topPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="25dp"
+                android:layout_toRightOf="@id/btnCloseUserDetails"
+                android:fontFamily="@font/exo_medium"
+                android:text="User details"
+                android:textColor="@color/default_black"
+                android:textSize="23sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCloseUserDetails"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ic_baseline_close_24"
+                android:backgroundTint="@color/green"
+                android:textAllCaps="false" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEditUserDetails"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_baseline_edit_24"
+                android:backgroundTint="@color/green"
+                android:textAllCaps="false"
+                android:textColor="@color/welcome"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/border"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnLogoutAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_toRightOf="@id/logoutICon"
+                android:background="none"
+                android:fontFamily="@font/lato_regular"
+                android:padding="10dp"
+                android:text="Logout"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/default_black"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/logoutICon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_logout_line_icon"
+                app:tint="@color/green" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="25dp"
+                android:layout_toRightOf="@id/btnCancelEdit"
+                android:fontFamily="@font/exo_medium"
+                android:text="Edit user details"
+                android:textColor="@color/default_black"
+                android:textSize="23sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCancelEdit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/ic_baseline_close_24"
+                android:backgroundTint="@color/green"
+                android:textAllCaps="false" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSaveEdit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_baseline_check_24"
+                android:backgroundTint="@color/green"
+                android:textAllCaps="false"
+                android:textColor="@color/welcome"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fnameEditLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            app:boxBackgroundColor="@null"
+            app:boxBackgroundMode="filled"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtEditFname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="First Name"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lnameEditLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            app:boxBackgroundColor="@null"
+            app:boxBackgroundMode="filled"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtEditLname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Last Name"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/weeksEditLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            app:boxBackgroundColor="@null"
+            app:boxBackgroundMode="filled"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinnerEditWeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="@string/how_far_along_are_you"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
