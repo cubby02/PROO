@@ -21,6 +21,7 @@
     <string name="food">I want to know about basic food preferences for pregnant women</string>
     <string name="more_result_continue">Do you want more results?</string>
     <string name="description">My name is Proo. I\'m your personal pregnancy organizer. You can ask, add event notification, and moments of your pregnancy.</string>
+    <string name="how_far_along_are_you">How far along are you?</string>
     <string-array name="months">
         <item>First month</item>
         <item>Second month</item>
@@ -90,8 +91,5 @@
     <string-array name="exit_response">
         <item>I\'m very pleased that I\'ve been able to help you today. Would you like to know more about your pregnancy, or you want to exit?</item>
         <item>Thanks for stopping by! Still curious about your pregnancy? Ask away or you want to go?</item>
-    </string-array>
-    <string-array name="weight">
-
     </string-array>
 </resources>

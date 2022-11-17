@@ -4,8 +4,16 @@ public class Users {
     public String firstname;
     public String lastname;
     public String email;
+    public String weeks;
 
     public Users() {
+    }
+
+    public Users(String firstname, String lastname, String email, String weeks) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.weeks = weeks;
     }
 
     public Users(String firstname, String lastname, String email) {

@@ -1,6 +1,7 @@
 package com.cubbysulotions.proo.LoginSignupScreen;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -31,11 +34,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 import hari.bounceview.BounceView;
 
 import static android.content.ContentValues.TAG;
 
 public class SignInFragment extends Fragment {
+    private static final String TAG = "SignInFragment";
 
     View view;
 
@@ -47,13 +55,14 @@ public class SignInFragment extends Fragment {
     }
 
     private TextInputEditText fname, lname, email, password;
-    private TextInputLayout fnameLayout, lnameLayout, emailLayout, passLayout;
+    private TextInputLayout fnameLayout, lnameLayout, emailLayout, passLayout, weeksLayout;
     private Button btnBack;
     private ImageButton btnSubmit;
     private FirebaseAuth mAuth;
     private NavController navController;
     private NavOptions navOptions;
     LoadingDialog loadingDialog;
+    AutoCompleteTextView spinner;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -68,6 +77,8 @@ public class SignInFragment extends Fragment {
             emailLayout = view.findViewById(R.id.emailLayout);
             passLayout = view.findViewById(R.id.passwordLayout);
             btnBack = view.findViewById(R.id.btnBack);
+            spinner = view.findViewById(R.id.spinnerWeek);
+            weeksLayout = view.findViewById(R.id.weeksLayout);
             BounceView.addAnimTo(btnBack);
             btnSubmit = view.findViewById(R.id.btnSubmit);
             BounceView.addAnimTo(btnSubmit);
@@ -85,6 +96,9 @@ public class SignInFragment extends Fragment {
             animationDrawable.setEnterFadeDuration(2000);
             animationDrawable.setExitFadeDuration(4000);
             animationDrawable.start();
+
+            SetWeeks setWeeks = new SetWeeks(SignInFragment.this);
+            setWeeks.execute();
 
             //Initialize Firebase Auth
             mAuth = FirebaseAuth.getInstance();
@@ -115,13 +129,15 @@ public class SignInFragment extends Fragment {
             String lastName = lname.getText().toString();
             String emailText = email.getText().toString();
             String passText = password.getText().toString();
+            String weeks = spinner.getText().toString();
 
             //The first if-else is to validate the length of the password
-            if (firstName.isEmpty() || lastName.isEmpty() || emailText.isEmpty() || passText.isEmpty()){
+            if (firstName.isEmpty() || lastName.isEmpty() || emailText.isEmpty() || passText.isEmpty() || spinner.length() == 0){
                 fnameLayout.setError("First Name is required");
                 lnameLayout.setError("Last Name is required");
                 emailLayout.setError("Email is required");
                 passLayout.setError("Password is required");
+                weeksLayout.setError("Current week is required");
             } else if (password.getText().length() < 6){
                 passLayout.setError("Password should be at least 6 characters");
             } else {
@@ -149,7 +165,7 @@ public class SignInFragment extends Fragment {
                                                                 //if the email verification is successfully sent, the first name, last name and email
                                                                 //will be save in Realtime database
                                                                 if(task.isSuccessful()){
-                                                                    Users users = new Users(firstName, lastName, emailText);
+                                                                    Users users = new Users(firstName, lastName, emailText, weeks);
                                                                     FirebaseDatabase.getInstance().getReference("users")
                                                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                                             .setValue(users).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -191,5 +207,38 @@ public class SignInFragment extends Fragment {
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private static class SetWeeks extends AsyncTask<Void, Void, List<String>>{
+        WeakReference<SignInFragment> reference;
+
+        public SetWeeks(SignInFragment context){
+            reference = new WeakReference<SignInFragment>(context);
+        }
+
+        @Override
+        protected List<String> doInBackground(Void... voids) {
+            List<String> weeks = new ArrayList<>();
+            for(int i = 1; i <= 40; i++){
+                weeks.add(i + " weeks");
+            }
+            return weeks;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> strings) {
+            SignInFragment main = reference.get();
+            if(main == null) return;
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    main.getActivity(),
+                    R.layout.drop_down_weeks,
+                    strings
+            );
+
+            main.spinner.setAdapter(adapter);
+
+            super.onPostExecute(strings);
+        }
     }
 }

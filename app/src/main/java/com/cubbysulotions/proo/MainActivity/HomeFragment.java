@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
     public ImageView imgTrimester;
     public RoundedImageView imgMoments;
     public Button btnLogout;
-    public String fname, lname, email;
+    public String fname, lname, email, weeks;
     public FirebaseAuth mAuth;
     public FirebaseUser currentUser;
     public FirebaseDatabase database;
@@ -121,153 +121,14 @@ public class HomeFragment extends Fragment {
             });
 
             firstName();
-            setTrismester();
-            setAgenda();
-            setMoments();
+            SetAgenda setAgenda = new SetAgenda(HomeFragment.this);
+            setAgenda.execute();
+
 
 
         } catch (Exception e){
             toast("Something went wrong, please try again");
             Log.e("Main Screen error", "exception", e);
-        }
-    }
-
-    private void setTrismester() {
-        String savedMonth = db.getSavedMonth();
-        switch (savedMonth){
-            case "First month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Hi there! You are on your first month of pregnancy, I hope you're doing fine.");
-                break;
-            case "Second month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("You're doing great! Congrats on your second month of pregnancy.");
-                break;
-            case "Third month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Keep up the good work, here comes the third month of pregnancy!");
-                break;
-            case "Fourth month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("You're now on second trimester, fourth month here it comes!");
-                break;
-            case "Fifth month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Keep up the good work, continue what your doctor advice you to do. Fifth month here it comes!");
-                break;
-            case "Sixth month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Congrats on your sixth months of pregnancy!");
-                break;
-            case "Seventh month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Whoa! Look where you are right now, you're on your third trimester.");
-                break;
-            case "Eighth month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Hello there! You are on your eighth month of pregnancy. I hope you're doing fine.");
-                break;
-            case "Ninth month":
-                txtTrimester.setText(savedMonth);
-                txtTrimesterContent.setText("Ready for your little one? Your due is around the corner, be more careful now.");
-                break;
-            default:
-                txtTrimester.setText("First Month");
-                txtTrimesterContent.setText("Hi there! You are on your first month of pregnancy, I hope you're doing fine.");
-                break;
-        }
-
-
-    }
-
-    private void setAgenda() {
-        try{
-            List<DailyEvent> events = new ArrayList<>();
-            DatabaseReference reference = database.getReference().child("events").child(currentUser.getUid());
-            reference.orderByChild("dateString").addValueEventListener(new ValueEventListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    DailyEvent ev = new DailyEvent();
-                    for(DataSnapshot data : snapshot.getChildren()){
-                        ev = data.getValue(DailyEvent.class);
-                        events.add(ev);
-                    }
-                    Collections.reverse(events);
-                    String day = events.get(0).getDateString();
-                    String date = events.get(0).getDateString();
-                    String title = events.get(0).getName();
-                    String content = events.get(0).getContent();
-
-
-                    txtDay.setText(CalendarUtils.formattedMonth(LocalDate.parse(day)).toUpperCase());
-                    txtDate.setText(CalendarUtils.formattedDayOnly(LocalDate.parse(date)));
-                    txtAgendaTitle.setText(title);
-                    if(content.length() > 120){
-                        content = content.substring(0, Math.min(content.length(), 120));
-                        txtAgendaContent.setText(content + "...");
-                    } else {
-                        txtAgendaContent.setText(content);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e(TAG, "onCancelled: " + error.getMessage());
-                }
-            });
-
-        } catch (Exception e){
-            toast("Something went wrong, please try again");
-            Log.e(TAG, "setAgenda: ", e);
-        }
-    }
-
-    private void setMoments(){
-        try {
-            List<Journal> list = new ArrayList<>();
-            DatabaseReference reference = database.getReference().child("journal").child(currentUser.getUid());
-            reference.addValueEventListener(new ValueEventListener() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    try {
-                        Journal ev = new Journal();
-
-                        for(DataSnapshot data : snapshot.getChildren()){
-                            ev = data.getValue(Journal.class);
-                            list.add(ev);
-                        }
-
-                        Collections.reverse(list);
-                        String title = list.get(0).getTitle();
-                        String content = list.get(0).getContent();
-                        String photo = list.get(0).getPhoto();
-
-                        Picasso.get().load(photo).into(imgMoments);
-                        txtMomentsTitle.setText(title);
-                        if(content.length() > 120){
-                            content = content.substring(0, Math.min(content.length(), 120));
-                            txtMomentsContent.setText(content + "...");
-                        } else {
-                            txtMomentsContent.setText(content);
-                        }
-
-                    } catch (Exception e){
-                        Log.e("PopulateJournal_Error", "Message: ", e);
-                        toast("Please wait...");
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.e(TAG, "onCancelled: " + error.getMessage() );
-                }
-            });
-        } catch (Exception e){
-            Log.e(TAG, "setMoments: ", e);
-            toast("Please wait...");
         }
     }
 
@@ -279,6 +140,9 @@ public class HomeFragment extends Fragment {
                 Users users = dataSnapshot.getValue(Users.class);
                 if (users != null){
                     fname = users.firstname;
+                    weeks = users.weeks;
+                    SetCurrentWeek setCurrentWeek = new SetCurrentWeek(HomeFragment.this);
+                    setCurrentWeek.onPostExecute(weeks);
                     greetingsUser.setText("Hi, " + fname.trim() + "!");
                 }
             }
@@ -303,5 +167,208 @@ public class HomeFragment extends Fragment {
 
     private void toast(String message){
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private static class SetCurrentWeek extends AsyncTask<String, Void, String>{
+        WeakReference<HomeFragment> reference;
+
+        public SetCurrentWeek(HomeFragment context){
+            reference = new WeakReference<HomeFragment>(context);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            strings[0] = strings[0].replaceAll("[^0-9]", " ");
+            strings[0] = strings[0].replaceAll(" +", " ");
+
+            if (strings[0].equals(""))
+                return "-1";
+
+            return strings[0];
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            HomeFragment main = reference.get();
+            if(main == null) return;
+
+            s = s.replaceAll("[^0-9]", " ");
+            s = s.replaceAll(" +", " ");
+
+            if (s.equals(""))
+                s = "-1";
+
+            int week = Integer.parseInt(s.trim());
+            String ordinal = "";
+            String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+            switch (week % 100) {
+                case 11:
+                case 12:
+                case 13:
+                    ordinal = week + "th";
+                default:
+                    ordinal = week + suffixes[week % 10];
+            }
+
+            if (week <= 4){
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Hi there! You are on your first month of pregnancy, I hope you're doing fine.");
+            } else if (week <= 8) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("You're doing great! Congrats on your second month of pregnancy.");
+            } else if (week <= 12) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Keep up the good work, here comes the third month of pregnancy!");
+            } else if (week <= 16) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("You're now on second trimester, fourth month here it comes!");
+            } else if (week <= 20) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Keep up the good work, continue what your doctor advice you to do. Fifth month here it comes!");
+            } else if (week <= 24) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Congrats on your sixth months of pregnancy!");
+            } else if (week <= 28) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Whoa! Look where you are right now, you're on your third trimester.");
+            } else if (week <= 32) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Hello there! You are on your eighth month of pregnancy. I hope you're doing fine.");
+            } else if (week <= 36) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Ready for your little one? Your due is around the corner, be more careful now.");
+            } else if (week <= 40) {
+                main.txtTrimester.setText(ordinal + " week");
+                main.txtTrimesterContent.setText("Please contact your medical provider");
+            }
+
+            super.onPostExecute(s);
+        }
+    }
+
+    private static class SetAgenda extends AsyncTask<Void, Void, Void>{
+        WeakReference<HomeFragment> reference;
+
+        public SetAgenda(HomeFragment context){
+            reference = new WeakReference<HomeFragment>(context);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            HomeFragment main = reference.get();
+            if(main == null) return;
+            setAgenda();
+            setMoments();
+            super.onPostExecute(unused);
+        }
+
+        private void setAgenda() {
+            HomeFragment main = reference.get();
+            if(main == null) return;
+            try{
+                List<DailyEvent> events = new ArrayList<>();
+                DatabaseReference reference = main.database.getReference().child("events").child(main.currentUser.getUid());
+                reference.orderByChild("dateString").addValueEventListener(new ValueEventListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        try {
+                            DailyEvent ev = new DailyEvent();
+                            for(DataSnapshot data : snapshot.getChildren()){
+                                ev = data.getValue(DailyEvent.class);
+                                events.add(ev);
+                            }
+                            Collections.reverse(events);
+                            String day = events.get(0).getDateString();
+                            String date = events.get(0).getDateString();
+                            String title = events.get(0).getName();
+                            String content = events.get(0).getContent();
+
+
+                            main.txtDay.setText(CalendarUtils.formattedMonth(LocalDate.parse(day)).toUpperCase());
+                            main.txtDate.setText(CalendarUtils.formattedDayOnly(LocalDate.parse(date)));
+                            main.txtAgendaTitle.setText(title);
+                            if(content.length() > 120){
+                                content = content.substring(0, Math.min(content.length(), 120));
+                                main.txtAgendaContent.setText(content + "...");
+                            } else {
+                                main.txtAgendaContent.setText(content);
+                            }
+                        } catch (Exception e) {
+                            LocalDate date = LocalDate.now();
+                            main.txtDay.setText(CalendarUtils.formattedMonth(date).toUpperCase());
+                            main.txtDate.setText(CalendarUtils.formattedDayOnly(date));
+                            main.txtAgendaTitle.setText("No current Agenda");
+                            main.txtAgendaContent.setText("No content");
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "onCancelled: " + error.getMessage());
+                    }
+                });
+
+            } catch (Exception e){
+                Toast.makeText(main.getActivity(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "setAgenda: ", e);
+            }
+        }
+
+        private void setMoments(){
+            HomeFragment main = reference.get();
+            if(main == null) return;
+            try {
+                List<Journal> list = new ArrayList<>();
+                DatabaseReference reference = main.database.getReference().child("journal").child(main.currentUser.getUid());
+                reference.addValueEventListener(new ValueEventListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        try {
+                            Journal ev = new Journal();
+
+                            for(DataSnapshot data : snapshot.getChildren()){
+                                ev = data.getValue(Journal.class);
+                                list.add(ev);
+                            }
+
+                            Collections.reverse(list);
+                            String title = list.get(0).getTitle();
+                            String content = list.get(0).getContent();
+                            String photo = list.get(0).getPhoto();
+
+                            Picasso.get().load(photo).into(main.imgMoments);
+                            main.txtMomentsTitle.setText(title);
+                            if(content.length() > 120){
+                                content = content.substring(0, Math.min(content.length(), 120));
+                                main.txtMomentsContent.setText(content + "...");
+                            } else {
+                                main.txtMomentsContent.setText(content);
+                            }
+
+                        } catch (Exception e){
+                            main.txtMomentsTitle.setText("No added entry");
+                            main.txtMomentsContent.setText("No content");
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "onCancelled: " + error.getMessage() );
+                    }
+                });
+            } catch (Exception e){
+                Toast.makeText(main.getActivity(), "Something went wrong, please try again", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "setMoments: ", e);
+            }
+        }
     }
 }
