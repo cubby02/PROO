@@ -7,6 +7,13 @@
     android:orientation="vertical"
     android:id="@+id/userDetailsMain">
 
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="3dp"
+        android:src="#B5B5B5"
+        android:layout_margin="5dp"
+        android:layout_gravity="center"/>
+
     <RelativeLayout
         android:id="@+id/userDetails"
         android:layout_width="match_parent"
