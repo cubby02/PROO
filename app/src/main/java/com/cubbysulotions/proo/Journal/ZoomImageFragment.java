@@ -75,7 +75,7 @@ public class ZoomImageFragment extends Fragment implements BackpressedListener {
     private void back(){
         Bundle bundle = new Bundle();
         bundle.putString("id", getArguments().getString("id"));
-        bundle.putString("save", getArguments().getString("save"));
+        bundle.putString("save", "view");
         navController.navigate(R.id.action_zoomImageFragment_to_addEntryFragment, bundle, navOptions);
     }
 

@@ -322,7 +322,15 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                         String.valueOf(time)
                                 );
 
-
+                                reference1.setValue(journal);
+                                viewMode.setVisibility(View.VISIBLE);
+                                edit.setVisibility(View.VISIBLE);
+                                more.setVisibility(View.VISIBLE);
+                                editMode.setVisibility(View.GONE);
+                                save.setVisibility(View.GONE);
+                                update.setVisibility(View.GONE);
+                                //id = getArguments().getString("id");
+                                showEntry(id);
 
                             }
                         });
