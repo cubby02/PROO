@@ -178,6 +178,7 @@ public class AddEventFragment extends Fragment implements BackpressedListener {
         String date = getArguments().getString("date");
         Bundle bundle = new Bundle();
         bundle.putString("date", date);
+        bundle.putString("source", "add");
 
         NavOptions navOptions = new NavOptions.Builder().setPopUpTo(R.id.journalFragment, true)
                 .setEnterAnim(R.anim.slide_in_down_reverse)
