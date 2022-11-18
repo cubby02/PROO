@@ -17,7 +17,7 @@ import com.cubbysulotions.proo.Calendar.CalendarFragment;
 import com.cubbysulotions.proo.Calendar.EditEventFragment;
 import com.cubbysulotions.proo.Calendar.ViewEventFragment;
 import com.cubbysulotions.proo.Calendar.WeeklyCalendarFragment;
-import com.cubbysulotions.proo.Chatbot.DBController;
+import com.cubbysulotions.proo.Home.HomeFragment;
 import com.cubbysulotions.proo.Journal.AddEntryFragment;
 import com.cubbysulotions.proo.Journal.JournalFragment;
 import com.cubbysulotions.proo.Journal.ZoomImageFragment;

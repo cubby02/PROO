@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.cubbysulotions.proo.Home.UserDetailsBottomSheet;
 import com.cubbysulotions.proo.LoadingDialog;
 import com.cubbysulotions.proo.Firebase.Users;
 import com.cubbysulotions.proo.R;
@@ -211,6 +212,7 @@ public class SignInFragment extends Fragment {
 
     private static class SetWeeks extends AsyncTask<Void, Void, List<String>>{
         WeakReference<SignInFragment> reference;
+        WeakReference<UserDetailsBottomSheet> reference2;
 
         public SetWeeks(SignInFragment context){
             reference = new WeakReference<SignInFragment>(context);

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MainActivity.HomeFragment"
+    tools:context=".Home.HomeFragment"
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
@@ -94,13 +94,15 @@
                     </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnLogout"
-                        android:layout_width="20dp"
-                        android:layout_height="25dp"
+                        android:id="@+id/btnUserDetails"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_alignParentEnd="true"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/ic_logout_line_icon"
-                        android:backgroundTint="@color/white" />
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/women_headshot_2" />
                 </RelativeLayout>
             </com.google.android.material.card.MaterialCardView>
 

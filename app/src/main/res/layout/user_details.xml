@@ -4,12 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/userDetailsMain">
 
     <RelativeLayout
         android:id="@+id/userDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -134,21 +136,6 @@
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnLogoutAccount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_toRightOf="@id/logoutICon"
-                android:background="none"
-                android:fontFamily="@font/lato_regular"
-                android:padding="10dp"
-                android:text="Logout"
-                android:textAlignment="textStart"
-                android:textAllCaps="false"
-                android:textColor="@color/default_black"
-                android:textSize="16sp" />
-
             <ImageView
                 android:id="@+id/logoutICon"
                 android:layout_width="30dp"
@@ -159,18 +146,37 @@
                 android:src="@drawable/ic_logout_line_icon"
                 app:tint="@color/green" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogoutAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toRightOf="@id/logoutICon"
+                android:background="@null"
+                android:fontFamily="@font/lato_regular"
+                android:padding="10dp"
+                android:text="Logout"
+                android:textAlignment="textStart"
+                android:textAllCaps="false"
+                android:textColor="@color/default_black"
+                android:textSize="16sp" />
+
 
         </RelativeLayout>
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/editUser"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <RelativeLayout
+            android:id="@+id/topPanel1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -208,30 +214,44 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fnameEditLayout"
+        <RelativeLayout
+            android:id="@+id/loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/weeksEditLayout"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
+            android:visibility="invisible"
             app:boxBackgroundColor="@null"
             app:boxBackgroundMode="filled"
-            app:errorTextAppearance="@style/error_appearance">
+            app:errorTextAppearance="@style/error_appearance"
+            tools:visibility="visible">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtEditFname"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:hint="First Name"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_below="@id/progress"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/lato_regular"
+                android:text="Updating..."
+                android:textColor="@color/default_black" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/progress"
+                style="@style/SpinKitView.Small.ThreeBounce"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                app:SpinKit_Color="@color/green" />
+
+        </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lnameEditLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/fnameEditLayout"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
@@ -253,6 +273,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/lnameEditLayout"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
@@ -270,6 +291,27 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fnameEditLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topPanel1"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            app:boxBackgroundColor="@null"
+            app:boxBackgroundMode="filled"
+            app:errorTextAppearance="@style/error_appearance">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtEditFname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="First Name"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

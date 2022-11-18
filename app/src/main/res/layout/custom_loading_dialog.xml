@@ -17,9 +17,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
+            android:padding="8dp"
             app:SpinKit_Color="@color/blue"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:padding="8dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/textView26"

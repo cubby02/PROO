@@ -1,7 +1,6 @@
-package com.cubbysulotions.proo.MainActivity;
+package com.cubbysulotions.proo.Home;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,26 +9,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cubbysulotions.proo.Calendar.Utilities.AllTaskAdapter;
 import com.cubbysulotions.proo.Calendar.Utilities.CalendarUtils;
 import com.cubbysulotions.proo.Calendar.Utilities.Events.DailyEvent;
 import com.cubbysulotions.proo.Chatbot.DBController;
 import com.cubbysulotions.proo.Journal.Journal;
 import com.cubbysulotions.proo.LoginSignupScreen.WelcomeActivity;
 import com.cubbysulotions.proo.Firebase.Users;
+import com.cubbysulotions.proo.MainActivity.MainActivity;
 import com.cubbysulotions.proo.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,9 +39,7 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,7 +62,7 @@ public class HomeFragment extends Fragment {
     public TextView txtMomentsTitle, txtMomentsContent;
     public ImageView imgTrimester;
     public RoundedImageView imgMoments;
-    public Button btnLogout;
+    public Button btnUserDetails;
     public String fname, lname, email, weeks;
     public FirebaseAuth mAuth;
     public FirebaseUser currentUser;
@@ -80,7 +74,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         try {
             greetingsUser = view.findViewById(R.id.txtHelloUser);
-            btnLogout = view.findViewById(R.id.btnLogout);
+            btnUserDetails = view.findViewById(R.id.btnUserDetails);
             imgMoments = view.findViewById(R.id.imgMoments);
             imgTrimester = view.findViewById(R.id.mgTrimester);
             txtTrimester = view.findViewById(R.id.txtTrimester);
@@ -113,10 +107,12 @@ public class HomeFragment extends Fragment {
             ((MainActivity)getActivity()).updateStatusBarColor("#FFB787CB");
             ((MainActivity)getActivity()).setLightStatusBar(false);
 
-            btnLogout.setOnClickListener(new View.OnClickListener() {
+
+            btnUserDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    logoutUser();
+                    UserDetailsBottomSheet bottomSheetFrag = new UserDetailsBottomSheet();
+                    bottomSheetFrag.show(getActivity().getSupportFragmentManager(), bottomSheetFrag.getTag());
                 }
             });
 

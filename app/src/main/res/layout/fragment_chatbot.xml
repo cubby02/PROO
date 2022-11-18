@@ -44,9 +44,9 @@
                     android:id="@+id/img2"
                     android:layout_width="150dp"
                     android:layout_height="120dp"
+                    android:layout_alignBottom="@id/content6"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ai_with_bg"
-                    android:layout_alignBottom="@id/content6"/>
+                    android:src="@drawable/women" />
 
                 <RelativeLayout
                     android:layout_below="@id/label"
