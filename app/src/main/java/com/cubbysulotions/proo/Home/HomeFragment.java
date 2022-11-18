@@ -39,6 +39,7 @@ import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment {
     }
 
     public TextView greetingsUser, txtTrimester, txtTrimesterContent;
-    public TextView txtDay, txtDate, txtAgendaTitle, txtAgendaContent;
+    public TextView txtDay, txtDate, txtAgendaTitle, txtAgendaContent, txtTime;
     public TextView txtMomentsTitle, txtMomentsContent;
     public ImageView imgTrimester;
     public RoundedImageView imgMoments;
@@ -85,6 +86,7 @@ public class HomeFragment extends Fragment {
             txtAgendaContent = view.findViewById(R.id.txtAgendaContent);
             txtMomentsTitle = view.findViewById(R.id.txtMomentsTitle);
             txtMomentsContent = view.findViewById(R.id.txtMomentsContent);
+            txtTime = view.findViewById(R.id.txtTime);
 
             //Initialize firebase
             mAuth = FirebaseAuth.getInstance();
@@ -284,11 +286,19 @@ public class HomeFragment extends Fragment {
                             String date = events.get(0).getDateString();
                             String title = events.get(0).getName();
                             String content = events.get(0).getContent();
+                            String time = events.get(0).getTimeString();
 
 
                             main.txtDay.setText(CalendarUtils.formattedMonth(LocalDate.parse(day)).toUpperCase());
                             main.txtDate.setText(CalendarUtils.formattedDayOnly(LocalDate.parse(date)));
-                            main.txtAgendaTitle.setText(title);
+                            main.txtTime.setText(CalendarUtils.formattedTime(LocalTime.parse(time)));
+                            if(title.length() > 15){
+                                title = title.substring(0, Math.min(title.length(), 15));
+                                main.txtAgendaTitle.setText(title + "...");
+                            } else {
+                                main.txtAgendaTitle.setText(title);
+                            }
+
                             if(content.length() > 120){
                                 content = content.substring(0, Math.min(content.length(), 120));
                                 main.txtAgendaContent.setText(content + "...");

@@ -167,7 +167,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
             save.setVisibility(View.GONE);
             update.setVisibility(View.GONE);
             id = getArguments().getString("id");
-            showEntry();
+            showEntry(id);
         }
 
         BounceView.addAnimTo(save);
@@ -322,15 +322,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                         String.valueOf(time)
                                 );
 
-                                reference1.setValue(journal);
-                                viewMode.setVisibility(View.VISIBLE);
-                                edit.setVisibility(View.VISIBLE);
-                                more.setVisibility(View.VISIBLE);
-                                editMode.setVisibility(View.GONE);
-                                save.setVisibility(View.GONE);
-                                update.setVisibility(View.GONE);
-                                id = getArguments().getString("id");
-                                showEntry();
+
 
                             }
                         });
@@ -403,7 +395,7 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
         });
     }
 
-    private void showEntry() {
+    private void showEntry(String id) {
         DatabaseReference reference1 = reference.child(id);
         reference1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -499,9 +491,9 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                String id = reference.push().getKey();
+                                String id3 = reference.push().getKey();
                                 Journal journal = new Journal(
-                                        id,
+                                        id3,
                                         title.getText().toString(),
                                         content.getText().toString(),
                                         uri.toString(),
@@ -510,11 +502,20 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                         String.valueOf(time)
                                 );
 
-                                reference.child(id).setValue(journal);
+                                reference.child(id3).setValue(journal);
                                 title.setText("");
                                 content.setText("");
                                 contentURI = null;
                                 editPhoto.setBackgroundResource(R.drawable.splash_bg);
+
+                                viewMode.setVisibility(View.VISIBLE);
+                                edit.setVisibility(View.VISIBLE);
+                                more.setVisibility(View.VISIBLE);
+                                editMode.setVisibility(View.GONE);
+                                save.setVisibility(View.GONE);
+                                update.setVisibility(View.GONE);
+                                id = getArguments().getString("id");
+                                showEntry(id3);
 
                             }
                         });
