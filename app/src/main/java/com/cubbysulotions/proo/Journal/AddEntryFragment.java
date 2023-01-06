@@ -329,7 +329,6 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                 editMode.setVisibility(View.GONE);
                                 save.setVisibility(View.GONE);
                                 update.setVisibility(View.GONE);
-                                //id = getArguments().getString("id");
                                 showEntry(id);
 
                             }
@@ -522,8 +521,8 @@ public class AddEntryFragment extends Fragment implements BackpressedListener {
                                 editMode.setVisibility(View.GONE);
                                 save.setVisibility(View.GONE);
                                 update.setVisibility(View.GONE);
-                                id = getArguments().getString("id");
-                                showEntry(id3);
+                                id = id3;
+                                showEntry(id);
 
                             }
                         });

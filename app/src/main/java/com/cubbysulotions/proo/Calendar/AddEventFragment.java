@@ -215,7 +215,7 @@ public class AddEventFragment extends Fragment implements BackpressedListener {
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getActivity(),
                 requestCode,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
 
         //Create time

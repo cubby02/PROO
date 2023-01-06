@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.cubbysulotions.proo.MainActivity.MainActivity;
@@ -20,6 +21,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String CHANNEL_ID = "SAMPLE_CHANNEL";
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     public void onReceive(Context context, Intent intent) {
         //Get id and message from intent
@@ -39,7 +41,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent contentIntent = PendingIntent.getActivity(context,
                 requestCode,
                 main,
-                0);
+                PendingIntent.FLAG_MUTABLE);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         //Prepare notification
