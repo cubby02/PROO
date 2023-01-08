@@ -300,7 +300,7 @@
                         android:layout_height="90dp"
                         android:src="@color/red"
                         app:riv_corner_radius="8dp"
-                        android:scaleType="center"/>
+                        android:scaleType="centerCrop"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
